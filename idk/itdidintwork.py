@@ -1,5 +1,4 @@
 print("sadge :(")
-print("it fucking worked")
 import time,sys,threading
 def loading_animation(l:int):
     while True:
