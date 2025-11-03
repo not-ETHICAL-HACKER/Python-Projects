@@ -1,6 +1,13 @@
 import time,sys,random
-def animate():
-    l=["" for x in range(100)]
-    for i in range(10):
-        print(l,1)
-print("1".join([" " for x in range(10)]))
+def marquee(txt:str="Hello World",dir:str="left",cd:float=0.1,num:int=10)->None:
+    """"Creates a marquee animation in the console."""
+    if dir not in ["left","right"]:
+        raise ValueError("Direction must be 'left' or 'right'")
+    if dir=="left":
+        while True:
+            sys.stdout.write((txt)*num+"\r")
+            sys.stdout.flush()
+            time.sleep(cd)
+            txt=txt[1:]+txt[0]
+    else:
+        pass
