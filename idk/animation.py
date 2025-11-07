@@ -32,22 +32,17 @@ def majic(txt:str):
             sys.stdout.write(" "* (len(txt)-i) + txt[-i] + "\r")
             sys.stdout.flush()
             time.sleep(0.1)
-import winsound as w
-l=list("abcdefghijklmnopqrstuvwxyz")
-import sys as s
-import time
-def magnet(frames:list,fps:float=60,Title:bool=False):
+def magnet(frames:list=list("Hello World"),fps:float=60,Alt:bool=False):
     a=0
     new=False
-    if not Title:
+    if not Alt:
         while True:
             if new:
                 print()
                 new=False
             for i in range(len(frames)):
-                s.stdout.write((" "*(i-a))+(frames[i-a])+("\r"))
-                s.stdout.flush()
-                w.Beep(500,100)
+                sys.stdout.write((" "*(i-a))+(frames[i-a])+("\r"))
+                sys.stdout.flush()
                 time.sleep(1/fps)
             a+=1
             if a==len(frames):
@@ -58,5 +53,4 @@ def magnet(frames:list,fps:float=60,Title:bool=False):
             for i in range(len(frames)):
                 a=len(frames)-1
                 #for alternate animation ie,|\-/ at the same time at diff animate times ig
-
-magnet(l)
+magnet()
