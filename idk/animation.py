@@ -1,5 +1,6 @@
 import time,sys,random
 def marquee(txt:str=" Hello World ",dir:str="left",cd:float=0.1,num:int=10)->None:
+<<<<<<< Updated upstream
     """"Creates a marquee animation in the console."""
     if dir not in ["left","right"]:
         raise ValueError("Direction must be 'left' or 'right'")
@@ -54,3 +55,24 @@ def magnet(frames:list=list("Hello World"),fps:float=60,Alt:bool=False):
                 a=len(frames)-1
                 #for alternate animation ie,|\-/ at the same time at diff animate times ig
 magnet()
+=======
+    """Creates a marquee animation in the console."""
+    if dir not in ["left","right"]:
+        raise ValueError("Direction must be 'left' or 'right'")
+    try:
+        if dir=="left":
+            while True:
+                sys.stdout.write((txt)*num+"\r")
+                sys.stdout.flush()
+                time.sleep(cd)
+                txt=txt[1:]+txt[0]
+        else:
+            while 6<7:
+                sys.stdout.write((txt)*num+"\r")
+                sys.stdout.flush()
+                time.sleep(cd)
+                txt=txt[-1]+txt[:-1]
+    except KeyboardInterrupt:
+        print("hlo")
+marquee()
+>>>>>>> Stashed changes
