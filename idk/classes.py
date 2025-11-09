@@ -1,27 +1,40 @@
-# goofy_popup.py
-import time
-import tkinter as tk
-from tkinter import messagebox
-import threading
-import sys
+def powers_of_2(x: int):
+    import math
 
-DELAY_SECONDS = 10  # change to whatever delay you want
+    RESET = "\033[39m"   # reset foreground only (no white flash)
+    BG_BLACK = "\033[40m"  # dark background
+    print(BG_BLACK, end="")
 
-def show_popup():
-    root = tk.Tk()
-    root.withdraw()  # hide main window
-    messagebox.showinfo("Goofy Ahh Notice", "This is a goofy ahh popup! 😜\nYou ran it, so you deserve it.")
-    root.destroy()
+    # rainbow color generator (256-color ANSI range 16–231)
+    def color_wave(i, total, phase=0):
+        # smooth hue cycle based on position
+        hue = int(16 + (i / total) * 215 + phase) % 231
+        return f"\033[38;5;{hue}m"
 
-def main():
-    try:
-        print(f"Waiting {DELAY_SECONDS} seconds... (press Ctrl+C to cancel)")
-        time.sleep(DELAY_SECONDS)
-        # run popup on main thread for tkinter
-        show_popup()
-    except KeyboardInterrupt:
-        print("Cancelled by user.")
-        sys.exit(0)
+    universe_atoms = 10**78
 
-if __name__ == "__main__":
-    main()
+    if 2**x > 2**(2**8):
+        print(f"\033[1;91mts too large to comprehend 🤯{RESET}")
+        ratio = 2**x / universe_atoms
+        print(f"\033[2mthis has {ratio:.2e} times more atoms than the universe{RESET}\n")
+
+    t = 0
+    while x > 8 - 1:
+        x //= 2
+        t += 1
+
+    var = "|"
+
+    print(f"Visualizing 2^{2**t * x} (rainbow mode):\n")
+
+    # Draw wave-colored bars
+    for i in range(x + 1):
+        bar = var * (2**i)
+        color = color_wave(i, x + 1, phase=t * 20)  # shift hue per reduction
+        print(f"{color}{bar}{RESET}")
+
+    if t > 0:
+        print(f"\n{color_wave(x, x)}This graph has been shrinked {t} time(s) for readability!{RESET}")
+while True:
+    p=int(input("Enter a number:"))
+    powers_of_2(p)
