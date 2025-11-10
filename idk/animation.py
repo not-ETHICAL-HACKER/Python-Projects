@@ -27,6 +27,7 @@ def bouncy(txt:str=" Hello World ",cd:float=0.1)->None:
             sys.stdout.flush()
             time.sleep(cd)
 def majic(txt:str):
+    txt=" "*5+txt
     while True:
         for i,ch in enumerate(txt):
             sys.stdout.write(" "* (len(txt)-i) + txt[-i] + "\r")
@@ -92,3 +93,8 @@ def powers_of_2(x: int):
 
     if t > 0:
         print(f"\n{color}This graph has been shrinked {t} time(s) for readability!{RESET}")
+while True:
+    a=int(input("Enter a number to visualize its power of 2 (or -1 to exit): "))
+    if a==-1:
+        break
+    powers_of_2(a)
