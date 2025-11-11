@@ -1,6 +1,6 @@
 import time,sys,random
 def marquee(txt:str=" Hello World ",dir:str="left",cd:float=0.1,num:int=10)->None:
-    """"Creates a marquee animation in the console."""
+    """Creates a marquee animation in the console."""
     if dir not in ["left","right"]:
         raise ValueError("Direction must be 'left' or 'right'")
     if dir=="left":
@@ -94,7 +94,9 @@ def powers_of_2(x: int):
     if t > 0:
         print(f"\n{color}This graph has been shrinked {t} time(s) for readability!{RESET}")
 while True:
+    break
     a=int(input("Enter a number to visualize its power of 2 (or -1 to exit): "))
     if a==-1:
         break
     powers_of_2(a)
+bouncy()

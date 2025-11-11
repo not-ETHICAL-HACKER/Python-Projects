@@ -1,3 +1,7 @@
-for i in range(10):
-    print(i)
-    print("Does it work?")
+def ig():
+    i=1
+    while True:
+        i+=i
+        yield i
+for j in ig():
+    print(j)

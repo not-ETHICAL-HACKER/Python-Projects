@@ -1,60 +1,222 @@
-import time,math,random
+import time
+import math
+import random
+import json
+from colorama import Fore, Back, Style, init
+import os
+
+#//saving and loading progress
+def save_progress(lvl:int=1, exp:int=1, filename="save.json"):
+    try:
+        with open(filename, "w") as f:
+            json.dump({"lvl": lvl, "exp": exp}, f, indent=4)
+        print("Progress saved successfully!")
+    except Exception as e:
+        print(f"Error saving progress: {e}") 
+
+def load_progress(filename="save.json"):
+    try:
+        with open(filename, "r") as f:
+            data = json.load(f)
+            print("Progress loaded successfully!")
+            return data["lvl"], data["exp"]
+    except FileNotFoundError:
+        print("No save file found — starting fresh.")
+        return 1, 0
+
+inp = input("Have you played this game before? (y|n) ")
+if inp.lower() == "y":
+    lvl, exp = load_progress()
+else:
+    lvl, exp = 1, 0
+
+# Move cursor up 1 line and clear it
+print("\033[F\033[K", end="")
+
+a=Fore.MAGENTA+Style.BRIGHT+"Welcome TO My Game."+Fore.RESET+Style.NORMAL
+print(a.center(100))
+print("\n"*3)
+
+#//claering screen
+def clear_screen():
+    os.system("cls" if os.name == "nt" else "clear")
+
 #!Constants
-inf = float('inf')
+
+inf = 1.7976931348623157e308  #? maximum float value
+speed=1.0 #! time between increments
+expo=1 #! exponent for increment function
+init(autoreset=True)
+diff=1
+skin=Fore.WHITE + Style.BRIGHT
+c=0
+stages=5
+
+
+#* storages
+total=[] #! list to store FINAL total experience points
 
 #todo: improve the game increment function to include more functions
 #! Functions
 def fib(x:int)->int:
+    """Returns the xth Fibonacci number."""
     a,b=0,1
     for _ in range(x):
         a,b=b,a+b
-    return a
-
-def fac(x:int)->int:
-    if x==0 or x==1:
-        return 1
-    else:
-        return x*fac(x-1)
+    return a**expo
+#! 67 lol
+def fac(x: int) -> int:
+    result = 1
+    for i in range(2, x + 1):
+        result *= i
+    return result ** expo
 
 def two_pwr(x:int)->int:
-    return 2**x
+    """Returns 2 raised to the power of x."""
+    return (2**x)**expo
 
-def game_inc(choice:str, n:int)->int|None:
-    if choice=="fib":
-        return fib(n)
-    elif choice=="fac":
-        return fac(n)
-    elif choice=="2pwr":
-        return two_pwr(n)
-    else:
-        return None
-def lvl_up(type_func:str,lvl:int)->int:
-    #! i have implemented ts badly but it works for now
-    #? idk man mabye the lvl should be a progress bar or time based
-    #* copy idea from cookie clicker and idle rvolution
+def game_inc(choice: str, n: int) -> int:
+    """Returns the result of the chosen function applied to n."""
+    choices = {
+        "fib": fib,
+        "fac": fac,
+        "2pwr": two_pwr
+    }
+    if choice not in choices:
+        return 1
+    return choices[choice](n)
 
-    exp=game_inc(type_func,int(math.log(lvl)))
+#? idk man mabye the lvl should be a progress bar or time based
+#* copy idea from cookie clicker and idle rvolution 
+
+def lvl_up(type_func: str, lvl: int) -> int:
+    """
+    Calculates experience gain based on level and selected function.\n
+    Uses a smooth, non-zero scaling function.
+    """
+
+    # Prevent math domain errors (e.g. log(0))
+    if lvl < 1:
+        lvl = 1
+
+    # Smoothed growth: logarithmic-ish, but always >= 1
+    scaled_lvl = max(1, int(math.log(lvl + 1) * 2))  # tweak the *2 to change scaling speed
+
+    exp = game_inc(type_func, scaled_lvl)
     return exp
 
-def int_ps(exp:int):
-    while True:
-        #!int_ps is integer per second
-        exp+=exp
-        time.sleep(1)
-        yield exp
-print(game_inc("fac",5))
-print(lvl_up("fib",10))
+def int_ps(exp: int, duration: int = 10):
+    tot = 0
+    for _ in range(duration):
+        tot += exp
+        time.sleep(speed)
+        yield tot
+
+
 #? add a way to choose which function to use for exp gain
 #! mabye even add a way to combine functions for exp gain
-for val in int_ps(lvl_up("2pwr",300)):
-    print(val)
-    if val>1000:
-        print("limit reached starting stronger again.......")
+#// animation for lvl up
+def lvl_up_animation(lvl:int)->None:
+    animation = list("|/-\\")
+    for _ in range(int(random.random()*20)):
+        for frame in animation:
+            print(f"\r{Fore.GREEN}Level Up! New Level: {lvl} {frame}", end="")
+            time.sleep(0.1)
+        print(end = "")
+    print()
+#//shop fucyions
+class Shop:
+    @staticmethod
+    def upgrade_speed(current:int|float)->float:
+        """Way to reduce time between every interval"""
+        r=random.random()
+        R=random.random()
+        if current-abs(r - R)>0:
+            return current-abs(r - R)
+        else:
+            return 0
+    @staticmethod
+    def upgrade_exponent(current:int|float)->float:
+        """This is a way to upgrade the exponent"""
+        exp=random.random()
+        return current+exp
+
+while True:
+    choice = input("Enter a style of gaining exp (fac, fib, 2pwr): ")
+    
+    if choice in ("fac", "fib", "2pwr"):
         break
-        #? maybe add a lvl up system after every break
-        #* or add a way to spend exp on upgrades
-        #* exp should lvl up only when exp reaches a certain threshold(ie,10**6)
-        #* copy the progression in idle revolution
+    else:
+        # erase only the last invalid line
+        print("\033[F\033[K", end="")
+        print(f"{Fore.RED}Invalid choice, please choose again.")
+
+
+#! Main Game Loop
+for main_loop in range(stages):
+    clear_screen()
+    for i in range(1):
+        #!error in loop values
+        for val in int_ps(lvl_up(choice,lvl+i)):
+            print(skin+str(val)+"\r",end="")
+            if val>=10**diff:
+                lvl+=1
+                total.append(val)
+                print(Fore.CYAN + f"Level {lvl}: Gaining XP via {choice} mode...")
+                print(Fore.YELLOW + f"Speed: {speed:.5f}s | Exponent: {expo}")
+                print("limit reached starting stronger again.......")
+                lvl_up_animation(lvl)
+                save_progress(lvl, val)
+                break
+                #? maybe add a lvl up system after every break
+                #* or add a way to spend exp on upgrades
+                #* exp should lvl up only when exp reaches a certain threshold(ie,10**6)
+                #* copy the progression in idle revolution
+    money=sum(total)
+    for i in range(1):
+        print(f"{Style.BRIGHT}{Fore.MAGENTA}You have {money} experience points.")
+        a=input("Do you wawnt to to spend your exp?\n(Y|N):")
+        if a in ("Y","y"):
+            print("Shop is under construction......")
+            print("THers only speed upgrades")
+            while True:
+                try:
+                    a=int(input(f"1. Upgrade Speed\n2. Upgrade Exponent\n3. Increase difficulty\nEnter your choice{Style.BRIGHT}(in int){Style.NORMAL}:"))
+                    break
+                except ValueError:
+                    print(f"{Fore.RED}Invalid statement.")
+            if a==1:
+                print("Upgrading Speed for 10 exp")
+                if 10>money:
+                    print(f"{Style.BRIGHT}{Fore.BLUE}Not enough exp to spend!")
+                else:
+                    money-=10
+                    speed=Shop.upgrade_speed(current=speed)
+                    print(f"New speed interval is {speed}")
+            elif a==2:
+                print("Upgrading Exponent for 10 exp")
+                if 10>money:
+                    print(f"{Style.BRIGHT}{Fore.BLUE}Not enough exp to spend!")
+                else:
+                    money-=10
+                    expo=Shop.upgrade_exponent(current=expo)
+                    if expo>3:
+                        print("Limit Reached")
+                        expo=0
+                    print(f"New exponent is {expo}")
+            elif a==3:
+                if inf<=10**diff:
+                    print("Reached infinty.\nCannot increase difficulty")
+                    print(1)
+                diff+=1
+                print(f"New difficulty is {diff}\n and a gift of {money*2}")
+            else:
+                print(f"{a} is an invalid choice")
+        else:
+            print("Saving exp for now",money)
+        print(f"{Fore.RED}Current Level: {lvl}{Fore.RESET}\n{Fore.BLUE}Current Speed: {speed}{Fore.RESET}\n{Fore.CYAN}Current Exponent: {expo}{Fore.RESET}\n{Fore.RED}Current Difficulty: {diff}{Fore.RESET}\n{Fore.GREEN}Current exp: {money}{Fore.RESET}")
+        time.sleep(1)
+
 #! from gpt
 """def cube(x: int) -> int:
     return x ** 3
