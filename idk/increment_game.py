@@ -164,19 +164,18 @@ class Shop:
         exp=random.random()
         return current+exp
 
-
+while True:
+    choice = input("Enter a style of gaining exp (fac, fib, 2pwr): ")
+    if choice in ("fac", "fib", "2pwr"):
+        break
+    else:
+            # erase only the last invalid line
+        print("\033[F\033[K", end="")
+        print(f"{Fore.RED}Invalid choice, please choose again.")
 
 
 #! Main Game Loop
 for infinity in range(1):
-    while True:
-        choice = input("Enter a style of gaining exp (fac, fib, 2pwr): ")
-        if choice in ("fac", "fib", "2pwr"):
-            break
-        else:
-            # erase only the last invalid line
-            print("\033[F\033[K", end="")
-            print(f"{Fore.RED}Invalid choice, please choose again.")
     for main_loop in range(stages):
         clear_screen()
         #todo: add a way to choose early game or late game scaling

@@ -1,4 +1,4 @@
-import time,sys,random
+import time,sys,math
 def marquee(txt:str=" Hello World ",dir:str="left",cd:float=0.1,num:int=10)->None:
     """Creates a marquee animation in the console."""
     if dir not in ["left","right"]:
@@ -55,46 +55,49 @@ def magnet(frames:list=list("Hello World"),fps:float=60,Alt:bool=False):
                 a=len(frames)-1
                 #for alternate animation ie,|\-/ at the same time at diff animate times ig
 def powers_of_2(x: int):
-    import math
     RESET = "\033[39m"   # reset only text color (no background flash)
     BG_BLACK = "\033[40m"
-
-    colors = [
-        "\033[38;5;196m",  # red
-        "\033[38;5;202m",  # orange
-        "\033[38;5;226m",  # yellow
-        "\033[38;5;82m",   # green
-        "\033[38;5;45m",   # cyan
-        "\033[38;5;21m",   # blue
-        "\033[38;5;201m",  # magenta
-    ]
-
+    colors = ["\033[38;5;196m","\033[38;5;202m","\033[38;5;226m","\033[38;5;82m","\033[38;5;45m","\033[38;5;21m","\033[38;5;201m"]
     universe_atoms = 10**78
-
     print(BG_BLACK, end="")  # force dark background once
-
     if 2**x > 2**(2**8):
         print(f"\033[1;91mts too large to comprehend 🤯{RESET}")
         ratio = 2**x / universe_atoms
         print(f"\033[2mthis has {ratio:.2e} times more atoms than the universe{RESET}\n")
-
     t = 0
     while x > 8 - 1:
         x //= 2
         t += 1
-
     var = "|"
     color = colors[t % len(colors)]
-
     print(f"Visualizing 2^{2**t * x}:")
-
     for i in range(x + 1):
         print(f"{color}{var * (2**i)}{RESET}")
-
     if t > 0:
         print(f"\n{color}This graph has been shrinked {t} time(s) for readability!{RESET}")
+<<<<<<< Updated upstream
 while True:
     a=int(input("Enter a number to visualize its power of 2 (or -1 to exit): "))
     if a==-1:
         break
     powers_of_2(a)
+=======
+def falling(txt: str = "Hello World", height: int = 5, cd: float = 0.05):
+    output = [" "] * len(txt)
+    for k, j in enumerate(txt):
+        for i in range(height):
+            print("\033[2J\033[H", end="")   # clear + reset cursor
+            output[k] = "\n" * i + j         # letter falls
+            print("".join(output))           # render all letters
+            time.sleep(cd)
+        output[k] = j  # fix letter in place after fall
+
+def fall(x:str="Hello World"):
+    l=x.split()
+    for j in l:
+        for k in j:
+            print(k,end=".")
+        print()
+fall()
+falling()
+>>>>>>> Stashed changes
