@@ -24,5 +24,11 @@ def fib_fast(n: int) -> int:
 import timeit
 
 setup = "from __main__ import fib_fast"
-print(timeit.timeit("fib_fast(10**9)", setup=setup, number=1))
+def longest_word_checker(txt: str, l: list) -> bool:
+    is_longest = all(len(txt) >= len(word) for word in l)
 
+    if not is_longest:
+        print(f"{txt} is not the longest word in {' '.join(l)}")
+
+    l.append(txt)
+    return is_longest
