@@ -75,29 +75,3 @@ def powers_of_2(x: int):
         print(f"{color}{var * (2**i)}{RESET}")
     if t > 0:
         print(f"\n{color}This graph has been shrinked {t} time(s) for readability!{RESET}")
-<<<<<<< Updated upstream
-while True:
-    a=int(input("Enter a number to visualize its power of 2 (or -1 to exit): "))
-    if a==-1:
-        break
-    powers_of_2(a)
-=======
-def falling(txt: str = "Hello World", height: int = 5, cd: float = 0.05):
-    output = [" "] * len(txt)
-    for k, j in enumerate(txt):
-        for i in range(height):
-            print("\033[2J\033[H", end="")   # clear + reset cursor
-            output[k] = "\n" * i + j         # letter falls
-            print("".join(output))           # render all letters
-            time.sleep(cd)
-        output[k] = j  # fix letter in place after fall
-
-def fall(x:str="Hello World"):
-    l=x.split()
-    for j in l:
-        for k in j:
-            print(k,end=".")
-        print()
-fall()
-falling()
->>>>>>> Stashed changes
