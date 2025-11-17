@@ -1,0 +1,13 @@
+gun_1="""ᡕᠵデᡁ᠊╾━"""
+gun_2="""/̵͇̿̿/’̿’̿ ̿ ̿̿ ̿̿ ̿̿"""
+gun_3="""︻デ═一"""
+target_1="""▂▃▄▅▆▇█▓▒░✪░▒▓█▇▆▅▄▃▂"""
+gun_5="""▬▬ι══════ﺤ"""
+gun_6="""▄︻デ╦═一━⌯⁍"""
+bullet_1="""⚫"""
+bullet_2="""●"""
+bullet_3="⁍"
+bullet_4="۞"
+bullet_5="*"
+effect1="⌯"
+#! REfer the notebook for more ideas
