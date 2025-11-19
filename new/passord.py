@@ -66,7 +66,7 @@ def password_generator(length:int=12,complexity:str="hard")->str:
         raise ValueError("Complexity must be 'easy', 'medium', or 'hard'")
     easy="1234567890"
     medium="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    hard=medium+easy+"!@#$%^&*() _+-=[]{}|;:',.<>?/\\"
+    hard=medium+easy+"!@#$%^&*()_+-=[]{}|;:',.<>?/\\"
     if complexity=="easy":
         chars=easy
     elif complexity=="medium":
@@ -78,6 +78,8 @@ def big():
     c=0
     for i in range(100):
         for j in range(i*i):
-            c+=j*j
+            m = j*j
+            c += (m-1) * m * (2*m - 1) // 6
     return c
 print(f"{big():,}")
+print(password_generator(16,"hard"))
