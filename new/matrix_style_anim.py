@@ -1,25 +1,25 @@
-def matrix(txt:str)->str:
-    b=""
-    c=0
-    while c<len(txt):
-        for i in range(65, 91):
-            a=""+b
-            print(chr(i))
-            if chr(i)==txt[c]:
-                c+=1
-                b+=chr(i)
-    return a
-def matrix_2(txt: str) -> str:
-    b = ""
-    c = 0
-    while c < len(txt):
-        for i in range(65, 91):
-            print(chr(i))
-            if chr(i) == txt[c]:
-                b += chr(i)
-                c += 1
-                break           # stop scanning A–Z once matched
-    #! improve the idea of matrix the moviening letters
-    return b
+import time
+import os
+import random
 
-print(matrix_2("HELLO"))
+
+def matrix(txt: str) -> None:
+    alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    c = 0
+    out = ""
+    while True:
+        for ch in alpha:
+            time.sleep(0.1)
+            print(ch)
+            a = ch
+            if a == txt[c]:
+                print(out+"\r",end="")
+                out += a
+                c += 1
+                break
+        if c == len(txt):
+            print(out)
+            break
+
+
+matrix("Hello")
