@@ -12,7 +12,7 @@ a = "▖▘▝▗"
 b = "┤┘┴└├┌┬┐"
 d = "◰◳◲◱"
 e = "◴◷◶◵"
-f1 = "◡◡⊙⊙◠◠"
+#f1 = "◡◡⊙⊙◠◠"
 g = "⣾⣽⣻⢿⡿⣟⣯⣷"
 h = "⠁⠂⠄⡀⢀⠠⠐⠈"
 init(autoreset=True)
@@ -22,13 +22,13 @@ colors = [Fore.RED+Style.BRIGHT, Fore.YELLOW+Style.BRIGHT, Fore.GREEN+Style.BRIG
           Fore.CYAN+Style.BRIGHT, Fore.BLUE+Style.BRIGHT, Fore.MAGENTA+Style.BRIGHT]
 i = j = 0
 
-lis = [frames, arr, cir, circ, block, blocks, a, b, d, e, f1, g, h]
-
+lis = [frames, arr, cir, circ, block, blocks, a, b, d, e, g, h]
 try:
     while True:
+        lis= random.sample(lis, len(lis))
         j += 1
         for f in lis[j % len(lis)]:
-            print(f"{c}Loading... {colors[i]+(f*10)}", flush=True, end="\r")
+            print(f"{c}Loading... {colors[i]+(f*1)}", flush=True, end="\r")
             time.sleep(0.1)
             i += 1
             if i == len(colors):
