@@ -1,3 +1,4 @@
+from math import factorial
 import random
 import time
 import os
@@ -35,6 +36,8 @@ def bogo_password_cracker(password:str="2000",time_interval:int=1,dialation:floa
     t1=time.perf_counter()
     chars=mid_medium
     i=d=0
+    print(f"Your password is of length {l} and it would aproximately have {len(chars)**l:,} permutations")
+    t1=time.time()
     while True:
         i+=1
         for j in range(1000):
@@ -48,8 +51,8 @@ def bogo_password_cracker(password:str="2000",time_interval:int=1,dialation:floa
             d+=1
             if a==password:
                 print("\n"*2)
-                t=i*1000+d
-                print(f"Password cracked: {a} in {round(t,3)//dialation} seconds of {dialation:,} x speed")
+                t=time.time()-t1
+                print(f"Password cracked: {a} in {round(t,3)} seconds of {round((i*1000+d)/t,3):e} x speed")
                 print(f"Total attempts (Rounded down in the thousands): {i*1000+d:,}")
                 t=t*time_interval
                 print(format_time(t))
@@ -80,4 +83,4 @@ def big():
             c += (m-1) * m * (2*m - 1) // 6
     return c
 print(f"{big():,}")
-bogo_password_cracker()
+bogo_password_cracker("1234")
