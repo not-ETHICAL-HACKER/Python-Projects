@@ -83,4 +83,4 @@ def big():
             c += (m-1) * m * (2*m - 1) // 6
     return c
 print(f"{big():,}")
-bogo_password_cracker("1234")
+bogo_password_cracker("Johan")
