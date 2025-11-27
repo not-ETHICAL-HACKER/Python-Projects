@@ -25,6 +25,7 @@ i = j = 0
 lis = [frames, arr, cir, circ, block, blocks, a, b, d, e, g, h]
 try:
     while True:
+        break
         lis= random.sample(lis, len(lis))
         j += 1
         for f in lis[j % len(lis)]:
@@ -35,3 +36,7 @@ try:
                 i = 0
 except KeyboardInterrupt or SystemExit:
     print(f"{c}Loading... Done!   ")
+def iterative_chrs(n: int):
+    for i in range(n+1):
+        print(f"\\U{i:08X} -> {chr(i)}")
+iterative_chrs(10**3)

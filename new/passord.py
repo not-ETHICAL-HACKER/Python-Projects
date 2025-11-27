@@ -1,3 +1,4 @@
+from math import factorial
 import random
 import time
 import os
@@ -29,14 +30,15 @@ def format_time(t: float) -> str:
 def bogo_password_cracker(password: str = "2000", time_interval: int = 1, dialation: float = 10**6) -> float:
     if not isinstance(password, str):
         raise TypeError("Password must be a string")
-    easy = "1234567890"
-    medium = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    mid_medium = medium+easy
-    hard = medium+easy+"!@#$%^&*() _+-=[]{}|;:',.<>?/"
-    l = len(password)
-    t1 = time.perf_counter()
-    chars = mid_medium
-    i = d = 0
+    easy="1234567890"
+    medium="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    mid_medium=medium+easy
+    hard=medium+easy+"!@#$%^&*() _+-=[]{}|;:',.<>?/"
+    l=len(password)
+    chars=mid_medium
+    i=d=0
+    print(f"Your password is of length {l} and it would aproximately have {len(chars)**l:,} permutations")
+    t1=time.time()
     while True:
         i += 1
         for j in range(1000):
@@ -50,10 +52,10 @@ def bogo_password_cracker(password: str = "2000", time_interval: int = 1, dialat
             d += 1
             if a == password:
                 print("\n"*2)
-                t2 = time.perf_counter()
-                t = t2-t1
-                print(
-                    f"Password cracked: {a} in {round(t,3)} seconds of {dialation:,} x speed")
+                t=time.time()-t1
+                print(f"Password cracked: {a} in {round(t,3)} seconds of {round((i*1000+d)/t,3):e} x speed")
+                print(f"Total attempts (Rounded down in the thousands): {i*1000+d:,}")
+                t=t*time_interval
                 print(format_time(t))
                 return t
     return -1.0
@@ -87,4 +89,4 @@ def big():
 
 
 print(f"{big():,}")
-bogo_password_cracker()
+bogo_password_cracker("1234")

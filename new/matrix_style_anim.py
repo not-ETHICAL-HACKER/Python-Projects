@@ -14,6 +14,7 @@ def matrix(txt: str = "Hello World!!!", cd: float = 1e-6) -> int:
     c = 0
     counter = 0
     out = ""
+    i=0
     while True:
         for ch in alpha:
             counter += 1
@@ -24,6 +25,7 @@ def matrix(txt: str = "Hello World!!!", cd: float = 1e-6) -> int:
                 alpha = "".join(random.sample(alpha, len(alpha)))
                 out += ch
                 c += 1
+                alpha=random.sample(alpha,len(alpha))
                 break
         if c == len(txt):
             print()
