@@ -40,8 +40,7 @@ def bogo_password_cracker(password: str = "2000", time_interval: int = 1, dialat
     while True:
         i += 1
         for j in range(1000):
-            a = ""
-            time.sleep(time_interval/dialation)
+            a=""
             for k in range(l):
                 a += random.choice(chars)
             if d % 1000 == 0:
@@ -55,13 +54,9 @@ def bogo_password_cracker(password: str = "2000", time_interval: int = 1, dialat
                 t = t2-t1
                 print(
                     f"Password cracked: {a} in {round(t,3)} seconds of {dialation:,} x speed")
-                print(
-                    f"Total attempts (Rounded down in the thousands): {i*1000+d:,}")
-                t = t*dialation
                 print(format_time(t))
                 return t
     return -1.0
-
 
 def password_generator(length: int = 12, complexity: str = "hard") -> str:
     if not isinstance(length, int) or length <= 0:
@@ -92,4 +87,4 @@ def big():
 
 
 print(f"{big():,}")
-print(password_generator(16, "hard"))
+bogo_password_cracker()
