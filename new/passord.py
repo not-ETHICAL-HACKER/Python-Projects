@@ -1,4 +1,4 @@
-from math import factorial
+from math import factorial, log
 import random
 import time
 import os
@@ -53,7 +53,7 @@ def bogo_password_cracker(password: str = "2000", time_interval: int = 1, dialat
             if a == password:
                 print("\n"*2)
                 t=time.time()-t1
-                print(f"Password cracked: {a} in {round(t,3)} seconds of {round((i*1000+d)/t,3):e} x speed")
+                print(f"Password cracked: {a} in {round(t,12)} seconds of {round((i*1000+d)/t,3):e} x speed")
                 print(f"Total attempts (Rounded down in the thousands): {i*1000+d:,}")
                 t=t*time_interval
                 print(format_time(t))
@@ -86,7 +86,6 @@ def big():
             m = j*j
             c += (m-1) * m * (2*m - 1) // 6
     return c
-
-
-print(f"{big():,}")
-bogo_password_cracker("1234")
+print(f"{log(big(),2):,}")
+print(f"{308 * log(1.8, 2)}")
+bogo_password_cracker("333")
