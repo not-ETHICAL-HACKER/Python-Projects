@@ -16,7 +16,8 @@ def powers_of_2(x: int):
     if 2**x > 2**(2**8):
         print(f"\033[1;91mts too large to comprehend 🤯{RESET}")
         ratio = 2**x / universe_atoms
-        print(f"\033[2mthis has {ratio:.2e} times more atoms than the universe{RESET}\n")
+        print(
+            f"\033[2mthis has {ratio:.2e} times more atoms than the universe{RESET}\n")
 
     t = 0
     while x > 8 - 1:
@@ -34,7 +35,10 @@ def powers_of_2(x: int):
         print(f"{color}{bar}{RESET}")
 
     if t > 0:
-        print(f"\n{color_wave(x, x)}This graph has been shrinked {t} time(s) for readability!{RESET}")
+        print(
+            f"\n{color_wave(x, x)}This graph has been shrinked {t} time(s) for readability!{RESET}")
+
+
 while True:
-    p=int(input("Enter a number:"))
+    p = int(input("Enter a number:"))
     powers_of_2(p)

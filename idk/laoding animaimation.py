@@ -1,4 +1,4 @@
-from colorama import Fore, Style, init
+from colorama import Fore, Style, init,Back
 import time
 import random
 
@@ -34,9 +34,9 @@ try:
             i += 1
             if i == len(colors):
                 i = 0
-except KeyboardInterrupt or SystemExit:
+except (KeyboardInterrupt,SystemExit):
     print(f"{c}Loading... Done!   ")
 def iterative_chrs(n: int):
     for i in range(n+1):
-        print(f"\\U{i:08X} -> {chr(i)}")
+        print(f"{Back.BLACK+Fore.BLUE}\\U{i:08X} -> {chr(i)}")
 iterative_chrs(10**3)
