@@ -2,12 +2,16 @@ import re
 from colorama import Fore, init, Back, Style
 import plotly
 # todo:do smth with plotly
-init(autoreset=not False)
+init(autoreset=True)
 
 c_1 = Fore.GREEN+Style.BRIGHT+Back.BLACK
 c_2 = Fore.RED+Style.BRIGHT+Back.BLACK
 
 ansi_escape = re.compile(r'\x1b\[[0-9;]*m')
+
+
+class UnEncryptableError(Exception):
+    pass
 
 
 def kaiser(char: str, k: int) -> str:
@@ -66,32 +70,29 @@ def ceaser_decrypter(txt: str = "Khoor#Zruog", key: int = 3, variance: bool = Fa
 def vig_table() -> list[str]:
     v_table = []
     al = "".join(list(chr(k) for k in range(65, 91)))
-    for i in range(26):
+    for _ in range(26):
         v_table.append(al)
         al = al[1:]+al[0]
     return v_table
 
 
+"""
 print("\n".join(vig_table()))
 
 with open("output for py/Cipher_output.txt", "a", encoding="utf-8") as f:
     f.write("\n".join(vig_table()))
+"""
 
 
-def viginere_encrypter(txt: str = "Hello World", key: str = "World"):
+def viginere_encrypter(txt: str = "rgtfvdsuybciunxddfieniggerfbdifdyfbdf", key: str = "World"):
+    forbid=set(chr(cha) for cha in range(33,65))
+    if  any(ch in forbid for ch in txt) or any(ch in forbid for ch in key):
+        raise UnEncryptableError("The Text Is UnEncryptable.")
     new_k = ""
-    bre = False
     new_t = ""
     u_l_counter = ""
-    while True:
-        #!cretes the key needede for ts cipher
-        for i in key:
-            if len(new_k) > len(txt):
-                bre = True
-                break
-            new_k += i
-        if bre:
-            break
+    enc = ""
+    v_tab = vig_table()
     for i, ch in enumerate(txt):
         #!this looop is for converting lower to upper for standard viginere cipher ig
         if ch.isalpha() and ch.islower():
@@ -100,15 +101,70 @@ def viginere_encrypter(txt: str = "Hello World", key: str = "World"):
         elif ch.isalpha():
             new_t += ch
             u_l_counter += "1"
-        elif ch.isspace():
-            new_t += ch
-            u_l_counter += " "
+        else:
+            new_t+=ch
+            u_l_counter+=" "
+        # Build repeated key (uppercase)
+    new_k = (key * ((len(txt) // len(key)) + 1))[:len(txt)]
+    new_k = new_k.upper()
+    enc = ""
+    ki = 0  # key index
+    for t_char in new_t:
+        if t_char == " ":       # or t_char.isspace()
+            enc += " "
+            continue
 
-    print(u_l_counter)
+        # apply key only to letters
+        k_char = new_k[ki]   
+        ki += 1                 # advance key ONLY HERE
+        row = ord(k_char) - 65
+        col = ord(t_char) - 65
+        enc += v_tab[row][col]
 
+    print("Encrypted:", enc)
+    print("Case mask:", u_l_counter)
+    print(f"Key : {key}")
 
-viginere_encrypter()
+def vigenere_decrypt(ciphertext: str, key: str) -> str:
+    plaintext = ""
+    key_index = 0
+    key = key.lower()
 
+    for char in ciphertext:
+        if char.isalpha():
+            shift = ord(key[key_index % len(key)]) - ord('a')
+
+            # decrypt
+            base = ord('A') if char.isupper() else ord('a')
+            p = chr((ord(char) - base - shift) % 26 + base)
+
+            plaintext += p
+            key_index += 1
+        else:
+            # non letters unchanged
+            plaintext += char
+
+    return plaintext
+
+def shift_encrypter(txt:str="Hello world",key:int=2)->str:
+    enc=""
+    for i in txt:
+        enc += chr((ord(i) << key) & 0x10FFFF)
+    print(enc)
+    return enc
+def shift_decrypter(txt:str,key:int=2)->str:
+    dec=""
+    for i in txt:
+        dec+=chr(int(ord(i)>>key))
+    print(dec)
+    return dec
+
+def xor_encrypt(text: str, key: int) -> str:
+    return "".join(chr(ord(c) ^ key) for c in text)
+
+def xor_decrypt(text: str, key: int) -> str:
+    return "".join(chr(ord(c) ^ key) for c in text)
+print(xor_encrypt("Hello World",2))
 """
 print(ceaser_decrypter(ceaser_encrypter(), variance=True))
 with open("output for py/Cipher_output.txt", "w", encoding="utf-8") as f:

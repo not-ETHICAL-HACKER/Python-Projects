@@ -25,7 +25,6 @@ i = j = 0
 lis = [frames, arr, cir, circ, block, blocks, a, b, d, e, g, h]
 try:
     while True:
-        break
         lis= random.sample(lis, len(lis))
         j += 1
         for f in lis[j % len(lis)]:
