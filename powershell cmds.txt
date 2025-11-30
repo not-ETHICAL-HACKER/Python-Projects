@@ -1,0 +1,5 @@
+#This belo is for counting number of lines in a repo
+Get-ChildItem -Recurse -Include *.py |
+>>     Get-Content |
+>>     Measure-Object -Line
+>> 
