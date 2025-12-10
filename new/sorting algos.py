@@ -58,7 +58,6 @@ def bubble_sort_graph():
 
         plt.pause(10/num)
 
-
     # -----------------------------
     #       FINISH IN GREEN
     # -----------------------------
