@@ -1,15 +1,32 @@
 import numpy as np
-import time
-import os
 import matplotlib.pyplot as plt
 
 def quad_bubble_sort(arr: list):
     n = len(arr)
     l_mid = r_mid = n//2
-    start = 0
-    end = n-1
+    start = old_1=0
+    end =old_2= n-1
     c=0
+    swap = True
     while True:
+        if not swap:
+            for i in range(old_1, old_2):
+                if arr[i] > arr[i+1]:
+                    arr[i], arr[i+1] = arr[i+1], arr[i]
+                    swap = True
+                    c+=1
+            #yield arr, c
+            old_2 -= 1
+            swap = False
+            for j in range(old_2, old_1, -1):
+                if arr[j] < arr[j-1]:
+                    arr[j], arr[j-1] = arr[j-1], arr[j]
+                    swap = True
+                    c+=1
+            #yield arr, c
+            old_1 += 1
+            if not swap:
+                break
         swap = False
         for i in range(start, end):
             if arr[i] > arr[i+1]:
@@ -42,14 +59,11 @@ def quad_bubble_sort(arr: list):
                 c+=1
         yield arr, c
         r_mid += 1
-        if not swap:
-            break
-            if arr == sorted(arr):
-                break
+        
     return arr,c
 
 
-a = [float(i)for i in np.linspace(0, 1, 100)]
+a = [float(i)for i in np.linspace(0, 1, 10**4)]
 np.random.shuffle(a)
 print(quad_bubble_sort(a))
 plt.ion()
@@ -72,7 +86,7 @@ for frame, iters in quad_bubble_sort(a):
     for rect, h in zip(bars, frame):
         rect.set_height(h)
 
-    ax.set_title(f"Quad Bubble Sort | Iterations: {iters}", color="white")
+    ax.set_title(f"Quad Bubble Sort | Iterations: {iters:,}", color="white")
     plt.pause(1e-6)
 
 # Finish in green
