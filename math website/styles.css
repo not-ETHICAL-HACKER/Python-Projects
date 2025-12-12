@@ -1,0 +1,41 @@
+/*
+:root{
+    --light_mode : "#FFFFFF";
+    --dark_mode : "#000000";
+}
+*/
+
+#Main_Head{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: xx-large;
+    text-align: left;
+    align-items: center;
+}
+#Main_hr{
+    height: 3px ;
+    border:none;
+    background-color: black;
+    margin-top: 0px;
+}
+#Main_Img{
+    height: 64px;
+    width: 64px;
+    border-right: 3px solid black;
+    padding: auto;
+}
+
+table,
+td {
+  border:none;
+  padding: 0px;
+}
+th:nth-child(even){
+    background-color:grey;
+}
+tr{
+  background-color:lightgrey;
+}
+tr:nth-child(even) {
+  background-color:darkgrey;
+
+}
