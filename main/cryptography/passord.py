@@ -4,7 +4,7 @@ import time
 import os
 import sys
 
-
+    
 def format_time(t: float) -> str:
     """
     The `format_time` function converts a given time in seconds into a more human-readable format such
