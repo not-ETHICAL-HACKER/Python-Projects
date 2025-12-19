@@ -51,3 +51,4 @@ if __name__ == "__main__":
 
     # Test the neural network with a test example.
     print(neural_network.learn(array([1, 0, 1])))
+

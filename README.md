@@ -9,7 +9,7 @@ I created it to explore different paths in Python development:
 - Machine learning
 - Data handling  
 - Web development  
-- And even dabbling in other languages  
+- And even in other languages  
 
 Basically, it’s my personal lab for learning and experimenting.  
 
