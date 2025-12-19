@@ -1,10 +1,17 @@
 # Python Projects
 
-These projects are  made purely (99%) from python
+These projects are  made purely (~95%) from Python
 
-## WHY?
+## Why This Repo?
 
-This repo was created for me to explore the various paths to being a py dev such as ml,data handling,web dev,(learnin another language),etc
+I created it to explore different paths in Python development:
+
+- Machine learning
+- Data handling  
+- Web development  
+- And even dabbling in other languages  
+
+Basically, it’s my personal lab for learning and experimenting.  
 
 ## Future
 
