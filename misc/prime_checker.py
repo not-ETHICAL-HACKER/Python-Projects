@@ -31,5 +31,5 @@ def mersenne_primes_up_to(limit:int)->list[int]:
 
     return result
 
-b=[x for x in range(10**3) if mersenne_primes_up_to(x)]
+b=[x for x in range(10**6) if prime_checker(x)]
 print(b,time.time()-t)
