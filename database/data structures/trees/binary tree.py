@@ -37,6 +37,3 @@ def alt_vals(arr: list[int | float]) -> list[int | float]:
         f.append(l[i])
 
     return [m] + f
-
-def sorter(arr:list)->None:
-    arr.sort()
