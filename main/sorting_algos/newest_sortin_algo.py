@@ -1,10 +1,10 @@
-import winsound
+from typing import Generator
 import time
 import numpy as np
 import matplotlib.pyplot as plt
 
 
-def quad_bubble_sort(arr: list):
+def quad_bubble_sort(arr: list[float])-> Generator[tuple[list[float], int]]:
     n = len(arr)
     l_mid = r_mid = n//2
     start = old_1 = 0
@@ -31,7 +31,7 @@ def quad_bubble_sort(arr: list):
             old_1 += 1
             if not swap:
                 print(time.time()-t)
-                return arr, c
+                return (arr, c)
         swap = False
         for i in range(start, end):
             if arr[i] > arr[i+1]:

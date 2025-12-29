@@ -66,7 +66,7 @@ def bubble_sort_graph():
 
     plt.ioff()
     plt.show()
-bubble_sort_graph()
+#!bubble_sort_graph()
 
 # todo: make a new sort algo like bogo sort for nxt time ig?
 def bogo_sort_graph():
@@ -128,3 +128,4 @@ def bogo_sort_graph():
 
     plt.ioff()
     plt.show()
+#!bogo_sort_graph()
