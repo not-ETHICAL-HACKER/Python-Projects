@@ -2,3 +2,10 @@
 Get-ChildItem -Recurse -Include *.py |
     Get-Content |
     Measure-Object -Line
+# this is for just for counting number of lines i have written 
+Get-ChildItem -Recurse -Include *.py, *.c, *.rs, *.js, *.html, *.css -Exclude *venv*, *__pycache__*, *.ipynb_checkpoints* |
+    Where-Object { $_.FullName -notmatch '\\site-packages\\' } |
+    Get-Content |
+    Measure-Object -Line
+# this is for counting files 
+Get-ChildItem -Recurse -Include *.py | Measure-Object
