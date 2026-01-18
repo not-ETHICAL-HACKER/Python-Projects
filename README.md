@@ -2,6 +2,10 @@
 
 These projects are  made purely (~95%) from Python
 
+## Repository Map
+
+![Code Landscape](./diagram.svg)
+
 ## Why This Repo?
 
 I created it to explore different paths in Python development:
