@@ -33,13 +33,7 @@ jobs:
           file_colors: '{"py": "#3776ab", "md": "forestgreen", "json": "goldenrod"}'
           
           # 4. How deep to go into your folders (1-9)
-          max_depth: 9
+          max_depth: 2
           # 5. Automation settings
           should_push: true
           commit_message: "Auto-update repository diagram [skip ci]"
-
-      - name: Force Dark Theme
-        run: |
-          sed -i 's/background:white/background:black/g' diagram.svg
-          sed -i 's/fill="#374151"/fill="#FFFFFF"/g' diagram.svg
-          sed -i 's/stroke="white"/stroke="black"/g' diagram.svg
