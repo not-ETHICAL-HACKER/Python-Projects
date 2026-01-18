@@ -4,7 +4,7 @@ name: "Create Repo Diagram"
 on:
   push:
     branches:
-      - main
+      - Hub
   workflow_dispatch: # This allows you to run it manually from the Actions tab
 
 jobs:
