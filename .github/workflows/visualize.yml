@@ -33,8 +33,10 @@ jobs:
           file_colors: '{"py": "#3776ab", "md": "forestgreen", "json": "goldenrod"}'
           
           # 4. How deep to go into your folders (1-9)
-          max_depth: 5
+          max_depth: 9
           
           # 5. Automation settings
           should_push: true
-          commit_message: "Auto-update repository diagram [skip ci]"    
+          commit_message: "Auto-update repository diagram [skip ci]"
+          
+          dark_mode: true
