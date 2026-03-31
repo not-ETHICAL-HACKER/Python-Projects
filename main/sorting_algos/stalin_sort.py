@@ -37,7 +37,7 @@ ax.tick_params(colors="white")
 # -----------------------
 c = 0
 for frame, iters in stalin_sort(a):
-    plt.pause(5) if c == 0 else plt.pause(1e-6)
+    plt.pause(5 if c == 0 else 1e-6)
     line.set_ydata(frame)
     ax.set_title(
         f"Stalin Sort Animation \n Iterations: {iters:,}", color="white")
