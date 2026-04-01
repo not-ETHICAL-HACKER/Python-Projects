@@ -9,4 +9,4 @@ def twr_o_l(x:int)->float:
     for i in range(1,x+1):
         c+=1/(i*2)
     return c
-print(twr_o_l(int(math.e*10**6)))
+print(twr_o_l(100000))
