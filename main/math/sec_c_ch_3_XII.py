@@ -4,7 +4,6 @@ random.seed(0)  # Set a fixed seed for reproducibility
 
 def rand_gen(n: int):
     return random.randint(10**(n-1), 10**(n)-1)
-print(int("100",base=4))
 
 def tetra_equidistant_nums(start: int, end: int) -> list[int]:
     from math import floor
