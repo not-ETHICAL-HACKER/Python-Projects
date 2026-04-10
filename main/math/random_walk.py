@@ -1,8 +1,11 @@
+import math
 import time
 import random
 import turtle
 from itertools import product
-t=turtle.Turtle()
+t = turtle.Turtle()
+t.hideturtle()
+
 
 def walk(steps: int) -> float:
     x = y = 0
@@ -55,18 +58,34 @@ def wander(pos: tuple[int, int, int], time_t: int, target: tuple[int, int, int] 
             z += dz
         print(f"Reached target: {target} in {e_t} steps")
 
-def turt_walk(steps:int):
+
+def turt_walk(steps: int, scale: float = 10) -> None:
     permu: list[tuple[int, ...]] = list(product([-1, 0, 1], repeat=2))
-    x=y=0
+    x = y = 0
+    log_num = 0
     t.speed(0)
+    t.hideturtle()
+    turtle.bgcolor("black")
+    colors = ["red", "blue", "green", "yellow", "cyan",
+              "magenta", "orange", "purple", "pink"]
     for i in range(steps):
-            r_c: tuple[int, int] = random.choice(permu)
-            dx, dy = r_c
-            x += dx
-            y += dy
-            sx,sy = x*10,y*10 # simulated coordinates
-            t.goto(sx,sy)
-    time.sleep(10)
-turt_walk(10**6)
+        if math.log10(i+1) >= log_num:
+            log_num += 1
+            t.color(colors[log_num % len(colors)])
+
+        r_c: tuple[int, int] = random.choice(permu)
+        dx, dy = r_c
+        if dx == 0 and dy == 0:
+            continue
+        x += dx
+        y += dy
+        sx, sy = x*scale, y*scale  # simulated coordinates
+        t.goto(sx, sy)
+    t.color("white")
+    t.goto(0, 0)
+    turtle.done()
+
+
+turt_walk(10**3)
 # walk(10**6)
 # wander((0, 0, 0), 10**6)
