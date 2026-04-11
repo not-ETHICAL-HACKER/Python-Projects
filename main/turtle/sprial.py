@@ -12,7 +12,7 @@ for i in range(lim):
     theta = i 
     a, b = b, b+a
     t.left(1.61803398875*10)
-    t.forward(math.log10(1.618**theta))
+    t.forward(math.log(1.618**theta))
 
 print("Done")
 turtle.done()

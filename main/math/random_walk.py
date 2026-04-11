@@ -59,7 +59,7 @@ def wander(pos: tuple[int, int, int], time_t: int, target: tuple[int, int, int] 
         print(f"Reached target: {target} in {e_t} steps")
 
 
-def turt_walk(steps: int, scale: float = 10) -> None:
+def turt_walk(steps: int, scale: float = 4) -> None:
     permu: list[tuple[int, ...]] = list(product([-1, 0, 1], repeat=2))
     x = y = 0
     log_num = 0
@@ -71,7 +71,7 @@ def turt_walk(steps: int, scale: float = 10) -> None:
     for i in range(steps):
         if math.log10(i+1) >= log_num:
             log_num += 1
-            t.color(colors[log_num % len(colors)])
+            t.color(colors[log_num%len(colors)])
 
         r_c: tuple[int, int] = random.choice(permu)
         dx, dy = r_c
@@ -86,6 +86,6 @@ def turt_walk(steps: int, scale: float = 10) -> None:
     turtle.done()
 
 
-turt_walk(10**3)
+turt_walk(10**6)
 # walk(10**6)
 # wander((0, 0, 0), 10**6)
