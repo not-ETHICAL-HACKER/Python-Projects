@@ -1,8 +1,9 @@
 """this file aint acually fourier transform i just wanted to see if i could implement it in py"""
 import turtle
 import math
+import numpy
 
-t = turtle.Turtle(visible=False)
+t = turtle.Turtle(shape="turtle")
 t.speed(0)
 turtle.bgcolor("black")
 scale_pi = 100
@@ -25,8 +26,7 @@ def fourier_transform(wave_args:list[float|int],c:str,phase_diff:float=0):
             t.goto(x,y)
             t.pendown()
         t.goto(x,y)
-l = [x for x in range(1,10**2+2,2)]
+l = [x for x in range(1,10**3+2,2)]
 colors = ["red","blue","green","yellow"]
-fourier_transform(l,colors[0],math.pi/2)
-print("done")
+fourier_transform(l,colors[0],math.pi)
 turtle.done()
