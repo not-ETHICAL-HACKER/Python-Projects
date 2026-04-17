@@ -5,8 +5,8 @@ def flames(n1:str,n2:str)->int:
         d1[n1[i]] = d1.get(n1[i], 0) + 1
     for j in range(len(n2)):
         d2[n2[j]] = d2.get(n2[j], 0) + 1
-    f = [abs(v1-v2) for k1,v1 in d1.items() for k2,v2 in d2.items() if k1==k2]
-    s  =  [v for k,v in d1.items() if k not in d2] + [v for k,v in d2.items() if k not in d1]
+    f = [d1[i] for i in d1]
+    s = [d2[i] for i in d2]
     return sum(f)+sum(s) if len(f)+len(s) > 0 else 0
 name1 = input("Enter the first name: ")
 name2 = input("Enter the second name: ")

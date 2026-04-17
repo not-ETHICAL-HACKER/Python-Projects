@@ -6,12 +6,20 @@ t = turtle.Turtle()
 t.speed(0)
 turtle.bgcolor("black")
 t.color("white")
-scale = 1
-def gauss(mu, sigma):
+scale = 10
+turtle.tracer(0)
+def gauss(mu:float, sigma:float):
+    n = 1
     for _ in range(10**5):
-        x = random.gauss(mu, sigma)*scale
-        y = random.gauss(mu, sigma)*scale
+        y = random.random()*10*n
+        x = random.gauss(mu, sigma)*scale*n
+        t.penup()
         t.goto(x, y)
-        time.sleep(0.01)  
+        t.pendown()
+        t.dot(2)
+        if _ % 1_000 == 0:
+            #turtle.update()
+            n+=.1
+    turtle.update()
     turtle.done()
-gauss(0, 10)
+gauss(0, 1)
