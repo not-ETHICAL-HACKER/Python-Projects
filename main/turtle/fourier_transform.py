@@ -9,25 +9,62 @@ turtle.bgcolor("black")
 scale_pi = 100
 scale = 100
 two_pi = int(2*math.pi*scale_pi)
-t.color("white")
-
+t.color("red")
+t2 = turtle.Turtle()
+t2.hideturtle()
+t.hideturtle()
+t2.speed(0)
+t2.color("blue")
 turtle.tracer(0)
-def fourier_transform(wave_args:list[float|int],c:list[str],phase_diff:float=0):
-    for _ in range(-two_pi*100,two_pi*100+1):
+
+
+def fourier_transform(wave_args: list[float | int], c: list[str], phase_diff: float = 0):
+    for _ in range(-two_pi*100, two_pi*100+1):
         phase_diff += math.radians(1)
-        for i in range(-two_pi,two_pi+1):
+        for i in range(-two_pi, two_pi+1):
             x = i
-            y = math.sin((sum([math.sin((var_theta*(i/scale_pi))+phase_diff) for var_theta in wave_args]))+phase_diff/10)*scale
-            t.color(c[_%len(c)])
+            y = sum([math.sin((var_theta*(i/scale_pi))+phase_diff)
+                         for var_theta in wave_args])*scale
+            t.color(c[_ % len(c)])
             if i == -two_pi:
                 t.penup()
-                t.goto(x,y)
+                t.goto(x, y)
                 t.pendown()
-            t.goto(x,y)
+            t.goto(x, y)
         turtle.update()
         time.sleep(1/24)
         t.clear()
-l:list[float] = [x for x in range(1,10**2)]
-colors = ["red","blue","green","yellow"]
-fourier_transform(l,colors,math.pi/2)
+
+
+def fourier_transform_2(wave1_args: list[float | int], wave2_args: list[float | int], color_list: list[str] = ["red"], phase_diff1: float = 0.0, phase_diff2: float = 0.0) -> None:
+    for _ in range(-two_pi*100, two_pi*100+1):
+        phase_diff1 += math.radians(1)
+        phase_diff2 += math.radians(1)
+        for i in range(-two_pi, two_pi+1):
+            x = i
+            y1 = sum([math.sin((var_theta*(i/scale_pi))+phase_diff1)
+                      for var_theta in wave1_args])*scale
+            y2 = sum([math.sin((var_theta*(i/scale_pi))+phase_diff2)
+                      for var_theta in wave2_args])*scale
+            t.color(color_list[_ % len(color_list)])
+            if i == -two_pi:
+                t.penup()
+                t2.penup()
+                t.goto(x, y1)
+                t2.goto(x, y2)
+                t2.pendown()
+                t.pendown()
+            t.goto(x, y1)
+            t2.goto(x, y2)
+        turtle.update()
+        time.sleep(1/24)
+        t.clear()
+        t2.clear()
+
+
+l: list[float] = [x for x in range(1, 10**2)]
+l1: list[int] = [x for x in range(0,10,2)]
+l2: list[int] = [x for x in range(1,10,2)]
+colors = ["red", "blue", "green", "yellow"]
+fourier_transform_2(l1, l2)
 turtle.done()
