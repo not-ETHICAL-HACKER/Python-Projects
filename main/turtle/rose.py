@@ -1,14 +1,11 @@
 import turtle
 import math
 import time
-scale = 250
+scale = 500
 pi_scale = 100
 two_pi = int(2*math.pi*pi_scale)*10
 t = turtle.Turtle(visible=False)
 t.speed(0)
-# e = turtle.Turtle()
-# e.color("white")
-# e.speed(0)
 colors = ["red", "orange", "yellow", "green", "cyan", "blue", "magenta"]
 
 
@@ -19,30 +16,17 @@ def rose(n: float, phase: float = 0) -> None:
         if i % ((two_pi/10)*interval) == 0 or i == -two_pi:
             t.color(colors[(interval-1) % len(colors)])
             interval += 1
-        phase += (two_pi/(10*pi_scale)*scale)
+        phase += math.radians(1)
         r = math.cos(n*(i/pi_scale+phase))*scale
         x = r*math.cos(i/pi_scale+phase)
         y = r*math.sin(i/pi_scale+phase)
-        # if i>pi_interval*two_pi/4:
-        # pi_interval += 1
-        # t.color(colors[pi_interval%len(colors)])
-        # e.color(colors[(pi_interval)%len(colors)])
         if i == -two_pi:
             t.penup()
-            # e.penup()
-            # e.goto(-x,-y)
             t.goto(x, y)
             t.pendown()
-            # e.pendown()
+
         t.goto(x, y)
-        # e.goto(-x,-y)
-# for k in [0,30,45,60,90]:
-#     for j in range(11):
-#         t.clear()
-#         turtle.Screen().title(f"Rose curve with n={j} and phase={k} degrees")
-#         rose(j,math.radians(k))
-#         time.sleep(.01)
 
 
-rose(math.pi*10**-3)
+rose(math.pow(math.e,.5))
 print("done")

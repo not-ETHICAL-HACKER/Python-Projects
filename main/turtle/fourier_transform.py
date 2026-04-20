@@ -1,4 +1,5 @@
 """this file aint acually fourier transform i just wanted to see if i could implement it in py"""
+import random
 import time
 import turtle
 import math
@@ -7,7 +8,7 @@ t = turtle.Turtle(shape="turtle")
 t.speed(0)
 turtle.bgcolor("black")
 scale_pi = 100
-scale = 100
+scale = 10
 two_pi = int(2*math.pi*scale_pi)
 t.color("red")
 t2 = turtle.Turtle()
@@ -40,12 +41,26 @@ def fourier_transform_2(wave1_args: list[float | int], wave2_args: list[float | 
     for _ in range(-two_pi*100, two_pi*100+1):
         phase_diff1 += math.radians(1)
         phase_diff2 += math.radians(1)
+        stat = False
         for i in range(-two_pi, two_pi+1):
             x = i
-            y1 = sum([math.sin((var_theta*(i/scale_pi))+phase_diff1)
-                      for var_theta in wave1_args])*scale
-            y2 = sum([math.sin((var_theta*(i/scale_pi))+phase_diff2)
-                      for var_theta in wave2_args])*scale
+            if stat:
+                y1 = sum([
+                    math.sin(var_theta * (i / scale_pi))+phase_diff1
+                    for var_theta in wave1_args
+                ]) * scale
+                y2 = sum([math.sin((var_theta*(i/scale_pi))+phase_diff2)
+                        for var_theta in wave2_args])*scale
+            else:
+                y1 = sum([
+                    math.sin(var_theta * (i / scale_pi)) * math.cos(phase_diff1)
+                    for var_theta in wave1_args
+                ]) * scale
+                y2 = sum([
+                    math.sin(var_theta * (i / scale_pi)) * math.cos(phase_diff2)
+                    for var_theta in wave2_args
+                ]) * scale
+
             t.color(color_list[_ % len(color_list)])
             if i == -two_pi:
                 t.penup()
@@ -63,8 +78,8 @@ def fourier_transform_2(wave1_args: list[float | int], wave2_args: list[float | 
 
 
 l: list[float] = [x for x in range(1, 10**2)]
-l1: list[int] = [x for x in range(0,10,2)]
-l2: list[int] = [x for x in range(1,10,2)]
+l1: list[float] = [_/2 for _ in range(10)]
+l2: list[float] = [_ for _ in range(10)]
 colors = ["red", "blue", "green", "yellow"]
 fourier_transform_2(l1, l2)
 turtle.done()
