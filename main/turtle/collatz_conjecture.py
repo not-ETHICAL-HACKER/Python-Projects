@@ -61,14 +61,14 @@ def alt_draw_collatz(n:int):
     seq = collatz_sequence(n)
     t.setheading(90)
     for i in range(len(seq)-1):
-        t.forward((seq[i][0]+1)*scale)
+        t.forward(math.log((seq[i][0]+1))*scale)
         if seq[i][1]%2==0:
             t.color("blue")
-            t.right(90)
+            t.right(45)
         else:
             t.color("red")
-            t.left(90)
-        t.backward((seq[i][1]+1)*scale)
+            t.left(45)
+        t.forward(math.log((seq[i][1]+1))*scale)
         time.sleep(1/240)
 for i in range(100):
     t.penup()
