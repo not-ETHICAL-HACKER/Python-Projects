@@ -28,5 +28,5 @@ def rose(n: float, phase: float = 0) -> None:
         t.goto(x, y)
 
 
-rose(math.pow(math.e,.5))
+rose(math.pi)
 print("done")
