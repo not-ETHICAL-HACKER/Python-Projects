@@ -6,6 +6,7 @@ t = turtle.Turtle()
 t.color("blue")
 t.speed(0)
 turtle.bgcolor("black")
+t.hideturtle()
 scale = 1
 
 #If the number is even, divide it by 2.
@@ -71,8 +72,9 @@ def alt_draw_collatz(n:int):
             t.right(30)
         else:
             t.color("red")
-            t.left(45)
-        t.forward(math.log((seq[i][1]+1))*scale)
+            t.left(30)
+        # t.forward(math.sqrt((seq[i][1]+1))*scale)
+        t.forward(10)
         time.sleep(1/240)
 for i in range(100):
     t.penup()
