@@ -6,6 +6,8 @@ from itertools import product
 t = turtle.Turtle()
 t.hideturtle()
 
+vectors : list[tuple[float,float]] = []
+angles : list[float] = []
 
 def walk(steps: int) -> float:
     x = y = 0
@@ -59,7 +61,7 @@ def wander(pos: tuple[int, int, int], time_t: int, target: tuple[int, int, int] 
         print(f"Reached target: {target} in {e_t} steps")
 
 
-def turt_walk(steps: int, scale: float = 4) -> None:
+def turt_walk(steps: int, scale: float = 4,vectors:list[tuple[float, float]] = None,angles:list[float] = None) -> None:
     permu: list[tuple[int, ...]] = list(product([-1, 0, 1], repeat=2))
     x = y = 0
     log_num = 0
@@ -81,11 +83,19 @@ def turt_walk(steps: int, scale: float = 4) -> None:
         y += dy
         sx, sy = x*scale, y*scale  # simulated coordinates
         t.goto(sx, sy)
+    vectors.append((x, y))
+    angles.append(t.heading())
     t.color("white")
     t.goto(0, 0)
-    turtle.done()
 
-
-turt_walk(10**6)
+def cross_product(vectors:list[tuple[float, float]], angles:list[float]) -> list[tuple[ float, float]]:
+    for i in range(len(vectors)-1):
+        x = vectors[i][0]*vectors[i+1][0]*math.sin(angles[i])
+        y = vectors[i][1]*vectors[i+1][1]*math.sin(angles[i])
+for _ in range(10):
+    turt_walk(10**2,10,vectors,angles)
+    time.sleep(1)
+    
+turtle.done()
 # walk(10**6)
 # wander((0, 0, 0), 10**6)

@@ -6,6 +6,7 @@ t = turtle.Turtle()
 t.color("blue")
 t.speed(0)
 turtle.bgcolor("black")
+t.hideturtle()
 scale = 1
 
 #If the number is even, divide it by 2.
@@ -61,19 +62,22 @@ def alt_draw_collatz(n:int):
     seq = collatz_sequence(n)
     t.setheading(90)
     for i in range(len(seq)-1):
-        t.forward(math.log((seq[i][0]+1))*scale)
+        t.forward(10)
+        # t.forward(math.log((seq[i][0]+1))*scale)
         if seq[i][1]%2==0:
             t.color("blue")
             t.right(45)
         else:
             t.color("red")
-            t.left(45)
-        t.forward(math.log((seq[i][1]+1))*scale)
+            t.left(90)
+        # t.forward(math.log((seq[i][1]+1))*scale)
+        t.forward(0)
         time.sleep(1/240)
 for i in range(100):
     t.penup()
     t.goto(0, 0)
     t.pendown()
+    turtle.title(f"Collatz Conjecture: {i}")
     alt_draw_collatz(i)
-    t.clear()
+    # t.clear()
 turtle.done()
