@@ -52,3 +52,5 @@ Mkfile.old
 dkms.conf
 even or odd.py
 output.txt
+main/math/random_walk_data.csv
+main/math/random_walk_mean_sigma.csv
