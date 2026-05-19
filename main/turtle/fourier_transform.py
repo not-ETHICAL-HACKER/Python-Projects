@@ -7,9 +7,6 @@ import math
 t = turtle.Turtle(shape="turtle")
 t.speed(0)
 turtle.bgcolor("black")
-scale_pi = 100
-scale = 10
-two_pi = int(2*math.pi*scale_pi)
 t.color("red")
 t2 = turtle.Turtle()
 t2.hideturtle()
@@ -77,6 +74,9 @@ def fourier_transform_2(wave1_args: list[float | int], wave2_args: list[float | 
         t2.clear()
 
 
+scale_pi = 100
+scale = 100
+two_pi = int(2*math.pi*scale_pi)
 l: list[float] = [random.randint(1, 10)*random.random() for x in range(1, 10**1)]
 l1: list[float] = [_/2 for _ in range(10)]
 l2: list[float] = [_ for _ in range(10)]
