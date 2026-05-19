@@ -17,7 +17,7 @@ turtle.tracer(0)
 
 
 def fourier_transform(wave_args: list[float | int], c: list[str], phase_diff: float = 0):
-    for _ in range(-two_pi*100, two_pi*100+1):
+    for _ in range(-two_pi, two_pi+1):
         phase_diff += math.radians(1)
         for i in range(-two_pi, two_pi+1):
             x = i
@@ -30,8 +30,8 @@ def fourier_transform(wave_args: list[float | int], c: list[str], phase_diff: fl
                 t.pendown()
             t.goto(x, y)
         turtle.update() #remove clear for cool effect
-        # time.sleep(1/24)
-        #t.clear()
+        #time.sleep(1/24)
+        t.clear()
 
 
 def fourier_transform_2(wave1_args: list[float | int], wave2_args: list[float | int], color_list: list[str] = ["red"], phase_diff1: float = 0.0, phase_diff2: float = 0.0) -> None:
@@ -75,11 +75,12 @@ def fourier_transform_2(wave1_args: list[float | int], wave2_args: list[float | 
 
 
 scale_pi = 100
-scale = 100
+scale = 50
 two_pi = int(2*math.pi*scale_pi)
-l: list[float] = [random.randint(1, 10)*random.random() for x in range(1, 10**1)]
+l: list[float] = [float(random.randint(1, 10)*random.random())*(1 if random.random() > 0.5 else -1) for x in range(1, 10**1)]
 l1: list[float] = [_/2 for _ in range(10)]
 l2: list[float] = [_ for _ in range(10)]
 colors = ["red", "blue", "green", "yellow"]
-fourier_transform(l,colors)
+red = ["red"]
+fourier_transform(l,red)
 turtle.done()
