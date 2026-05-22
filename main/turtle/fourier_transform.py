@@ -80,7 +80,7 @@ def fourier_transform_3(wave_num: int, colors: list[str], wave_args: list[Any] =
     if not wave_args:
         wave_args = []
         for i in range(wave_num):
-            args = [random.randint(0, 10) for _ in range(10**1)]
+            args = [random.randint(0, 10)*random.gauss(1, 1) for _ in range(10**1)]
             wave_args.append(args)
     for _ in range(wave_num):
         t = turtle.Turtle(visible=False)
@@ -90,16 +90,21 @@ def fourier_transform_3(wave_num: int, colors: list[str], wave_args: list[Any] =
     diff = 0
     for _ in range(-two_pi*100, two_pi*100+1):
         diff += math.radians(1)
-        phase_differences = [x+diff for x in phase_differences]
+        turtle.title(f"diff: {math.degrees(diff):.2f}°,progress: {(_ + two_pi*100) / (two_pi*200) * 100:.2f}%")
         for i in range(-two_pi, two_pi+1):
             for num, t in enumerate(turts):
                 x = i
-                y = sum([math.sin(var_theta * (i / scale_pi)+phase_differences[num])
+                y = sum([math.sin(var_theta * (i / scale_pi) + diff +phase_differences[num])
                         for var_theta in wave_args[num]]) * scale
+                if i == -two_pi:
+                    t.penup()
+                    t.goto(x, y)
+                    t.pendown()
                 t.goto(x, y)
         turtle.update()
         for t in turts:
-            t.clear()    
+            t.clear()   
+            ... 
 
 
 scale_pi = 100
@@ -113,5 +118,8 @@ l1: list[float] = [_/2 for _ in range(10)]
 l2: list[float] = [_ for _ in range(10)]
 colors = ["red", "blue", "green", "yellow"]
 red = ["red"]
-fourier_transform_3(2, colors=colors)
+num = 4
+phase_diffs = [n*math.radians(180/num) for n in range(num)]
+print(phase_diffs)
+fourier_transform_3(num, colors=colors, phase_differences=phase_diffs)
 turtle.done()
