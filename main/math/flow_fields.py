@@ -1,6 +1,7 @@
-# FLOW FIELDS
+
+# * FLOW FIELDS
 # every point on screen has an angle (direction)
-# N turtles each follow the angle at their current position, step, repeat
+#! N turtles each follow the angle at their current position, step, repeat
 # dont clear trails - let them accumulate
 # angle can be defined as:
 #   sin(x) * cos(y)          -> smooth rippling lanes, easy starting point
@@ -9,12 +10,12 @@
 #   time-varying field        -> field shifts while particles are moving
 # the screen slowly fills with flowing lines
 
-# each frame, for each turtle:
-# 1. get current x, y
-# 2. angle = sin(x) * cos(y)  (or whatever field formula)
-# 3. setheading(degrees(angle))
-# 4. forward(step_size)
-# 5. repeat, don't clear
+#! each frame, for each turtle:
+#! 1. get current x, y
+#! 2. angle = sin(rad(x)) * cos(rad(y)) * 360  (or whatever field formula)
+#! 3. setheading(degrees(angle))
+#! 4. forward(step_size)
+#! 5. repeat, don't clear
 import turtle
 import random
 import time
