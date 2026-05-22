@@ -8,6 +8,13 @@
 #   distance from a point     -> spiral/galaxy effect
 #   time-varying field        -> field shifts while particles are moving
 # the screen slowly fills with flowing lines
+
+# each frame, for each turtle:
+# 1. get current x, y
+# 2. angle = sin(x) * cos(y)  (or whatever field formula)
+# 3. setheading(degrees(angle))
+# 4. forward(step_size)
+# 5. repeat, don't clear
 import turtle
 import random
 import time
