@@ -8,3 +8,18 @@
 #   distance from a point     -> spiral/galaxy effect
 #   time-varying field        -> field shifts while particles are moving
 # the screen slowly fills with flowing lines
+import turtle
+import random
+import time
+import math
+
+t = turtle.Turtle()
+t.color("blue")
+turtle.bgcolor("black")
+t.speed(0)
+width = turtle.window_width()
+height = turtle.window_height()
+print(width, height)
+i = input()
+
+turtle.done()

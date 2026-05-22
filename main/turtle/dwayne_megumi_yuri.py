@@ -44,17 +44,18 @@ def spawn(dens:float,index:int,pos:tuple[float,float])->list[turtle.Turtle]:
             nx += random.gauss(0,10)
             ny += random.gauss(0,10)
             t = turtle.Turtle()
-            t.color(col[index])
+            t.color(col[index]%len(col))
             t.penup()
             t.setpos((nx,ny))
             t.pendown()
-            t.shape(shapes[index])
+            t.shape(shapes[index]%len(shapes))
             turts.append(t)
     return turts
 
+parts = 3
+
 def three_origins(dist,angle)->list[list[turtle.Turtle]]:
     perm = []
-    parts = 3
     for i in range(parts):
         new_angle = angle + i * 360/parts # 120 is deg in wi=hich the turt has to turn for parity ig?
         print(new_angle)
