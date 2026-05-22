@@ -36,18 +36,14 @@ def fourier_transform(wave_args: list[float | int], c: list[str], phase_diff: fl
 
 def fourier_transform_2(wave1_args: list[float | int], wave2_args: list[float | int], color_list: list[str] = ["red"], phase_diff1: float = 0.0, phase_diff2: float = 0.0) -> None:
     for _ in range(-two_pi*100, two_pi*100+1):
-        phase_diff1 += math.radians(1)
-        phase_diff2 += math.radians(1)
-        stat = False
+        phase_diff1 += math.radians(math.e)
+        phase_diff2 += math.radians(math.pi)
+        stat = True
         for i in range(-two_pi, two_pi+1):
             x = i
             if stat:
-                y1 = sum([
-                    math.sin(var_theta * (i / scale_pi))+phase_diff1
-                    for var_theta in wave1_args
-                ]) * scale
-                y2 = sum([math.sin((var_theta*(i/scale_pi))+phase_diff2)
-                        for var_theta in wave2_args])*scale
+                y1 = sum([math.sin(var_theta * (i / scale_pi)+phase_diff1) for var_theta in wave1_args]) * scale
+                y2 = sum([math.sin((var_theta * (i/scale_pi))+phase_diff2) for var_theta in wave2_args]) * scale
             else:
                 y1 = sum([
                     math.sin(var_theta * (i / scale_pi)) * math.cos(phase_diff1)
@@ -69,18 +65,20 @@ def fourier_transform_2(wave1_args: list[float | int], wave2_args: list[float | 
             t.goto(x, y1)
             t2.goto(x, y2)
         turtle.update()
-        time.sleep(1/24)
+        # time.sleep(1/24)
         t.clear()
         t2.clear()
 
 
 scale_pi = 100
-scale = 50
+scale = 100
 two_pi = int(2*math.pi*scale_pi)
-l: list[float] = [float(random.randint(1, 10)*random.random())*(1 if random.random() > 0.5 else -1) for x in range(1, 10**1)]
+l: list[float] = [float(random.randint(1, 10)*random.random()) for x in range(10**0)]
+ll = [float(random.randint(1, 10)*random.random()) for x in range(10**0)]
+
 l1: list[float] = [_/2 for _ in range(10)]
 l2: list[float] = [_ for _ in range(10)]
 colors = ["red", "blue", "green", "yellow"]
 red = ["red"]
-fourier_transform(l,red)
+fourier_transform_2(l,ll)
 turtle.done()
