@@ -21,12 +21,10 @@ import random
 import time
 import math
 
-t = turtle.Turtle()
+t = turtle.Turtle(visible=False)
 t.color("blue")
 turtle.bgcolor("black")
 t.speed(0)
-width = turtle.window_width()
-height = turtle.window_height()
 def mark_every(num: float):
     if num > 1000:
         return
@@ -76,45 +74,64 @@ def flow_fields_1(pos:tuple[float,float],colors:str,multipler:float=1.0):
             t.sety(height//2-ry)
             t.setheading(random.randint(0,360))
             
-def flow_fields_2(turt_nums: int, poss: list[tuple], multiplier: float = 1.0):
-    if not poss:
-        poss = [(random.uniform(-width//2, width//2), random.uniform(-height//2, height//2)) for _ in range(turt_nums)]
-    
+def flow_fields_2(turt_nums: int, positions: list[tuple], multiplier: float = 1.0):
+    if not positions:
+        positions = [(random.uniform(-width//2, width//2), random.uniform(-height//2, height//2)) for _ in range(turt_nums)]
     turts = []
+    thresholds = [100, 200, 300, 400, 500, 600]
+    
     for i in range(turt_nums): # add one more for center
+        value = math.hypot(positions[i][0],positions[i][1])
+        val = sum(1 for t in thresholds if value > t)
         tt = turtle.Turtle(visible=False)
         tt.speed(0)
-        tt.color(colors[i % len(colors)])
+        tt.color(colors[val])
+        tt.color("red") # for testing
         tt.penup()
-        tt.goto(poss[i])
+        tt.goto(positions[i])
         tt.pendown()
         turts.append(tt)
 
-    positions = list(poss)
     num = 10**4
+    avg = 0
+    k = math.pi/180 * multiplier
+    w2 = width//2
+    h2 = height//2
     
     for i in range(num + 1):
-        turtle.title(f"Flow Fields - Percentage {(i/num)*100}%")
-        if i % 1_000 == 0:
+        tim = time.time()
+        if i % 10 == 0:
             turtle.update()
         for idx, tt in enumerate(turts):
+            if i % 10 == 0:
+                tt.clear()
             x, y = positions[idx]
-            angle = math.sin(math.radians(x) * multiplier) * math.cos(math.radians(y) * multiplier) * 360
+            
+            # angle = math.sin(math.radians(x) * multiplier) * math.cos(math.radians(y) * multiplier) * 360
+            angle = (math.sin(x * k) * math.cos(y * k)) * 360
             tt.left(angle)
-            tt.forward(scale)
-            x, y = tt.pos()
+            tt.forward(1*scale)
             # boundary
-            rx, ry = random.uniform(10,50), random.uniform(10,50)
-            if x < -width//2: tt.setx(-width//2+rx); tt.setheading(random.randint(0,360))
-            elif x > width//2: tt.setx(width//2-rx); tt.setheading(random.randint(0,360))
-            if y < -height//2: tt.sety(-height//2+ry); tt.setheading(random.randint(0,360))
-            elif y > height//2: tt.sety(height//2-ry); tt.setheading(random.randint(0,360))
+            x, y = tt.xcor(), tt.ycor()
+            
+            # if x < -w2: rx = random.uniform(10,50); tt.setx(-w2+rx); tt.setheading(random.randint(0,360))
+            # elif x > w2: rx = random.uniform(10,50); tt.setx(w2-rx); tt.setheading(random.randint(0,360))
+            # if y < -h2: ry = random.uniform(10,50); tt.sety(-h2+ry); tt.setheading(random.randint(0,360))
+            # elif y > h2: ry = random.uniform(10,50); tt.sety(h2-ry); tt.setheading(random.randint(0,360))
             positions[idx] = tt.pos()
+        fps =1/(time.time()-tim)
+        avg += fps
+        if i % 10 == 0:
+            turtle.title(f"Flow Fields - Percentage {(i/num)*100:.2f}% , avg:{avg/1 if i == 0 else avg/i:.2f}")
 
 scale = 1
 colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"]
 
+i = input()
+width = turtle.window_width()
+height = turtle.window_height()
+
 turtle.tracer(0)
-mark_every(10)
-flow_fields_2(10**3,[])
+mark_every(100)
+flow_fields_2(10**3*5,[],1)
 turtle.done()
