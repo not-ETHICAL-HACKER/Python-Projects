@@ -86,7 +86,6 @@ def flow_fields_2(turt_nums: int, positions: list[tuple], multiplier: float = 1.
         tt = turtle.Turtle(visible=False)
         tt.speed(0)
         tt.color(colors[val])
-        tt.color("red") # for testing
         tt.penup()
         tt.goto(positions[i])
         tt.pendown()
@@ -108,26 +107,27 @@ def flow_fields_2(turt_nums: int, positions: list[tuple], multiplier: float = 1.
             x, y = positions[idx]
             
             # angle = math.sin(math.radians(x) * multiplier) * math.cos(math.radians(y) * multiplier) * 360
-            angle = (math.sin(x * k) * math.cos(y * k)) * 360
+            # angle = (math.sin(x * k) * math.cos(y * k)) * 360
+            angle = math.exp(-1*math.hypot(x,y)) * math.sin(x * k) * math.cos(y * k) * 360
             tt.left(angle)
             tt.forward(1*scale)
             # boundary
             x, y = tt.xcor(), tt.ycor()
             
-            # if x < -w2: rx = random.uniform(10,50); tt.setx(-w2+rx); tt.setheading(random.randint(0,360))
-            # elif x > w2: rx = random.uniform(10,50); tt.setx(w2-rx); tt.setheading(random.randint(0,360))
-            # if y < -h2: ry = random.uniform(10,50); tt.sety(-h2+ry); tt.setheading(random.randint(0,360))
-            # elif y > h2: ry = random.uniform(10,50); tt.sety(h2-ry); tt.setheading(random.randint(0,360))
+            if x < -w2: rx = random.uniform(10,50); tt.setx(-w2+rx); tt.setheading(random.randint(0,360))
+            elif x > w2: rx = random.uniform(10,50); tt.setx(w2-rx); tt.setheading(random.randint(0,360))
+            if y < -h2: ry = random.uniform(10,50); tt.sety(-h2+ry); tt.setheading(random.randint(0,360))
+            elif y > h2: ry = random.uniform(10,50); tt.sety(h2-ry); tt.setheading(random.randint(0,360))
             positions[idx] = tt.pos()
         fps =1/(time.time()-tim)
         avg += fps
-        if i % 10 == 0:
+        if i % 1 == 0:
             turtle.title(f"Flow Fields - Percentage {(i/num)*100:.2f}% , avg:{avg/1 if i == 0 else avg/i:.2f}")
 
 scale = 1
 colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"]
 
-i = input()
+# i = input()
 width = turtle.window_width()
 height = turtle.window_height()
 
