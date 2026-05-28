@@ -14,22 +14,25 @@ import math
 turtle.bgcolor("black")
 def particle_field_1(n:int,radius:float=1):
     colors = ["red","blue","green"]
+    shapes = ["circle","square","triangle"]
     index = {"red":0,"blue":1,"green":2}
     matrix = {
-        "red" :  [-0.1,-0,+1e-3], #? 0 index is red, 1 is blue, 2 is green
-        "blue" : [-0,-0.1,-0], #! this table means tht what opens this table is the column
-        "green" :[+1e-3,-0,-0.1]  #! and th nums are rows ig
+        #          red    blue   green
+        "red" :   [+1.5,  -2,    -2],   #? red only loves itself, hates others
+        "blue" :  [+3,   -0.1,  -0.75],  #! blue strongly likes red, slightly dislikes green, slightly dislikes itself
+        "green" : [+3,   -0.75,  -0.1]  #! green strongly likes red, slightly dislikes itself, slightly dislikes blue
     }
+
     turt = []
     pos  = []
-    drag = 0.0
+    drag = 0.1
     turtle.tracer(0)
     for i in range(3):
         for j in range(n):
             rx = random.randint(-w2,w2)
             ry = random.randint(-h2,h2)
             pos.append((rx,ry))
-            t = turtle.Turtle(shape="circle")
+            t = turtle.Turtle(shape=shapes[i])
             t.shapesize(0.5, 0.5)
             t.color(colors[i])
             t.penup()
@@ -46,13 +49,18 @@ def particle_field_1(n:int,radius:float=1):
                 if i == j:
                     continue
                 x2,y2 = t2.pos()
-                hyp = math.hypot(x1-x2,y1-y2)
+                hyp = max(math.hypot(x1-x2,y1-y2),1e-6)
                 if hyp < radius:
+                    k = -0.01
                     c1 = t1.pencolor()
                     c2 = t2.pencolor()
                     t1_affects = matrix[c1][index[c2]]
-                    vx += t1_affects * (x2 - x1) / hyp - drag*vx
-                    vy += t1_affects * (y2 - y1) / hyp - drag*vy
+                    # vx += (t1_affects * (x2 - x1) / hyp)*math.exp(k*hyp)
+                    # vy += (t1_affects * (y2 - y1) / hyp)*math.exp(k*hyp)
+                    vx += (t1_affects * (x2 - x1) / hyp)*math.pow(hyp,-2)
+                    vy += (t1_affects * (y2 - y1) / hyp)*math.pow(hyp,-2)
+                    vx *= (1-drag)
+                    vy *= (1-drag)
                 vel[i] = (vx,vy)
         for i,t in enumerate(turt):
             vx,vy = vel[i]
@@ -76,4 +84,4 @@ width = turtle.window_width()
 height = turtle.window_height()
 w2 = width//2
 h2 = height//2
-particle_field_1(100,100)
+particle_field_1(3,math.hypot(w2,h2))
