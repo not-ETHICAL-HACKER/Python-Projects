@@ -11,7 +11,15 @@ Each frame, for every particle, sum up forces from all other particles based on 
 import turtle
 import random
 import math
+import csv
+
 turtle.bgcolor("black")
+def save_matrix(matrix,filename,n:int,num_of_colors:int,prob:list[float],radius:float):
+    with open(filename,"a",newline='') as f:
+        writer = csv.writer(f)
+        for key, value in matrix.items():
+            row = [n,num_of_colors,radius] +[x for x in prob]+ [key] + list(value.values())
+            writer.writerow(row)
 def particle_field_1(n:int,radius:float=1):
     colors = ["red","blue","green"]
     shapes = ["circle","square","triangle"]
@@ -80,8 +88,82 @@ def particle_field_1(n:int,radius:float=1):
                 vel[i] = (vx,-vy)
         turtle.update()
 
+def particle_field_2(n:int,num_of_colors:int,prob:list[float] = [],radius:float=1):
+    t_colors = ["red","blue","green","yellow","cyan","magenta","orange","purple","white"]
+    true_matrix = {
+        c1: {c2: round(random.uniform(-1, 1),2) for c2 in t_colors} for c1 in t_colors
+    }
+    turt = []
+    if not prob:
+        prob = [random.random() for _ in range(num_of_colors)]
+        if len(prob) < len(t_colors):
+            prob.extend([0]*(len(t_colors)-len(prob)))
+        if len(prob) > len(t_colors):
+            prob = prob[:len(t_colors)]
+    
+    turtle.tracer(0)
+    for i in range(n):
+        t = turtle.Turtle(shape="circle")
+        t.color(random.choices(t_colors,k=1,weights=prob)[0])
+        t.shapesize(0.5, 0.5)
+        rx = random.uniform(-w2,w2)
+        ry = random.uniform(-h2,h2)
+        t.penup()
+        t.goto(rx,ry)
+        turt.append(t)
+    turtle.update()
+    vel = [(0,0) for _ in range(n)]
+    drag = 0.1
+    write = False
+    while True:
+        for i,t1 in enumerate(turt):
+            vx,vy = vel[i]
+            x1,y1 = t1.pos()
+            if i == 1 and not write:
+                save_matrix(true_matrix,"matrix.csv",n,num_of_colors,prob,radius)
+                write = True
+            for j,t2 in enumerate(turt):
+                if i == j:
+                    continue
+                x2,y2 = t2.pos()
+                hyp = max(math.hypot(x1-x2,y1-y2),1e-6)
+                if hyp < radius:
+                    k = -0.000001
+                    c1 = t1.pencolor()
+                    c2 = t2.pencolor()
+                    t1_affects = true_matrix[c1][c2]
+                    vx += (t1_affects * (x2 - x1) / hyp)*math.exp(k*hyp)
+                    vy += (t1_affects * (y2 - y1) / hyp)*math.exp(k*hyp)
+                    # vx += (t1_affects * (x2 - x1) / hyp)*math.pow(hyp,-.5)
+                    # vy += (t1_affects * (y2 - y1) / hyp)*math.pow(hyp,-.5)
+                    vx *= (1-drag)
+                    vy *= (1-drag)
+                vel[i] = (vx,vy)
+        for i,t in enumerate(turt):
+            vx,vy = vel[i]
+            t.setx(t.xcor() + vx)
+            t.sety(t.ycor() + vy)
+            #! remove comments to make the system gain energy at the borders, which can lead to more interesting patterns but less stability
+            if t.xcor() < -w2:
+                t.setx(-w2)
+                # vel[i] = (-vx,vy)
+                vel[i] = (-vx+random.uniform(-.1,.1),vy+random.uniform(-.1,.1))
+            elif t.xcor() > w2:
+                t.setx(w2)
+                # vel[i] = (-vx,vy)
+                vel[i] = (-vx+random.uniform(-.1,.1),vy+random.uniform(-.1,.1))
+            if t.ycor() < -h2:
+                # vel[i] = (vx,-vy)
+                t.sety(-h2)
+                vel[i] = (vx+random.uniform(-.1,.1),-vy+random.uniform(-.1,.1))
+            elif t.ycor() > h2:
+                # vel[i] = (vx,-vy)
+                t.sety(h2)
+                vel[i] = (vx+random.uniform(-.1,.1),-vy+random.uniform(-.1,.1))
+        turtle.update()
+i = input()
 width = turtle.window_width()
 height = turtle.window_height()
 w2 = width//2
 h2 = height//2
-particle_field_1(3,math.hypot(w2,h2))
+particle_field_2(100,4,radius = 100)
