@@ -89,6 +89,13 @@ def particle_field_1(n:int,radius:float=1):
         turtle.update()
 
 def particle_field_2(n:int,num_of_colors:int,prob:list[float] = [],radius:float=1):
+    """
+    Particles interact through local attraction and repulsion rules based
+    on particle type. Interaction strength decreases with distance, creating
+    smooth collective motion. Dense regions experience higher effective drag,
+    causing clusters to stabilize over time. Small random perturbations and
+    boundary noise prevent static equilibrium and sustain emergent patterns.
+    """
     t_colors = ["red","blue","green","yellow","cyan","magenta","orange","purple","white"]
     true_matrix = {
         c1: {c2: round(random.uniform(-1, 1),2) for c2 in t_colors} for c1 in t_colors
@@ -125,8 +132,16 @@ def particle_field_2(n:int,num_of_colors:int,prob:list[float] = [],radius:float=
             for j,t2 in enumerate(turt):
                 if i == j:
                     continue
+                if random.random() < 0.01:
+                    vx += random.uniform(-0.01,0.01)
+                    vy += random.uniform(-0.01,0.01) #! to prevent the system from getting stuck in a static state, add some random noise to the velocity
                 x2,y2 = t2.pos()
-                hyp = max(math.hypot(x1-x2,y1-y2),1e-6)
+                hyp = math.hypot(x1-x2,y1-y2) 
+                if hyp < .1:
+                    continue
+                #* Planned extension: combine the particle interaction system with
+                #* a flow field so particles respond both to nearby particles and
+                #* to large-scale environmental motion.
                 if hyp < radius:
                     k = -0.000001
                     c1 = t1.pencolor()
@@ -139,31 +154,40 @@ def particle_field_2(n:int,num_of_colors:int,prob:list[float] = [],radius:float=
                     vx *= (1-drag)
                     vy *= (1-drag)
                 vel[i] = (vx,vy)
+        # radius += 1
         for i,t in enumerate(turt):
             vx,vy = vel[i]
             t.setx(t.xcor() + vx)
             t.sety(t.ycor() + vy)
+            x,y = t.pos()
             #! remove comments to make the system gain energy at the borders, which can lead to more interesting patterns but less stability
-            if t.xcor() < -w2:
-                t.setx(-w2)
-                # vel[i] = (-vx,vy)
+            if x > w2:
+                t.setpos((w2-random.uniform(1,2),y))
+                vx = -abs(vx) * 0.95
+                vel[i] = (vx+random.uniform(-.1,.1),vy+random.uniform(-.1,.1))
+            elif x < -w2:
+                t.setpos((-w2+random.uniform(1,2),y))
+                vx = abs(vx) * 0.95
                 vel[i] = (-vx+random.uniform(-.1,.1),vy+random.uniform(-.1,.1))
-            elif t.xcor() > w2:
-                t.setx(w2)
-                # vel[i] = (-vx,vy)
-                vel[i] = (-vx+random.uniform(-.1,.1),vy+random.uniform(-.1,.1))
-            if t.ycor() < -h2:
-                # vel[i] = (vx,-vy)
-                t.sety(-h2)
-                vel[i] = (vx+random.uniform(-.1,.1),-vy+random.uniform(-.1,.1))
-            elif t.ycor() > h2:
-                # vel[i] = (vx,-vy)
-                t.sety(h2)
-                vel[i] = (vx+random.uniform(-.1,.1),-vy+random.uniform(-.1,.1))
+            if y < -h2:
+                vy = abs(vy) * 0.95
+                t.setpos((x,-h2+random.uniform(1,2)))
+                vel[i] = (vx+random.uniform(-.1,.1),vy+random.uniform(-.1,.1))
+            elif y > h2:
+                vy = -abs(vy) * 0.95    
+                t.setpos((x,h2-random.uniform(1,2)))
+                vel[i] = (vx+random.uniform(-.1,.1),vy+random.uniform(-.1,.1))
+            if i % 1 == 0:
+                t.clear()
+                t.goto(x,y-radius)
+                t.pendown()
+                t.circle(radius)
+                t.penup()
+                t.goto(x,y)
         turtle.update()
-i = input()
+# i = input()
 width = turtle.window_width()
 height = turtle.window_height()
 w2 = width//2
 h2 = height//2
-particle_field_2(100,4,radius = 100)
+particle_field_2(100,3,radius = 25)
