@@ -106,7 +106,8 @@ def flow_fields_2(turt_nums: int, positions: list[tuple], multiplier: float = 1.
     for i in range(turt_nums):  # add one more for center
         value = math.hypot(positions[i][0], positions[i][1])
         val = sum(1 for t in thresholds if value > t)
-        tt = turtle.Turtle(visible=False)
+        tt = turtle.Turtle(shape="circle")
+        tt.shapesize(0.125, 0.125)
         tt.speed(0)
         tt.color(colors[val])
         tt.penup()
@@ -164,5 +165,5 @@ height = turtle.window_height()
 
 turtle.tracer(0)
 # mark_every(100)
-flow_fields_2(10**3*2, [], 1)
+flow_fields_2(10**3*5, [], 1)
 turtle.done()

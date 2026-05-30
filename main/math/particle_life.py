@@ -101,18 +101,26 @@ def particle_field_2(n:int,num_of_colors:int,prob:list[float] = [],radius:float=
         c1: {c2: round(random.uniform(-1, 1),2) for c2 in t_colors} for c1 in t_colors
     }
     turt = []
+    print("len(t_colors) =", len(t_colors))
+    print("len(prob) =", len(prob))
     if not prob:
         prob = [random.random() for _ in range(num_of_colors)]
         if len(prob) < len(t_colors):
             prob.extend([0]*(len(t_colors)-len(prob)))
         if len(prob) > len(t_colors):
             prob = prob[:len(t_colors)]
-    
+    if prob:
+        if len(prob) < len(t_colors):
+            prob.extend([0]*(len(t_colors)-len(prob)))
+        if len(prob) > len(t_colors):
+            prob = prob[:len(t_colors)]
+    print("len(t_colors) =", len(t_colors))
+    print("len(prob) =", len(prob))
     turtle.tracer(0)
     for i in range(n):
         t = turtle.Turtle(shape="circle")
         t.color(random.choices(t_colors,k=1,weights=prob)[0])
-        t.shapesize(0.5, 0.5)
+        t.shapesize(0.25, 0.25)
         rx = random.uniform(-w2,w2)
         ry = random.uniform(-h2,h2)
         t.penup()
@@ -142,8 +150,9 @@ def particle_field_2(n:int,num_of_colors:int,prob:list[float] = [],radius:float=
                 #* Planned extension: combine the particle interaction system with
                 #* a flow field so particles respond both to nearby particles and
                 #* to large-scale environmental motion.
+                
                 if hyp < radius:
-                    k = -0.000001
+                    k = -0.001
                     c1 = t1.pencolor()
                     c2 = t2.pencolor()
                     t1_affects = true_matrix[c1][c2]
@@ -160,6 +169,9 @@ def particle_field_2(n:int,num_of_colors:int,prob:list[float] = [],radius:float=
             t.setx(t.xcor() + vx)
             t.sety(t.ycor() + vy)
             x,y = t.pos()
+            angle = math.atan2(y, x)
+            t.setheading(math.degrees(angle)+150) # change phase to create swirl patterns and act as gravity wells
+            t.forward(.1) # change this to immitate gravity wells or other environmental forces
             #! remove comments to make the system gain energy at the borders, which can lead to more interesting patterns but less stability
             if x > w2:
                 t.setpos((w2-random.uniform(1,2),y))
@@ -190,4 +202,4 @@ width = turtle.window_width()
 height = turtle.window_height()
 w2 = width//2
 h2 = height//2
-particle_field_2(100,3,radius = 25)
+particle_field_2(60,2,[1/2]*2,5)
