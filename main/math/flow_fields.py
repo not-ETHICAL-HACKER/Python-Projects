@@ -165,5 +165,5 @@ height = turtle.window_height()
 
 turtle.tracer(0)
 # mark_every(100)
-flow_fields_2(10**3*5, [], 1)
+flow_fields_2(10**3*2, [], 1)
 turtle.done()
