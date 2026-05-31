@@ -397,16 +397,202 @@ def particle_field_3(n:int,num_of_colors:int,num_of_shapes:int,prob_col:list[flo
                 if x > w2 or x < -w2 or y < -h2 or y > h2:
                     resp.add(t)
                     
-            # if i % 10 == 0:
-            #     t.clear()
-            #     t.goto(x,y-radius)
-            #     t.pendown()
-            #     t.circle(radius)
-            #     t.penup()
-            #     t.goto(x,y)
+            if i % 1 == 0:
+                t.clear()
+                t.goto(x,y-radius)
+                t.pendown()
+                t.circle(radius)
+                t.penup()
+                t.goto(x,y)
         
         turtle.update()
 
+def particle_field_4(n:int,num_of_colors:int,num_of_shapes:int,prob_col:list[float] = [],prob_shape:list[float] = [],prob_func:list[float] = [],inner_radius:float=1,outer_radius:float=100):
+    """intoduces inner radius and outer radius for interactions, so particles only interact with others that are within a certain distance range, which can create more complex and varied patterns by allowing for both short-range and long-range interactions. This can lead to the emergence of distinct clusters based on proximity, as well as larger-scale structures formed by long-range forces."""
+    turts = []
+    t_colors = ["red","blue","green","yellow","cyan","magenta","orange","purple","white"]
+    t_shapes = ["circle","square","triangle","turtle","arrow"]
+    
+    prob_col = fix_probs(prob_col, num_of_colors, len(t_colors))
+    prob_shape = fix_probs(prob_shape, num_of_shapes, len(t_shapes))
+    prob_func = fix_probs(prob_func, len(funcs), len(funcs))
+    
+    turtle.tracer(0)
+    
+    for _ in range(n):
+        
+            t = turtle.Turtle(shape=random.choices(t_shapes,k=1,weights=prob_shape)[0])
+            t.color(random.choices(t_colors,k=1,weights=prob_col)[0])
+            t.shapesize(shape_size, shape_size)
+            rx = random.uniform(-w2,w2)
+            ry = random.uniform(-h2,h2)
+            t.penup()
+            t.goto(rx,ry)
+            turts.append(t)
+        
+    turtle.update()
+    
+    vel = [(0,0) for _ in range(n)]
+    drag = 0.1
+    true_color_matrix = {
+                c1: {
+                    c2: round(random.uniform(-1, 1),2)
+                for c2 in t_colors
+            } 
+        for c1 in t_colors
+    }
+    
+    f_name = list(funcs.keys())
+    
+    true_shape_matrix = {
+        s1: {
+                    s2: (round(random.uniform(-1, 1),2) ,random.choices(f_name,k=1,weights=prob_func)[0]) 
+                for s2 in t_shapes
+            } 
+        for s1 in t_shapes
+    }
+    save_matrices(true_color_matrix,true_shape_matrix,"matrices_new.pkl",n,(inner_radius,outer_radius))
+    while True:
+        for i,t1 in enumerate(turts):
+            vx,vy = vel[i]
+            x1,y1 = t1.pos()
+            c1 = t1.pencolor()
+            s1 = t1.shape()
+            for j,t2 in enumerate(turts):
+                if i == j:
+                    continue
+                if random.random() < 0.01:
+                    vx += random.uniform(-0.01,0.01)
+                    vy += random.uniform(-0.01,0.01) #! to prevent the system from getting stuck in a static state, add some random noise to the velocity
+                
+                x2,y2 = t2.pos()
+                hyp = math.hypot(x1-x2,y1-y2) 
+                
+                if hyp < .1:
+                    continue
+                
+                if hyp < inner_radius:
+                    ...
+                elif inner_radius < hyp < outer_radius:
+                    k = -0.001
+                
+                    c2 = t2.pencolor()
+                    s2 = t2.shape()
+                    
+                    t1_color_affects = true_color_matrix[c1][c2]
+                    shape_affects, func = true_shape_matrix[s1][s2]
+                    func = funcs[func]
+                    
+                    dx = x2 - x1
+                    dy = y2 - y1
+                    
+                    cosine = dx/hyp #* this is the trig func and it acts like a unit circle, giving the direction of the force
+                    sine = dy/hyp #! cos is x corr of unit vector, sin is y corr of unit vector
+                    
+                    decay = math.exp(k*hyp) #* this is the decay function, which makes the force weaker as the distance increases
+                    
+                    vx += (t1_color_affects * cosine)*decay
+                    vy += (t1_color_affects * sine)*decay
+                    
+                    shape_force = shape_affects * func(hyp)
+                    
+                    vx += shape_force * cosine
+                    vy += shape_force * sine
+                    
+                    vx *= (1-drag)
+                    vy *= (1-drag) # uncomment to observe group enegy loss
+                
+                    vx = max(min(vx,5),-5)
+                    vy = max(min(vy,5),-5)
+                
+                vel[i] = (vx,vy)
+            
+            # vx *= (1-drag) # comment out to observe stricter energy loss, which can lead to more stable clusters but less dynamic patterns
+            # vy *= (1-drag)
+        for i,t in enumerate(turts):
+            vx,vy = vel[i]
+            t.setx(t.xcor() + vx)
+            t.sety(t.ycor() + vy)
+            x,y = t.pos()
+            x_y_hyp = math.hypot(x,y)
+            sqr = True
+            
+            if sqr:
+            
+                if x > w2:
+                    t.setx(w2-random.uniform(1,2))
+                    ux = x/x_y_hyp
+                    uy = y/x_y_hyp
+                    dot = vx*ux + vy*uy
+                    
+                    vx = (vx - 2*dot*ux) * 0.90 
+                    vy = (vy - 2*dot*uy) * 0.95
+                    
+                    vel[i] = (vx+random.uniform(-.1,.1),vy+random.uniform(-.1,.1))
+            
+                elif x < -w2:
+                    t.setx(-w2+random.uniform(1,2))
+                    
+                    ux = x/x_y_hyp
+                    uy = y/x_y_hyp
+                    dot = vx*ux + vy*uy
+                    
+                    vx = (vx - 2*dot*ux) * 0.90
+                    vy = (vy - 2*dot*uy) * 0.90
+                    vel[i] = (vx+random.uniform(-.1,.1),vy+random.uniform(-.1,.1))
+            
+                if y < -h2:
+                    t.sety(-h2+random.uniform(1,2))
+                    ux = x/x_y_hyp
+                    uy = y/x_y_hyp
+                    
+                    dot = vx*ux + vy*uy
+                    
+                    vx = (vx - 2*dot*ux)*0.90
+                    vy = (vy - 2*dot*uy)*0.90
+                    vel[i] = (vx+random.uniform(-.1,.1),vy+random.uniform(-.1,.1))
+            
+                elif y > h2:
+                    t.sety(h2-random.uniform(1,2))
+                    ux = x/x_y_hyp
+                    uy = y/x_y_hyp
+                    
+                    dot = vx*ux + vy*uy
+                    
+                    vx = (vx - 2*dot*ux) * 0.90
+                    vy = (vy - 2*dot*uy) * 0.90
+                    vel[i] = (vx+random.uniform(-.1,.1),vy+random.uniform(-.1,.1))
+            
+            else:
+                true_rad = math.hypot(w2,h2)
+                r = math.hypot(x,y)
+            
+                if r > true_rad:
+                    nx = x/r
+                    ny = y/r
+
+                    dot = vx*nx + vy*ny
+
+                    vx = vx - 2*dot*nx
+                    vy = vy - 2*dot*ny
+
+                    vel[i] = (vx,vy)
+            
+            if i % 1 == 0:
+                t.clear()
+                t.goto(x,y-outer_radius)
+                t.pendown()
+                t.circle(outer_radius)
+                t.penup()
+                t.goto(x,y-inner_radius)
+                t.pendown()
+                t.circle(inner_radius)
+                t.penup()
+                t.goto(x,y)
+        
+        turtle.update()
+
+    
 # i = input()
 
 funcs = {
@@ -430,6 +616,6 @@ w2 = width//2
 h2 = height//2
 
 n_c = 3
-n_s = 3
+n_s = 1
 shape_size = 0.2
-particle_field_3(400,n_c,n_s,[1/n_c]*n_c,[1/n_s]*n_s,[1/len(funcs)]*len(funcs),radius=20)
+particle_field_4(200,n_c,n_s,[1/n_c]*n_c,[1/n_s]*n_s,[1/len(funcs)]*len(funcs),outer_radius=20,inner_radius=10)
