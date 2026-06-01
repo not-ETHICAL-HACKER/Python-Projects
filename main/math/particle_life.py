@@ -474,7 +474,7 @@ def particle_field_4(n:int,num_of_colors:int,num_of_shapes:int,prob_col:list[flo
                 if hyp < inner_radius:
                     ...
                 elif inner_radius < hyp < outer_radius:
-                    k = -0.001
+                    k = -0.0005
                 
                     c2 = t2.pencolor()
                     s2 = t2.shape()
@@ -578,17 +578,17 @@ def particle_field_4(n:int,num_of_colors:int,num_of_shapes:int,prob_col:list[flo
 
                     vel[i] = (vx,vy)
             
-            if i % 1 == 0:
-                t.clear()
-                t.goto(x,y-outer_radius)
-                t.pendown()
-                t.circle(outer_radius)
-                t.penup()
-                t.goto(x,y-inner_radius)
-                t.pendown()
-                t.circle(inner_radius)
-                t.penup()
-                t.goto(x,y)
+            # if i % 1 == 0:
+            #     t.clear()
+            #     t.goto(x,y-outer_radius)
+            #     t.pendown()
+            #     t.circle(outer_radius)
+            #     t.penup()
+            #     t.goto(x,y-inner_radius)
+            #     t.pendown()
+            #     t.circle(inner_radius)
+            #     t.penup()
+            #     t.goto(x,y)
         
         turtle.update()
 
@@ -596,18 +596,18 @@ def particle_field_4(n:int,num_of_colors:int,num_of_shapes:int,prob_col:list[flo
 # i = input()
 
 funcs = {
-        "sin":math.sin,
-        "cos":math.cos,
-        "sin_cos":lambda x: math.sin(x)*math.cos(x),
-        "sin^2-cos^2":lambda x: math.sin(x)**2 - math.cos(x)**2,
-        "inv_exp":lambda x: math.exp(-0.01*x),
+        # "sin":math.sin,
+        # "cos":math.cos,
+        # "sin_cos":lambda x: math.sin(x)*math.cos(x),
+        # "sin^2-cos^2":lambda x: math.sin(x)**2 - math.cos(x)**2,
+        # "inv_exp":lambda x: math.exp(-0.01*x),
         "log_e_1p" :lambda x: math.log1p(abs(x)),
-        "inv_sqrt": lambda x: 1/math.sqrt(abs(x)),
-        "atan(sin,cos)":lambda x: math.atan2(math.sin(x),math.cos(x)),
-        "inv_sqr":lambda x: 1/x**2 if abs(x) > 1 else 0,
-        "neg":lambda x:-abs(x),
-        "mex_hat": lambda x: (1 - x*x/25)*math.exp(-x*x/50),
-        "gauss": lambda x: math.exp(-((x-10)**2)/20)
+        # "inv_sqrt": lambda x: 1/math.sqrt(abs(x)),
+        # "atan(sin,cos)":lambda x: math.atan2(math.sin(x),math.cos(x)),
+        # "inv_sqr":lambda x: 1/x**2 if abs(x) > 1 else 0,
+        # "neg":lambda x:-abs(x),
+        # "mex_hat": lambda x: (1 - x*x/25)*math.exp(-x*x/50),
+        # "gauss": lambda x: math.exp(-((x-10)**2)/20)
 }
 
 width = turtle.window_width()
@@ -615,7 +615,7 @@ height = turtle.window_height()
 w2 = width//2
 h2 = height//2
 
-n_c = 3
+n_c = 2
 n_s = 1
-shape_size = 0.2
-particle_field_4(200,n_c,n_s,[1/n_c]*n_c,[1/n_s]*n_s,[1/len(funcs)]*len(funcs),outer_radius=20,inner_radius=10)
+shape_size = 0.1
+particle_field_4(200,n_c,n_s,[1/n_c]*n_c,[1/n_s]*n_s,[1/len(funcs)]*len(funcs),outer_radius=100,inner_radius=20)
