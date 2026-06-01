@@ -452,6 +452,20 @@ def particle_field_4(n:int,num_of_colors:int,num_of_shapes:int,prob_col:list[flo
         for s1 in t_shapes
     }
     save_matrices(true_color_matrix,true_shape_matrix,"matrices_new.pkl",n,(inner_radius,outer_radius))
+
+    inner_funcs = {
+        # "repel_exp": lambda x: -math.exp(-0.3*x),
+        # "spring": lambda x: (x-inner_radius),
+        "sin_core": lambda x: math.sin(0.5*x)
+    }
+    true_inner_funcs = {
+        s1: {
+            s2: random.choice(list(inner_funcs.keys()))
+            for s2 in t_shapes
+        }
+        for s1 in t_shapes
+    }
+
     while True:
         for i,t1 in enumerate(turts):
             vx,vy = vel[i]
@@ -461,9 +475,9 @@ def particle_field_4(n:int,num_of_colors:int,num_of_shapes:int,prob_col:list[flo
             for j,t2 in enumerate(turts):
                 if i == j:
                     continue
-                if random.random() < 0.01:
-                    vx += random.uniform(-0.01,0.01)
-                    vy += random.uniform(-0.01,0.01) #! to prevent the system from getting stuck in a static state, add some random noise to the velocity
+                # if random.random() < 0.01:
+                #     vx += random.uniform(-0.01,0.01)
+                #     vy += random.uniform(-0.01,0.01) #! to prevent the system from getting stuck in a static state, add some random noise to the velocity
                 
                 x2,y2 = t2.pos()
                 hyp = math.hypot(x1-x2,y1-y2) 
@@ -473,8 +487,20 @@ def particle_field_4(n:int,num_of_colors:int,num_of_shapes:int,prob_col:list[flo
                 
                 if hyp < inner_radius:
                     ...
+                                
+                    # dx = x2 - x1
+                    # dy = y2 - y1
+                    
+                    # cosine = dx/hyp #* this is the trig func and it acts like a unit circle, giving the direction of the force
+                    # sine = dy/hyp #! cos is x corr of unit vector, sin is y corr of unit vector
+                    # func = inner_funcs[true_inner_funcs[s1][s2]]
+                    # inner_force = func(hyp)
+                    # vx += inner_force * cosine
+                    # vy += inner_force * sine
+                    
+                    
                 elif inner_radius < hyp < outer_radius:
-                    k = -0.0005
+                    k = -0.02
                 
                     c2 = t2.pencolor()
                     s2 = t2.shape()
@@ -489,7 +515,7 @@ def particle_field_4(n:int,num_of_colors:int,num_of_shapes:int,prob_col:list[flo
                     cosine = dx/hyp #* this is the trig func and it acts like a unit circle, giving the direction of the force
                     sine = dy/hyp #! cos is x corr of unit vector, sin is y corr of unit vector
                     
-                    decay = math.exp(k*hyp) #* this is the decay function, which makes the force weaker as the distance increases
+                    decay = math.exp(k*(hyp-inner_radius)) #* this is the decay function, which makes the force weaker as the distance increases
                     
                     vx += (t1_color_affects * cosine)*decay
                     vy += (t1_color_affects * sine)*decay
@@ -499,16 +525,16 @@ def particle_field_4(n:int,num_of_colors:int,num_of_shapes:int,prob_col:list[flo
                     vx += shape_force * cosine
                     vy += shape_force * sine
                     
-                    vx *= (1-drag)
-                    vy *= (1-drag) # uncomment to observe group enegy loss
+                    # vx *= (1-drag)
+                    # vy *= (1-drag) # uncomment to observe group enegy loss
                 
                     vx = max(min(vx,5),-5)
                     vy = max(min(vy,5),-5)
                 
                 vel[i] = (vx,vy)
             
-            # vx *= (1-drag) # comment out to observe stricter energy loss, which can lead to more stable clusters but less dynamic patterns
-            # vy *= (1-drag)
+            vx *= (1-drag) # comment out to observe stricter energy loss, which can lead to more stable clusters but less dynamic patterns
+            vy *= (1-drag)
         for i,t in enumerate(turts):
             vx,vy = vel[i]
             t.setx(t.xcor() + vx)
@@ -601,13 +627,14 @@ funcs = {
         # "sin_cos":lambda x: math.sin(x)*math.cos(x),
         # "sin^2-cos^2":lambda x: math.sin(x)**2 - math.cos(x)**2,
         # "inv_exp":lambda x: math.exp(-0.01*x),
-        "log_e_1p" :lambda x: math.log1p(abs(x)),
-        # "inv_sqrt": lambda x: 1/math.sqrt(abs(x)),
+        # "log_e_1p" :lambda x: math.log1p(abs(x)),
+        # "inv_sqrt": lambda x: 1/math.sqrt(abs(x)) if abs(x) > 1 else 0,
         # "atan(sin,cos)":lambda x: math.atan2(math.sin(x),math.cos(x)),
         # "inv_sqr":lambda x: 1/x**2 if abs(x) > 1 else 0,
         # "neg":lambda x:-abs(x),
-        # "mex_hat": lambda x: (1 - x*x/25)*math.exp(-x*x/50),
-        # "gauss": lambda x: math.exp(-((x-10)**2)/20)
+        # "pos":lambda x:abs(x),
+        "mex_hat": lambda x: (1 - x*x/25)*math.exp(-x*x/50),
+        "gauss": lambda x: math.exp(-((x-10)**2)/20)
 }
 
 width = turtle.window_width()
@@ -615,7 +642,7 @@ height = turtle.window_height()
 w2 = width//2
 h2 = height//2
 
-n_c = 2
-n_s = 1
+n_c = 10
+n_s = 10
 shape_size = 0.1
-particle_field_4(200,n_c,n_s,[1/n_c]*n_c,[1/n_s]*n_s,[1/len(funcs)]*len(funcs),outer_radius=100,inner_radius=20)
+particle_field_4(500,n_c,n_s,[1/n_c]*n_c,[1/n_s]*n_s,[1/len(funcs)]*len(funcs),outer_radius=100,inner_radius=20)
