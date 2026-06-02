@@ -50,11 +50,32 @@ class Particle:
     def apply_drag(self):
         self.vx *= (1-self.drag)
         self.vy *= (1-self.drag)
-        
-    def draw(self, screen):
-        if self.shape == 'circle':
-            pygame.draw.circle(screen, self.color, (int(self.x), int(self.y)), int(self.particle_size))
-    
+    def draw_shape(self,screen, shape, color, x, y, size):
+        if shape == "circle":
+            pygame.draw.circle(screen, color, (x, y), size)
+
+        elif shape == "square":
+            pygame.draw.rect(screen, color,
+                            (x-size, y-size, 2*size, 2*size))
+
+        elif shape == "triangle":
+            points = [
+                (x, y-size),
+                (x-size, y+size),
+                (x+size, y+size)
+            ]
+            pygame.draw.polygon(screen, color, points)
+
+        elif shape == "hexagon":
+            points = []
+            for i in range(6):
+                angle = math.radians(i * 60)
+                points.append((
+                    x + size * math.cos(angle),
+                    y + size * math.sin(angle)
+                ))
+            pygame.draw.polygon(screen, color, points)
+            
     def border_check(self, width, height,circle=False):
         if not circle:
             if self.x < 0:
@@ -177,5 +198,5 @@ while running:
     for particle in particles:
         particle.move()
         particle.border_check(WIDTH, HEIGHT, circle=True)
-        particle.draw(screen)
+        particle.draw_shape(screen,particle.shape, particle.color, int(particle.x), int(particle.y), int(shape_size*WIDTH))
     pygame.display.flip()
