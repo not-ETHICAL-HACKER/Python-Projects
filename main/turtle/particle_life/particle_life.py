@@ -8,7 +8,6 @@ blue    +0.3  -0.2    +0.4
 Each frame, for every particle, sum up forces from all other particles based on color rules, update velocity, move.
 """
 #! In Particle Life, + means attraction, - means repulsion  
-from encodings.punycode import T
 import pickle
 import turtle
 import random
