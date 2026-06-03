@@ -60,10 +60,10 @@ WHY IT WORKS
 - Global patterns emerge from simple rules
 
 ------------------------------------------------------------
-1 CELL = 1 PIXEL VERSION
+1 CELL = 10 PIXEL VERSION
 ------------------------------------------------------------
-- Grid size = screen resolution
-- Each cell = pixel
+- Grid size = screen resolution/10
+- Each cell = 10x10 pixel
 - Value maps directly to color
 
 Results:
@@ -77,3 +77,5 @@ KEY IDEA
 ------------------------------------------------------------
 Cellular automata = grid + local rules + time steps
 """
+#! only use balck and white for now, ie, 0 and 1, or dead and alive
+#! black background, white cells
