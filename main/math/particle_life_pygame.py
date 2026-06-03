@@ -18,31 +18,33 @@ class Particle:
         x1,y1 = p1.x, p1.y
         x2,y2 = p2.x, p2.y
         
-        x_diff = x2 - x1
-        y_diff = y2 - y1
+        dx = x2 - x1
+        dy = y2 - y1
         
-        hyp = math.hypot(x_diff, y_diff)
+        hyp = dx**2+ dy**2
 
-        if hyp < 1:
+        if hyp < 1 or hyp > self.outer_radius**2:
             return
         
-        cosine = x_diff/hyp
-        sine = y_diff/hyp
-        #! try to make waves by making num of particles large and at start of sim make them all point in a direction and move in it for like 10 frames and then remove the vrctor force and observe whether eave nature of particles can be observed or not
-        if hyp < self.inner_radius:
-            self.vx += -1/math.sqrt(hyp) * cosine
-            self.vy += -1/math.sqrt(hyp) * sine
+        distance = math.sqrt(hyp)
         
-        elif self.inner_radius < hyp < self.outer_radius:
-            k = -0.005
-            self.vx += (c_matrix[p1.c][p2.c] * cosine) * math.exp(k * hyp)
-            self.vy += (c_matrix[p1.c][p2.c] * sine) * math.exp(k * hyp)
+        cosine = dx/distance
+        sine = dy/distance
+        #! try to make waves by making num of particles large and at start of sim make them all point in a direction and move in it for like 10 frames and then remove the vrctor force and observe whether eave nature of particles can be observed or not
+        if hyp < self.inner_radius**2:
+            # self.vx += -1/math.sqrt(distance) * cosine
+            # self.vy += -1/math.sqrt(distance) * sine
+            ...
+        elif self.inner_radius**2 < hyp < self.outer_radius**2:
+            k = -0.0005
+            self.vx += (c_matrix[p1.c][p2.c] * cosine) * 1 / (1 + k * distance)
+            self.vy += (c_matrix[p1.c][p2.c] * sine) * 1 / (1 + k * distance)
 
             func_name = s_matrix[p1.shape][p2.shape][1]
             func = funcs[func_name]
             
-            self.vx += func(hyp) * cosine * s_matrix[p1.shape][p2.shape][0]
-            self.vy += func(hyp) * sine * s_matrix[p1.shape][p2.shape][0]
+            self.vx += func(distance) * cosine * s_matrix[p1.shape][p2.shape][0]
+            self.vy += func(distance) * sine * s_matrix[p1.shape][p2.shape][0]
         
     def move(self):
         self.x += self.vx
@@ -67,16 +69,6 @@ class Particle:
             ]
             pygame.draw.polygon(screen, color, points)
 
-        elif shape == "hexagon":
-            points = []
-            for i in range(6):
-                angle = math.radians(i * 60)
-                points.append((
-                    x + self.particle_size * math.cos(angle),
-                    y + self.particle_size * math.sin(angle)
-                ))
-            pygame.draw.polygon(screen, color, points)
-            
     def border_check(self, width, height,circle=False):
         if not circle:
             if self.x < 0:
@@ -153,7 +145,7 @@ t_dict_colors = {
     "cyan": (0, 255, 255),
     "magenta": (255, 0, 255)
 }
-t_shapes = ['circle', 'square', 'triangle', 'hexagon']
+t_shapes = ['circle', 'square', 'triangle']
 f_name = list(funcs.keys())
 fix_probs(prob_func, len(funcs), len(funcs))
 fix_probs(prob_color, n_c, len(t_colors))
@@ -184,19 +176,58 @@ for _ in range(6_00):
     particles.append(Particle(x, y,color,c, shape))
 
 running = True
+CELL_SIZE = 100
+#! change cell size to interaction radius for accurate particles ,ie, CELL_SIZE = outer_radius
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
     screen.fill((0, 0, 0))
-    for i, particle in enumerate(particles):
-        for j, other in enumerate(particles):
-            if i == j:
-                # Calculate distance and apply forces based on true_color_matrix and true_shape_matrix
-                continue
-            particle.update(particle, other, true_color_matrix, true_shape_matrix)
-            
+    
+    grid = {}
+
+    # Build grid
+    for p in particles:
+        # Check this cell and its 8 neighboring cells.
+        # Since CELL_SIZE ~= interaction radius,
+        # particles farther than one cell away cannot interact.
+        # This reduces the search from all particles
+        # to only nearby particles.
+        cx = int(p.x // CELL_SIZE)
+        cy = int(p.y // CELL_SIZE)
+
+        if (cx, cy) not in grid:
+            grid[(cx, cy)] = []
+
+        grid[(cx, cy)].append(p)    
+    for particle in particles:
+
+        cx = int(particle.x // CELL_SIZE)
+        cy = int(particle.y // CELL_SIZE)
+
+        for dx_cell in (-1, 0, 1):
+            for dy_cell in (-1, 0, 1):
+
+                nearby = grid.get(
+                    (cx + dx_cell, cy + dy_cell),
+                    []
+                )
+
+                for other in nearby:
+
+                    if particle is other:
+                        continue
+
+                    particle.update(
+                        particle,
+                        other,
+                        true_color_matrix,
+                        true_shape_matrix
+                    )
+
         particle.apply_drag()
+    
     for particle in particles:
         particle.move()
         particle.border_check(WIDTH, HEIGHT)
