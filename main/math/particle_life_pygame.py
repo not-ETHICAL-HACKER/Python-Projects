@@ -1,14 +1,15 @@
 import pygame,random,math
 class Particle:
-    def __init__(self, x, y,color,shape):
+    def __init__(self, x, y,c,color,shape):
         self.x = x
         self.y = y
         self.vx = 0
         self.vy = 0
         self.outer_radius = 100
-        self.inner_radius = 10
-        self.drag = 0.01
+        self.inner_radius = 25
+        self.drag = 0.1
         self.particle_size = 1
+        self.c = c
         self.color = color
         self.shape = shape
         # self.life = 100
@@ -34,9 +35,9 @@ class Particle:
         
         elif self.inner_radius < hyp < self.outer_radius:
             k = -0.005
-            self.vx += (c_matrix[p1.color][p2.color] * cosine) * math.exp(k * hyp)
-            self.vy += (c_matrix[p1.color][p2.color] * sine) * math.exp(k * hyp)
-            
+            self.vx += (c_matrix[p1.c][p2.c] * cosine) * math.exp(k * hyp)
+            self.vy += (c_matrix[p1.c][p2.c] * sine) * math.exp(k * hyp)
+
             func_name = s_matrix[p1.shape][p2.shape][1]
             func = funcs[func_name]
             
@@ -50,19 +51,19 @@ class Particle:
     def apply_drag(self):
         self.vx *= (1-self.drag)
         self.vy *= (1-self.drag)
-    def draw_shape(self,screen, shape, color, x, y, size):
+    def draw_shape(self,screen, shape, color, x, y):
         if shape == "circle":
-            pygame.draw.circle(screen, color, (x, y), size)
+            pygame.draw.circle(screen, color, (x, y), self.particle_size)
 
         elif shape == "square":
             pygame.draw.rect(screen, color,
-                            (x-size, y-size, 2*size, 2*size))
+                            (x-self.particle_size, y-self.particle_size, 2*self.particle_size, 2*self.particle_size))
 
         elif shape == "triangle":
             points = [
-                (x, y-size),
-                (x-size, y+size),
-                (x+size, y+size)
+                (x, y-self.particle_size),
+                (x-self.particle_size, y+self.particle_size),
+                (x+self.particle_size, y+self.particle_size)
             ]
             pygame.draw.polygon(screen, color, points)
 
@@ -71,8 +72,8 @@ class Particle:
             for i in range(6):
                 angle = math.radians(i * 60)
                 points.append((
-                    x + size * math.cos(angle),
-                    y + size * math.sin(angle)
+                    x + self.particle_size * math.cos(angle),
+                    y + self.particle_size * math.sin(angle)
                 ))
             pygame.draw.polygon(screen, color, points)
             
@@ -80,16 +81,16 @@ class Particle:
         if not circle:
             if self.x < 0:
                 self.x = 0
-                self.vx *= -1
+                self.vx *= -0.95
             elif self.x > width:
                 self.x = width
-                self.vx *= -1
+                self.vx *= -0.95
             if self.y < 0:
                 self.y = 0
-                self.vy *= -1
+                self.vy *= -0.95
             elif self.y > height:
                 self.y = height
-                self.vy *= -1
+                self.vy *= -0.95
         else:
             w2 = width//2
             h2 = height//2
@@ -174,12 +175,13 @@ true_shape_matrix = {
         for s1 in t_shapes
     }
 
-for _ in range(100):
+for _ in range(6_00):
     x = random.uniform(0, WIDTH)
     y = random.uniform(0, HEIGHT)
-    color = random.choice(list(t_dict_colors.values()))
+    color = random.choice(list(t_dict_colors.keys()))
+    c = random.choice(list(t_dict_colors.values()))
     shape = random.choice(t_shapes)
-    particles.append(Particle(x, y, color, shape))
+    particles.append(Particle(x, y,color,c, shape))
 
 running = True
 while running:
@@ -197,6 +199,6 @@ while running:
         particle.apply_drag()
     for particle in particles:
         particle.move()
-        particle.border_check(WIDTH, HEIGHT, circle=True)
-        particle.draw_shape(screen,particle.shape, particle.color, int(particle.x), int(particle.y), int(shape_size*WIDTH))
+        particle.border_check(WIDTH, HEIGHT)
+        particle.draw_shape(screen,particle.shape, particle.color, int(particle.x), int(particle.y))
     pygame.display.flip()
