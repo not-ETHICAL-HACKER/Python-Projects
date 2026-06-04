@@ -98,7 +98,7 @@ class Particle:
                 self.vy *= -1
                 
 def fix_probs(prob, n, max_len):
-    if hasattr(prob, 'list') or hasattr(prob, 'tuple'):
+    if isinstance(prob, (list, tuple)):
         if not prob:
             prob = [random.random() for _ in range(n)]
 
@@ -106,7 +106,7 @@ def fix_probs(prob, n, max_len):
         prob.extend([0] * (max_len - len(prob)))
         
         return [p/sum(prob) for p in prob]
-    if hasattr(prob, 'dict'):
+    if isinstance(prob, dict):
         keys = list(prob.keys())[:max_len]
         values = list(prob.values())[:max_len]
         total = sum(values)
@@ -133,7 +133,7 @@ funcs = {
 n_c = 1
 n_s = 1
 particles: list[Particle] = []
-t_colors = ['red', 'green', 'blue', 'yellow', 'cyan', 'magenta']
+t_colors = ['red', 'green', 'blue', 'yellow', 'cyan', 'magenta'][:n_c]
 prob_func = [random.random() for _ in range(len(funcs))]
 t_shapes = ['circle', 'square', 'triangle']
 prob_color = [random.random() for _ in range(len(t_colors))]
