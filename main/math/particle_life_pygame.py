@@ -1,16 +1,16 @@
 import pygame,random,math
 class Particle:
-    def __init__(self, x, y,c,color,shape):
+    def __init__(self, x, y, color_name, rgb_color, shape):
+        self.c = color_name
+        self.color = rgb_color    
         self.x = x
         self.y = y
         self.vx = 0
         self.vy = 0
         self.outer_radius = 100
         self.inner_radius = 25
-        self.drag = 0.1
+        self.drag = 0.25
         self.particle_size = 1
-        self.c = c
-        self.color = color
         self.shape = shape
         # self.life = 100
 
@@ -133,10 +133,11 @@ funcs = {
 n_c = 1
 n_s = 1
 particles: list[Particle] = []
-prob_func = [random.random() for _ in range(len(funcs))]
-prob_color = [random.random() for _ in range(n_c)]
-prob_shape = [random.random() for _ in range(n_s)]
 t_colors = ['red', 'green', 'blue', 'yellow', 'cyan', 'magenta']
+prob_func = [random.random() for _ in range(len(funcs))]
+t_shapes = ['circle', 'square', 'triangle']
+prob_color = [random.random() for _ in range(len(t_colors))]
+prob_shape = [random.random() for _ in range(len(t_shapes))]
 t_dict_colors = {
     "red": (255, 0, 0),
     "green": (0, 255, 0),
@@ -145,34 +146,33 @@ t_dict_colors = {
     "cyan": (0, 255, 255),
     "magenta": (255, 0, 255)
 }
-t_shapes = ['circle', 'square', 'triangle']
 f_name = list(funcs.keys())
-fix_probs(prob_func, len(funcs), len(funcs))
-fix_probs(prob_color, n_c, len(t_colors))
-fix_probs(prob_shape, n_s, len(t_shapes))
+prob_func = fix_probs(prob_func, len(funcs), len(funcs))
+prob_color = fix_probs(prob_color, len(t_colors), len(t_colors))
+prob_shape = fix_probs(prob_shape, len(t_shapes), len(t_shapes))
 shape_size = 0.1
 
 true_color_matrix = {
                 c1: {
-                    c2: round(random.uniform(-1, 1),2)
+                    c2: round(random.uniform(-1, 1))/10
                 for c2 in t_colors
             } 
         for c1 in t_colors
     }
 true_shape_matrix = {
         s1: {
-                    s2: (round(random.uniform(-1, 1),2) ,random.choices(f_name,k=1,weights=prob_func)[0]) 
+                    s2: (round(random.uniform(-1, 1))/10 ,random.choices(f_name,k=1,weights=prob_func)[0]) 
                 for s2 in t_shapes
             } 
         for s1 in t_shapes
     }
 
-for _ in range(6_00):
+for _ in range(1_000):
     x = random.uniform(0, WIDTH)
     y = random.uniform(0, HEIGHT)
-    color = random.choice(list(t_dict_colors.keys()))
-    c = random.choice(list(t_dict_colors.values()))
-    shape = random.choice(t_shapes)
+    color = random.choices(t_colors, k=1, weights=prob_color)[0]
+    c = t_dict_colors[color]
+    shape = random.choices(t_shapes, k=1, weights=prob_shape)[0]
     particles.append(Particle(x, y,color,c, shape))
 
 running = True
