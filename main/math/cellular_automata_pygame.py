@@ -106,9 +106,9 @@ for i in range(int((WIDTH//cell_size))):
 
 running = True
 CONWAY = False
-VON = not CONWAY
+VON = False
+CROSS = True
 
-CROSS = False
 # TODO: Recreate the diamond fractal automaton from the reference image.
 
 #* Observations:
@@ -134,6 +134,7 @@ while running:
             running = False
 
     new_pos = set()
+    
     for (x, y) in alive_pos:
         # Count alive neighbors
         neighbors = 0
@@ -159,7 +160,16 @@ while running:
                 new_pos.add((x, y))  # stays alive or becomes alive
             else:
                 dead_pos.add((x, y))  # becomes dead
-                        
+        if CROSS:
+            for dx in (-1, 0, 1):
+                for dy in (-1, 0, 1):
+                    if abs(dx)+abs(dy) == 1 and (x + dx, y + dy) in alive_pos:
+                        neighbors += 1
+            if neighbors in (2,3):
+                new_pos.add((x,y))
+            else:
+                dead_pos.add((x,y))
+            
     for (x,y) in  dead_pos:
         neighbors = 0
         if CONWAY or VON:
@@ -170,10 +180,20 @@ while running:
                 
             if neighbors == 3:
                 new_pos.add((x, y))  # becomes alive
+                dead_pos.discard((x,y)) # remove discarf if it doesnt produce conways gaem of life
+        if CROSS:
+            for dx in  (-1,0,1):
+                for dy in  (-1,0,1):
+                    if abs(dx)+abs(dy) == 1 and (x + dx, y + dy) in alive_pos:
+                        neighbors += 1
+            if neighbors in(1,3):
+                new_pos.add((x,y)) # becomes alive
+                dead_pos.discard((x,y))
+            
 
 
     alive_pos = new_pos
-
+    
     screen.fill((0, 0, 0))  # clear screen
     for (x, y) in alive_pos:
         pygame.draw.rect(screen, (255,255,255),
