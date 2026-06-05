@@ -82,17 +82,18 @@ Cellular automata = grid + local rules + time steps
 import pygame,random,math
 
 pygame.init()
-WIDTH = 800
-HEIGHT = 600
+WIDTH = 1200
+HEIGHT = 1000
 
-cell_size = 10
+cell_size = 5
+chance = 0.5
 alive_pos = set()  # store alive cell positions as (x, y) tuples
 dead_pos = set()   # store dead cell positions as (x, y) tuples
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 for i in range(int((WIDTH//cell_size))):
     for j in range(int((HEIGHT//cell_size))):
-            if random.random() < 0.1:  # 10% chance to be alive
+            if random.random() < chance:  # 10% chance to be alive
                 pygame.draw.rect(screen, (255,255,255),
                  (i*cell_size, j*cell_size,
                   cell_size, cell_size))
@@ -104,7 +105,7 @@ for i in range(int((WIDTH//cell_size))):
                 dead_pos.add((i, j))  # store grid position
 
 running = True
-CONWAY =True
+CONWAY = False
 VON = not CONWAY
 
 CROSS = False
@@ -154,14 +155,14 @@ while running:
                         if (x + dx, y + dy) in alive_pos:
                             neighbors += 1
                     
-            if neighbors == 2:
+            if neighbors in (2,): #change to make new behavior
                 new_pos.add((x, y))  # stays alive or becomes alive
             else:
                 dead_pos.add((x, y))  # becomes dead
                         
     for (x,y) in  dead_pos:
         neighbors = 0
-        if CONWAY:
+        if CONWAY or VON:
             for dx in  (-1,0,1):
                 for dy in  (-1,0,1):
                     if (dx, dy) != (0, 0) and (x + dx, y + dy) in alive_pos:
