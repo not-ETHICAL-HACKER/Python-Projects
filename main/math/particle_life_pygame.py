@@ -1,8 +1,8 @@
 import pygame,random,math
 class Particle:
     def __init__(self, x, y, color_name, rgb_color, shape):
-        self.c = color_name
-        self.color = rgb_color    
+        self.color_name = color_name
+        self.rgb_color = rgb_color    
         self.x = x
         self.y = y
         self.vx = 0
@@ -37,9 +37,9 @@ class Particle:
         sine = dy/distance
         
         if self.c == other.c or self.shape == other.shape:
-            self.density += 1 - distance/self.outer_radius
+            self.density += 1 - distance/self.inner_radius
         else:
-            self.density += (1 - distance/self.outer_radius) * 0.5
+            self.density += (1 - distance/self.inner_radius) * 0.5
         #! try to make waves by making num of particles large and at start of sim make them all point in a direction and move in it for like 10 frames and then remove the vrctor force and observe whether eave nature of particles can be observed or not
         if distance < self.abs_radius:
             overlap_factor = 1.0 - (distance / self.abs_radius)
@@ -55,8 +55,8 @@ class Particle:
         
         elif self.inner_radius**2 < hyp < self.outer_radius**2:
             k = 1 * phi
-            x_affects = c_matrix[self.c][other.c]
-            y_affects = c_matrix[self.c][other.c]
+            x_affects = c_matrix[self.color_name][other.color_name]
+            y_affects = c_matrix[self.color_name][other.color_name]
             
             density_factor = 1 - min(max(0, self.density - self.density_limit),2.0)
             
@@ -263,5 +263,5 @@ while running:
     for particle in particles:
         particle.move()
         particle.border_check(WIDTH, HEIGHT)
-        particle.draw_shape(screen,particle.shape, particle.color, int(particle.x), int(particle.y))
+        particle.draw_shape(screen,particle.shape, particle.rgb_color, int(particle.x), int(particle.y))
     pygame.display.flip()
