@@ -85,15 +85,15 @@ pygame.init()
 WIDTH = 1200
 HEIGHT = 1000
 
-cell_size = 5
-chance = 0.5
+cell_size = 4
+chance = 0.25
 alive_pos = set()  # store alive cell positions as (x, y) tuples
 dead_pos = set()   # store dead cell positions as (x, y) tuples
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 for i in range(int((WIDTH//cell_size))):
     for j in range(int((HEIGHT//cell_size))):
-            if random.random() < chance:  # 10% chance to be alive
+            if random.random() < chance:  
                 pygame.draw.rect(screen, (255,255,255),
                  (i*cell_size, j*cell_size,
                   cell_size, cell_size))
@@ -105,9 +105,9 @@ for i in range(int((WIDTH//cell_size))):
                 dead_pos.add((i, j))  # store grid position
 
 running = True
-CONWAY = False
+CONWAY = True
 VON = False
-CROSS = True
+CROSS = False
 
 # TODO: Recreate the diamond fractal automaton from the reference image.
 
@@ -169,8 +169,10 @@ while running:
                 new_pos.add((x,y))
             else:
                 dead_pos.add((x,y))
-            
-    for (x,y) in  dead_pos:
+    
+    new_dead_pos = dead_pos.copy()
+
+    for (x,y) in  new_dead_pos:
         neighbors = 0
         if CONWAY or VON:
             for dx in  (-1,0,1):
@@ -186,7 +188,7 @@ while running:
                 for dy in  (-1,0,1):
                     if abs(dx)+abs(dy) == 1 and (x + dx, y + dy) in alive_pos:
                         neighbors += 1
-            if neighbors in(1,3):
+            if neighbors in(2,):
                 new_pos.add((x,y)) # becomes alive
                 dead_pos.discard((x,y))
             
