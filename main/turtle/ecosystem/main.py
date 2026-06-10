@@ -52,7 +52,7 @@ class Particle(turtle.Turtle):
         self.vy = 0
         self.ax = 0#! use vx * dt to find ax and store it ig? 
         self.ay = 0#! also use clock func in pygame to acccuratelay find dt
-        
+        #! avoid using fx and fy bcs its too hard for me to implement
         self.fx = 0 #! this is where the particle is pointing by finding (new x - old x)/hyp
         self.fy = 0 #! do some dot or cross product shenanigans to find resultant between these vectors and vector pointing to other particle
         
