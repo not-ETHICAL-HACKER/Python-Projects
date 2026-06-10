@@ -2,23 +2,19 @@ import  random
 import mysql.connector as my
 con  = my.connect(host="localhost",user="root",passwd="tiger",database="johan")
 cursor = con.cursor()
+products = ["apple", "banana", "orange", "grape", "kiwi"]
+names = ["Alice", "Bob", "Charlie", "David", "Eve"]
 
-def matrix(txt: str = "Hello World!!!") -> str:
-    alpha = "".join(chr(i) for i in range(32, 128))
-    alpha = "".join(random.sample(alpha, len(alpha)))
-    c = 0
-    fin = ""
-    while True:
-        c += 1
-        for ch in alpha:
-            fin += ch
-            if ch == txt[c]:
-                alpha = "".join(random.sample(alpha, len(alpha)))
-                alpha=random.sample(alpha,len(alpha))
-                fin += ch
-                break
-        if c == len(txt):
-            return fin
+prev = "select coalesce(max(sales_id),0) from sales"
+cursor.execute(prev)
+result = cursor.fetchone()
+i = result[0] + 1
 
-for i in range(100):
-    ...
+for _ in range(i, i + 100):
+    n = random.choice(names)
+    p = random.choice(products)
+    q = random.randint(1, 10)
+    cursor.execute(f"insert into test values ({i}, {n}, {p}, {q},{p*q})")
+
+con.commit()
+con.close()
