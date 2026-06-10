@@ -159,7 +159,7 @@ funcs = {
         "gauss": lambda x: math.exp(-((x-25)**2)/50)
 }
 
-n_c = 1
+n_c = 2
 n_s = 1
 particles: list[Particle] = []
 t_colors = ['red', 'green', 'blue', 'yellow', 'cyan', 'magenta'][:n_c]
@@ -182,20 +182,20 @@ prob_shape = fix_probs(prob_shape, len(t_shapes), len(t_shapes))
 
 true_color_matrix = {
                 c1: {
-                    c2: round(random.uniform(-1, 1))/10
+                    c2: round(random.uniform(-1, 1), 2)
                 for c2 in t_colors
             } 
         for c1 in t_colors
     }
 true_shape_matrix = {
         s1: {
-                    s2: (round(random.uniform(-1, 1))/10 ,random.choices(f_name,k=1,weights=prob_func)[0]) 
+                    s2: (round(random.uniform(-1, 1), 2) ,random.choices(f_name,k=1,weights=prob_func)[0]) 
                 for s2 in t_shapes
             } 
         for s1 in t_shapes
     }
 
-for _ in range(1_00):
+for _ in range(1_000):
     x = random.uniform(0, WIDTH)
     y = random.uniform(0, HEIGHT)
     color = random.choices(t_colors, k=1, weights=prob_color)[0]
