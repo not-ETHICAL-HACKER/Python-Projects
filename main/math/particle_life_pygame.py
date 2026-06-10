@@ -36,7 +36,7 @@ class Particle:
         cosine = dx/distance
         sine = dy/distance
         
-        if self.c == other.c or self.shape == other.shape:
+        if self.color_name == other.color_name or self.shape == other.shape:
             self.density += 1 - distance/self.inner_radius
         else:
             self.density += (1 - distance/self.inner_radius) * 0.5
