@@ -47,18 +47,56 @@ class Particle(turtle.Turtle):
         
         self.x = x
         self.y = y
+
+        self.prev_x = 0
+        self.prev_y = 0
         
         self.vx = 0
         self.vy = 0
         self.ax = 0#! use vx * dt to find ax and store it ig? 
         self.ay = 0#! also use clock func in pygame to acccuratelay find dt
         #! avoid using fx and fy bcs its too hard for me to implement
-        self.fx = 0 #! this is where the particle is pointing by finding (new x - old x)/hyp
-        self.fy = 0 #! do some dot or cross product shenanigans to find resultant between these vectors and vector pointing to other particle
+        self.fx = random.uniform(-1, 1) #! this is where the particle is pointing by finding (new x - old x)/hyp
+        self.fy = random.uniform(-1, 1) #! do some dot or cross product shenanigans to find resultant between these vectors and vector pointing to other particle
         
+        dist = math.hypot(self.fx, self.fy)
+        if dist > 0:
+            self.fx /= dist
+            self.fy /= dist
+        else:
+            self.fx = 0
+            self.fy = 0
+
         self.inner_radius = 25
         self.abs_radius = self.particle_size * 2
         #! ignore fov for now bcs  its kinda diff to implement
         self.fov = 0 #? in degrees
+
+        def update(self,other:"Particle"):
+            #! find the distance between the two particles
+            dx = other.x - self.x
+            dy = other.y - self.y
+
+            dist = math.hypot(dx, dy)
+            
+            if dist < 1:
+                dist = 1 #! avoid division by zero
+            
+            ux = dx / dist
+            uy = dy / dist
+            
+            if dist < self.inner_radius:
+                #! do something when they are close enough (e.g. eat, reproduce, etc.)
+                pass
+            
+            self.vx += ux * 0.1 #! this is where the acceleration happens, change 0.1 to something else to make it stronger or weaker
+            self.vy += uy * 0.1
+
+            #! update position based on velocity
+            self.x += self.vx
+            self.y += self.vy
+            
+            #! update the turtle's position
+            self.goto(self.x, self.y)
 
         
