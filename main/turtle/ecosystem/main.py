@@ -9,6 +9,7 @@
 #! memory/cooldown so predators don't switch targets every frame
 #! camouflage: prey detected only within a reduced range
 import turtle,random,math
+turtle.bgcolor("black")
 # Forward vector (fx, fy) = the direction the particle is facing.
 # It should NOT be the particle's position (x, y).
 #
@@ -45,13 +46,13 @@ interaction_matrix = {
 }
 
 colors = {
-    "prey" : "red",
-    "pred" : "blue"
+    "prey" : "blue",
+    "pred" : "red"
 }
 
 fov = {
-    "prey" : 60,
-    "pred" : 45
+    "prey" : 200,
+    "pred" : 120
 }
 class Particle(turtle.Turtle):
     
@@ -65,6 +66,7 @@ class Particle(turtle.Turtle):
         self.shapesize(self.particle_size/10, self.particle_size/10)
         self.color(colors[self.type])
         
+        self.dead = False
         self.id = id
         self.t_id = 0
         self.drag = 0.1
@@ -80,8 +82,7 @@ class Particle(turtle.Turtle):
         
         self.vx = 0
         self.vy = 0
-        self.ax = 0#! use vx * dt to find ax and store it ig? 
-        self.ay = 0#! also use clock func in pygame to acccuratelay find dt
+
         #! avoid using fx and fy bcs its too hard for me to implement
         self.fx = random.uniform(-1, 1) #! this is where the particle is pointing by finding (new x - old x)/hyp do some dot or cross product shenanigans to find resultant between these vectors and vector pointing to other particle
         self.fy = random.uniform(-1, 1) #! fx means forward vector ie where particle is moving irrespective of where its target is
@@ -114,6 +115,10 @@ class Particle(turtle.Turtle):
             elif self.y > height//2:
                 self.y = height//2
                 self.vy *= -0.95
+    
+    def  die(self):
+        self.hideturtle()
+        self.dead = True
                 
     def update(self,other:"Particle"):
             #! find the distance between the two particles
@@ -128,26 +133,34 @@ class Particle(turtle.Turtle):
             ux = dx / dist
             uy = dy / dist
             
-            if dist < self.inner_radius:
-                #! do something when they are close enough (e.g. eat, reproduce, etc.)
-                pass
+            if dist < self.inner_radius and self.type == "pred" and other.type == "prey":
+                other.die()
+                return
             if dist > self.max_radius:
                 return
             
             dot = self.fx*ux +self.fy*uy
-            pwr = interaction_matrix[self.type][other.type]
+            pwr = interaction_matrix[self.type][other.type] * (1 - dist/(self.max_radius + 1)) #! the closer they are the stronger the interaction
             if dot > self.limit: #! target in fov
-                self.ax += pwr * ux
-                self.ay += pwr * uy
+                self.vx += pwr * ux
+                self.vy += pwr * uy
             
     def move(self):
         
             #! update position based on velocity
+
+            self.vx *= (1-self.drag)
+            self.vy *= (1-self.drag)
+
+            self.fx = self.prev_x - self.x
+            self.fy = self.prev_y - self.y
+            
+            self.prev_x = self.x
+            self.prev_y = self.y
+            
             self.x += self.vx
             self.y += self.vy
             
-            self.fx = self.prev_x - self.x
-            self.fy = self.prev_y - self.y
             dist = math.hypot(self.fx, self.fy)
             if dist > 0:
                 self.fx /= dist
@@ -158,6 +171,44 @@ class Particle(turtle.Turtle):
                 
             #! update the turtle's position
             self.goto(self.x, self.y)
-num = 10
+num = 100
+turtle.tracer(0,0)
 particles = [Particle(random.uniform(-200,200),random.uniform(-200,200),i) for i in range(num)]
+CELL_SIZE = 100    
+while True:
+    grid = {}
+    particles = [p for p in particles if not p.dead]
+    for p in particles:
+
+        cx = int(p.x // CELL_SIZE)
+        cy = int(p.y // CELL_SIZE)
+
+        if (cx, cy) not in grid:
+            grid[(cx, cy)] = []
+
+        grid[(cx, cy)].append(p)    
+        for particle in particles:
+                    
+            cx = int(particle.x // CELL_SIZE)
+            cy = int(particle.y // CELL_SIZE)
+
+            for dx_cell in (-1, 0, 1):
+                for dy_cell in (-1, 0, 1):
+
+                    nearby = grid.get(
+                        (cx + dx_cell, cy + dy_cell),
+                        []
+                    )
+
+                    for other in nearby:
+
+                        if particle is other:
+                            continue
+                        
+                        
+                        p.update(other)
+            p.border_check(800, 700, circle=False)
+        p.move()
+    turtle.update()
+        
 turtle.done()
