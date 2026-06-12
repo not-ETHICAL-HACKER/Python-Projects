@@ -36,7 +36,7 @@ turtle.bgcolor("black")
 
 interaction_matrix = {
     "prey" : {
-        "prey" : 0.5,
+        "prey" : 0.1,
         "pred" : -1
     },
     "pred":{
@@ -51,8 +51,8 @@ colors = {
 }
 
 fov = {
-    "prey" : 200,
-    "pred" : 120
+    "prey" : 30,
+    "pred" : 45
 }
 class Particle(turtle.Turtle):
     
@@ -101,6 +101,8 @@ class Particle(turtle.Turtle):
         self.fov = fov[self.type] #? in degrees
         self.limit = math.cos(math.radians(self.fov))
 
+    def browninan_motion(self):
+        ...
     def border_check(self, width, height,circle=False):
         if not circle:
             if self.x < -width//2:
