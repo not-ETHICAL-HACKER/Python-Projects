@@ -36,11 +36,11 @@ turtle.bgcolor("black")
 
 interaction_matrix = {
     "prey" : {
-        "prey" : 1,
+        "prey" : 2,
         "pred" : -1
     },
     "pred":{
-        "prey" : 1,
+        "prey" : 0.5,
         "pred" : -0.1
     }
 }
@@ -54,6 +54,16 @@ fov = {
     "prey" : 180,
     "pred" : 45
 }
+
+class Food(turtle.Turtle):
+    def __init__(self,x,y):
+        super().__init__()
+        self.penup()
+        self.shape("circle")
+        self.shapesize(2,2)
+        self.hp = 100
+        self.color("green")
+        self.goto(x,y)
 
 class Particle(turtle.Turtle):
     
@@ -71,7 +81,7 @@ class Particle(turtle.Turtle):
         self.age = 0
         self.id = id
         self.t_id = None
-        self.drag = 0.1
+        self.drag = 0.01
         self.max_energy = random.gauss(1_000)
         self.energy = self.max_energy
         self.energy_efficiency = (1 - random.random())
@@ -86,7 +96,7 @@ class Particle(turtle.Turtle):
 
         self.mutation_chance = random.random()
         
-        self.max_time = 100
+        self.max_time = 10
         self.time = 0
         
         self.vx = 0
@@ -97,11 +107,11 @@ class Particle(turtle.Turtle):
         self.abs_radius = self.particle_size * 2
         #! ignore fov for now bcs  its kinda diff to implement
         self.fov = fov[self.type] #? in degrees
-        self.limit = math.cos(math.radians(self.fov))
+        self.limit = math.cos(math.radians(self.fov/2))
 
     def browninan_motion(self):
-        self.vx += random.uniform(-0.01,0.01)
-        self.vy += random.uniform(-0.01,0.01)
+        self.vx += random.uniform(-0.05,0.05)
+        self.vy += random.uniform(-0.05,0.05)
         
     def border_check(self, width, height,circle=False):
         if not circle:
@@ -196,14 +206,12 @@ class Particle(turtle.Turtle):
             ux = dx / dist
             uy = dy / dist
             
-            self.time += 1
-            self.energy += -random.uniform(0,0.01)*math.log10(self.age)*self.energy_efficiency
             
-            if self.time == self.max_time:
+            if self.time == self.max_time or dist > self.max_radius:
                 self.time = 0
                 self.t_id = None
                 
-            if self.t_id is None and other.type != self.type:
+            if self.t_id is None and other.type != self.type and dist < self.max_radius:
                 self.t_id = other.id
             
             if dist < self.inner_radius and self.type == "pred" and other.type == "prey" and self.t_id == other.id:
@@ -239,8 +247,8 @@ class Particle(turtle.Turtle):
             
             dist = math.hypot(self.vx, self.vy)
             if dist > 0:
-                self.fx /= dist
-                self.fy /= dist
+                self.fx = self.vx / dist
+                self.fy = self.vy / dist
             else:
                 self.fx = 0
                 self.fy = 0
@@ -249,17 +257,24 @@ class Particle(turtle.Turtle):
             self.goto(self.x, self.y)
     def tick(self):
         self.age += 1
+        
+        self.time += 1
+        self.energy += -random.uniform(0,0.01)*math.log10(self.age)*self.energy_efficiency
 
         self.energy -= (
             random.uniform(0, 0.01)
             * math.log10(max(self.age, 10))
             * self.energy_efficiency
         )
+        if random.random() > 0.9:
+            particle.sex(other,particles)
 num = 250
 turtle.tracer(0,0)
 particles = [Particle(random.uniform(-200,200),random.uniform(-200,200),i) for i in range(num)]
 CELL_SIZE = 100    
 while True:
+    if random.random() < 0.01 and len(particles) < 250:
+        particles.append(Particle(random.uniform(-200,200),random.uniform(-200,200),len(particles)))
     grid = {}
     particles = [p for p in particles if not p.dead]
     for p in particles:
@@ -291,10 +306,8 @@ while True:
 
                         if particle is other:
                             continue
-                        if random.random() > 0.9:
-                            particle.sex(other,particles)
                         particle.update(other)
-            particle.border_check(400, 400, circle=False)
+            particle.border_check(600, 600, circle=False)
             particle.drag_force()
             particle.move()
     turtle.update()
