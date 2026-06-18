@@ -9,7 +9,7 @@ class Crystal(turtle.Turtle):
         self.x = x
         self.y = y
         self.color("blue")
-        self.shapesize(0.05,0.05)
+        self.shapesize(0.1,0.1)
         self.penup()
         self.crystal_rad = 10
         self.effective_rad = 100
