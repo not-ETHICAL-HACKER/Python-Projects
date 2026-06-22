@@ -5,11 +5,11 @@ turtle.tracer(0)
 turtle.bgcolor("black")
 
 types = {
-    "H" : {"color":"blue","radius":7.5,"effective_radius":50,"size":0.5,"mass":1},
-    "D" : {"color":"red","radius":10,"effective_radius":50,"size":0.75,"mass":2},
-    "T" : {"color":"green","radius":15,"effective_radius":50,"size":1,"mass":3},
-    "He" : {"color":"yellow","radius":20,"effective_radius":100,"size":1.25,"mass":4},
-    "n" : {"color":"purple","radius":5,"effective_radius":0,"size":0.25,"mass":1} #neutron
+    "H" : {"color":"blue","radius":7.5,"effective_radius":50,"size":0.05,"mass":1},
+    "D" : {"color":"red","radius":10,"effective_radius":50,"size":0.075,"mass":2},
+    "T" : {"color":"green","radius":15,"effective_radius":50,"size":.1,"mass":3},
+    "He" : {"color":"yellow","radius":20,"effective_radius":100,"size":.125,"mass":4},
+    "n" : {"color":"purple","radius":5,"effective_radius":0,"size":0.025,"mass":1} #neutron
 }
 
 class Particle(turtle.Turtle):

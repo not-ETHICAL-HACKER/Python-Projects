@@ -107,7 +107,7 @@ def flow_fields_2(turt_nums: int, positions: list[tuple], multiplier: float = 1.
         value = math.hypot(positions[i][0], positions[i][1])
         val = sum(1 for t in thresholds if value > t)
         tt = turtle.Turtle(shape="circle")
-        tt.shapesize(0.125, 0.125)
+        tt.shapesize(0.01, 0.01)
         tt.speed(0)
         tt.color(colors[val])
         tt.penup()
@@ -121,7 +121,7 @@ def flow_fields_2(turt_nums: int, positions: list[tuple], multiplier: float = 1.
 
     for i in range(num + 1):
         tim = time.time()
-        if i % 20 == 0:
+        if i % 10 == 0:
             turtle.update()
         for idx, tt in enumerate(turts):
             if i % 20 == 0:
@@ -136,7 +136,7 @@ def flow_fields_2(turt_nums: int, positions: list[tuple], multiplier: float = 1.
                 angle = math.atan2(y, x)
                 tt.setheading(math.degrees(angle)+90+i/100)
             
-            mag = 1/(math.pow(rad/100,.25))
+            mag = 1/(math.pow(rad/100,.16))
                 
             # tt.left(math.degrees(angle)+90)
             
