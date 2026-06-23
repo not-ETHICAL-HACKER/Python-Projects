@@ -97,7 +97,22 @@ def pheromone_vector(i,grid):
             
             x_arr[i] += fx * strength 
             y_arr[i] += fy * strength
+"""
+TODO:
 
+?[ ] Remove time_arr (ants should always leave pheromone)
+![ ] Add nest (nest_x, nest_y)
+?[ ] Add has_food[] state for each ant
+![ ] Create food_grid (same idea as pheromone_grid)
+![ ] Food >> pheromone >> random weighting
+?[ ] Use TWO pheromone grids:
+        - home_pheromone (searching ants follow)
+        - food_pheromone (returning ants leave)
+?[ ] Replace Brownian motion with angle-based steering
+        (front, front-left, front-right sensors)
+*[ ] Later: walls/obstacles
+*[ ] Later: optimize rendering (Pygame)
+"""
 num_ant = 1_000
 num_food = 10
 pheromone_cell_size = 10
