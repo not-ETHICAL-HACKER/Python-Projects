@@ -46,7 +46,7 @@ def trail_grid(grid):
     for cell in list(grid.keys()):
         grid[cell] *= 0.95 
         if grid[cell] < 0.01:#! ie when 0.95^{x} < 0.01 where x is number of time trail_grid is called
-            del grid[cell]
+            grid[cell] = 0
             
     for i,(x,y) in enumerate(zip(x_arr,y_arr)):
 
@@ -83,6 +83,7 @@ def pheromone_vector(i,grid):
             if not nearby:
                 continue
             if nearby > max_intensity:
+                max_intensity = nearby
                 target_cell = cx + dx_cell,cy + dy_cell
     if target_cell:
             # Calculate destination coordinate (center of target cell)
@@ -97,13 +98,16 @@ def pheromone_vector(i,grid):
             x_arr[i] += fx * strength 
             y_arr[i] += fy * strength
 
-num_ant = 1_0
+num_ant = 1_000
+num_food = 10
 pheromone_cell_size = 10
 MAX_TIME = 10
 pheromone_grid = {}
-x_arr = [random.randint(-100,100) for _ in range(num_ant)]
-y_arr = [random.randint(-100,100) for _ in range(num_ant)]
+x_arr = [random.randint(-500,500) for _ in range(num_ant)]
+y_arr = [random.randint(-500,500) for _ in range(num_ant)]
 time_arr = [0 for _ in range(num_ant)]
+food_x = [0 for _ in range(num_food)]#! try to implement food and the attraction must be strong
+food_y = [0 for _ in range(num_food)]
 
 while True:
     grid = {}
