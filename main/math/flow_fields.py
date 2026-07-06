@@ -136,7 +136,7 @@ def flow_fields_2(turt_nums: int, positions: list[tuple], multiplier: float = 1.
                 angle = math.atan2(y, x)
                 tt.setheading(math.degrees(angle)+90+i/100)
             
-            mag = 1/(math.pow(rad/100,.16))
+            mag = 1/(math.pow(rad/100,.25))
                 
             # tt.left(math.degrees(angle)+90)
             
