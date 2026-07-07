@@ -7,6 +7,7 @@ t = turtle.Turtle(visible=False)
 t.color("green")
 turtle.tracer(0, 0)
 c =  00
+t.setheading(90)
 def tree(length):
     if length < 10:
         global c
@@ -32,12 +33,12 @@ def tree(length):
     t.backward(length/height)
 
 def poly(side):
-    n = 3
+    n = 10
     for _ in range(n):
         t.forward(side)
         t.left(360/n)
 
-def recur_sqr(side):
+def recur_shape(side):
     if side < 10:
         return
     phi =  (1 + math.sqrt(5)) / 2
@@ -47,7 +48,7 @@ def recur_sqr(side):
     poly(side)
     time.sleep(.01)
     turtle.update()
-    recur_sqr(side*0.995)
+    recur_shape(side*0.995)
 
 def edge(l):
     if l < 1:
