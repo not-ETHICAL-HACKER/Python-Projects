@@ -31,24 +31,44 @@ def tree(length):
     t.left(angle)
     t.backward(length/height)
 
-def sqr(side):
-    for i in range(4):
+def poly(side):
+    n = 3
+    for _ in range(n):
         t.forward(side)
-        t.left(90)
+        t.left(360/n)
 
 def recur_sqr(side):
     if side < 10:
         return
     phi =  (1 + math.sqrt(5)) / 2
-    t.left(math.e)
-    t.forward(side * 0.01)
-    sqr(side)
-    time.sleep(.1)
+    golden_angle = 360 / phi
+    t.left(golden_angle)
+    # t.forward(side * 0.1)
+    poly(side)
+    time.sleep(.01)
     turtle.update()
-    # t.forward(side/100)
-    # sqr(side)
-    recur_sqr(side*0.99)        
-t.pendown()
-recur_sqr(500)
-print(c)
+    recur_sqr(side*0.995)
+
+def edge(l):
+    if l < 1:
+        turtle.update()
+        return
+    angle = 15
+    t.forward(10)
+    edge(l/4)
+    t.left(angle)
+    t.forward(10)
+    edge(l/4)
+    t.left(angle)
+    t.forward(10)
+    edge(l/4)
+    t.left(angle)
+    t.forward(10)
+    edge(l/4)
+    t.left(angle)
+    t.forward(10)
+
+edge(1000)
+
+# print(c)
 turtle.done()
