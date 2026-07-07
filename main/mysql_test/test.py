@@ -1,4 +1,4 @@
-import  random
+import  random,winsound
 import mysql
 import mysql.connector
 con  = mysql.connector.connect(host="localhost",user="root",passwd="tiger",database="johan")
@@ -19,6 +19,6 @@ cursor.executemany(
         "INSERT INTO sales (customer_name, product, quantity, price) VALUES (%s, %s, %s, %s)",
         l
     )
-
+winsound.Beep(1000, 500)  # Beep sound
 con.commit()
 con.close()
