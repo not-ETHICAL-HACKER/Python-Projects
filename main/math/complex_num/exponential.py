@@ -31,10 +31,10 @@ def draw_complex_exponential(z, n):
     # t.goto(result.real * scale, result.imag * scale)  # Scale for visibility
     turtle.update()
 
-scale = 100  # Scale for visibility
+scale = 200  # Scale for visibility
 depth = 20  # Depth of Taylor series expansion
 
-for i in range(0, 360+1):
+for i in range(0, 360+1,1):
     #! draw the unit circle
     if i == 0:
         t_2.penup()
@@ -42,8 +42,16 @@ for i in range(0, 360+1):
         t_2.pendown()
     t_2.goto(math.cos(math.radians(i)) * scale, math.sin(math.radians(i)) * scale)
 
+t_3 = turtle.Turtle(visible=False)
+t_3.color("green")
+
 for i in range(0, 360+1, 1):
     t.clear()
+    t_3.clear()
+    t_3.penup()
+    t_3.goto(math.cos(math.radians(i)) * scale, math.sin(math.radians(i)) * scale)
+    t_3.dot(10)
+
     z = math.radians(i)
     draw_complex_exponential(z, depth)
     time.sleep(0.05)
