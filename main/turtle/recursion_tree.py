@@ -31,7 +31,7 @@ def tree(length):
     t.backward(length/height)
 
 def poly(side):
-    n = math.e
+    n = math.tau
     for _ in range(int(n)):
         t.forward(side)
         t.left(360/n)
@@ -42,6 +42,7 @@ def recur_shape(side):
     """
     turtle.colormode(255)
     if side < 1:
+        t.clear()
         return
     phi =  (1 + math.sqrt(5)) / 2
     golden_angle = 360 / phi
@@ -75,7 +76,7 @@ def edge(l):
     t.left(angle)
     t.forward(10)
 
-recur_shape(10**2*3)
+recur_shape(10**2*5)
 
 # print(c)
 turtle.done()
