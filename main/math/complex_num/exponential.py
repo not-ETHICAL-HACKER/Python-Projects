@@ -22,9 +22,9 @@ def imaginary_exponential(z, n):
 def draw_complex_exponential(z, n):
     """Draw the complex exponential e^(i*z) on the turtle canvas."""
     _, arr = imaginary_exponential(z, n)
+    
     colors = ["red","orange","yellow","green","cyan","blue","purple"]
-    for k, intermediate in enumerate(arr):
-        
+    for k, intermediate in enumerate(arr):  
         t.color(colors[k % len(colors)])
         t.goto(intermediate.real*scale,
             intermediate.imag*scale)

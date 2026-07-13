@@ -26,7 +26,7 @@ class Particle:
 # Randomised Epicycles
 arr = [Particle(random.randint(10, 10), random.uniform(0.1, 1.0), random.uniform(0, math.tau)) for _ in range(100)]
 # # Square Wave Generator
-# arr = [Particle(150 * (4 / (math.pi * i)), i * 0.2, 0) for i in range(1,10**3)]
+arr = [Particle(150 * (4 / (math.pi * i)), i * 0.2, 0) for i in range(1,10**3)]
 arr = [
     Particle(150, 1, 0),
     Particle(90, 2, math.pi/6),
@@ -56,6 +56,12 @@ arr = [
     Particle(40, 8, math.pi/3),
     Particle(25, 13, math.pi/2),
     Particle(15, 21, math.pi),
+]
+arr = [
+    Particle(100,30,0),
+    Particle(100,30*math.pi,0),
+    Particle(100,30*math.tau,0)
+    
 ]
 t = 0
 while True:
