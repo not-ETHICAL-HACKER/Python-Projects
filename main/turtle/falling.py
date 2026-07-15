@@ -71,6 +71,7 @@ def rotate(angle,t:turtle.Turtle,v):
     ux = math.cos(math.radians(shake_angle))
     uy = math.sin(math.radians(shake_angle))
     t.seth(shake_angle)
+    uy = math.sin(math.radians(angle))
     return ux,uy
 angle = 0
 diff = 1
