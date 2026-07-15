@@ -69,9 +69,8 @@ def rotate(angle,t:turtle.Turtle,v):
     shake = 100 * (1 - ratio) ** 2  # Shake factor based on velocity
     shake_angle = (math.cos(angle)*shake - math.sin(angle)*shake) - 90
     ux = math.cos(math.radians(shake_angle))
-    uy = math.sin(math.radians(shake_angle))
     t.seth(shake_angle)
-    uy = math.sin(math.radians(angle))
+    uy = math.sin(angle/5) *  shake / 250
     return ux,uy
 angle = 0
 diff = 1
@@ -79,7 +78,10 @@ time_diff = .001
 dist = 0
 
 print(f"Both Objects start falling at same time with initial velocity of {vy} m/s and terminal velocity of {v_t} m/s")
+print(f"one pixel is 1m so the blue ball is moving at")
 flag = True
+disp = 0
+dt = 0
 def calc_energy(m,v):
     return 1/2 * m * v**2
 while True:
@@ -96,8 +98,14 @@ while True:
     angle += math.radians(diff)
     ux, uy = rotate(angle,pov,vy)
     pov.setx(pov.xcor() + ux)
+    pov.sety(pov.ycor() + uy)
     obj.sety(obj.ycor() + vy * time_diff)
+    dt += time_diff
+    disp += vy * time_diff
     if obj.ycor() > 400:
+        print(f"blue ball moving at {disp/dt} m/s")
+        disp = 0
+        dt = 0
         obj.sety(-400)
     # time.sleep(time_diff)
     turtle.update()
