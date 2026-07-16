@@ -15,7 +15,7 @@ GREEN = (0,255,0)
 BLUE  = (0,0,255)
 running = True
 clock = pygame.time.Clock()
-num = 1_000
+num = 1_00
 x_arr = [np.random.randint(0,w2*2) for _ in range(num)]
 y_arr = [np.random.randint(0,h2*2) for _ in range(num)]
 
