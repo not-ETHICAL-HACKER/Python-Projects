@@ -234,7 +234,7 @@ while running:
     for particle in particles:
         
         particle.density = 0.0 # only for testing remove if too complex  
-                  
+        
         cx = int(particle.x // CELL_SIZE)
         cy = int(particle.y // CELL_SIZE)
 
