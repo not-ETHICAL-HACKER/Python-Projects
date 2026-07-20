@@ -59,8 +59,7 @@ arr = [
 ]
 arr = [
     Particle(100,30,0),
-    Particle(100,30*math.pi,0),
-    Particle(100,30*math.tau,0)
+    Particle(100,30*math.pi,0)
     
 ]
 t = 0

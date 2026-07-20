@@ -76,7 +76,81 @@ angle = 0
 diff = 1
 time_diff = .001
 dist = 0
+"""Sure! Here's a concise prompt you can save and paste into a new chat if you need to continue troubleshooting later:
 
+Context: Windows keyboard/input issue
+
+I'm having a strange keyboard/input problem on Windows.
+
+Symptoms
+The problem occurs in Visual Studio Code and the Windows Search/taskbar.
+In VS Code, typing hello world sometimes becomes hhello worirlldd (duplicated or incorrect letters).
+At one point, the keyboard started typing random letters by itself.
+During that same incident, Windows also activated/clicked whatever the mouse cursor was hovering over.
+The random input was random letters, not meaningful words.
+What works normally
+ChatGPT (browser)
+Notepad
+Windows On-Screen Keyboard
+What I've already tried
+Restarted the PC.
+Reinstalled the keyboard driver via Device Manager.
+Restarted Windows Explorer.
+Closed VS Code completely (problem still exists in Windows Search).
+Tried another keyboard once (planning to test again).
+On-Screen Keyboard works correctly.
+Notepad works correctly.
+What I haven't tried yet
+sfc /scannow
+DISM /Online /Cleanup-Image /RestoreHealth
+Testing with a new Windows user account
+What I need help with
+Please continue troubleshooting from here without repeating the basic steps above. Based on this information, help determine whether this is:
+
+a hardware problem,
+a Windows input subsystem issue,
+background software injecting input,
+corruption in Windows,
+or something else.
+Please suggest the next diagnostic steps in order of likelihood.Sure! Here's a concise prompt you can save and paste into a new chat if you need to continue troubleshooting later:
+
+Context: Windows keyboard/input issue
+
+I'm having a strange keyboard/input problem on Windows.
+
+Symptoms
+The problem occurs in Visual Studio Code and the Windows Search/taskbar.
+In VS Code, typing hello world sometimes becomes hhello worirlldd (duplicated or incorrect letters).
+At one point, the keyboard started typing random letters by itself.
+During that same incident, Windows also activated/clicked whatever the mouse cursor was hovering over.
+The random input was random letters, not meaningful words.
+What works normally
+ChatGPT (browser)
+Notepad
+Windows On-Screen Keyboard
+What I've already tried
+Restarted the PC.
+Reinstalled the keyboard driver via Device Manager.
+Restarted Windows Explorer.
+Closed VS Code completely (problem still exists in Windows Search).
+Tried another keyboard once (planning to test again).
+On-Screen Keyboard works correctly.
+Notepad works correctly.
+What I haven't tried yet
+sfc /scannow
+DISM /Online /Cleanup-Image /RestoreHealth
+Testing with a new Windows user account
+What I need help with
+Please continue troubleshooting from here without repeating the basic steps above. Based on this information, help determine whether this is:
+
+a hardware problem,
+a Windows input subsystem issue,
+background software injecting input,
+corruption in Windows,
+or something else.
+Please suggest the next diagnostic steps in order of likelihood."""
+"""my keyboard drags letters in vs code and the task bar but  not here?when i typed it inn vs code it gave 
+hhello worirlldd; and also the onscreennm keyboard works and u also work so i dont seee the issue; also the keyboard started writing on its own and and stated touching where the mouses was hovering"""
 print(f"Both Objects start falling at same time with initial velocity of {vy} m/s and terminal velocity of {v_t} m/s")
 print(f"one pixel is 1m so the blue ball is moving at")
 flag = True

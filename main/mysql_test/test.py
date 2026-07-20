@@ -20,5 +20,5 @@ cursor.executemany(
         l
     )
 winsound.Beep(1000, 500)  # Beep sound
-con.commit()
+con.commit()7
 con.close()

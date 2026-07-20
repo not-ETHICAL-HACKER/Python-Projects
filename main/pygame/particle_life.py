@@ -3,7 +3,7 @@ import numpy as np
 
 pygame.init()
 WIDTH,HEIGHT = 1000,700
-N = 100
+N = 1000
 
 x_arr = np.random.randint(0,WIDTH,N).astype(float)
 y_arr = np.random.randint(0,HEIGHT,N).astype(float)
