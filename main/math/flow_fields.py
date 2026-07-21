@@ -107,7 +107,7 @@ def flow_fields_2(turt_nums: int, positions: list[tuple], multiplier: float = 1.
         value = math.hypot(positions[i][0], positions[i][1])
         val = sum(1 for t in thresholds if value > t)
         tt = turtle.Turtle(shape="circle")
-        tt.shapesize(1,1)
+        tt.shapesize(0.1, 0.1)
         tt.speed(0)
         tt.color(colors[val])
         tt.penup()
