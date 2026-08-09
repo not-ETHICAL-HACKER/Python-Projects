@@ -16,7 +16,9 @@ class Atom(turtle.Turtle):
         self.goto(x,y)
         self.interaction_radius = interaction_radius
         self.abs_radius = abs_radius
-
+x_lim = 200
+y_lim = 200
+out_bounds_sqr = x_lim**2 + y_lim**2
 class Particle(turtle.Turtle):
     def __init__(self,y,q,c):
         super().__init__()
@@ -31,18 +33,18 @@ class Particle(turtle.Turtle):
         # self.pendown()
         self.q = q
         self.vx = 1
-        self.vy = random.uniform(-1e-3,1e-3)
+        self.vy = random.uniform(-1e-9,1e-9)
         # self.m = 1.6 * 10 ** -27 if q > 0 else 9.1 * 10 ** -31
     
     def update(self):
         theta = None
-        if abs(self.x) > 300 or abs(self.y) > 500:
+        if self.x**2 + self.y**2 > out_bounds_sqr:
             theta = math.degrees(math.atan2(self.vy, self.vx))
             self.clear()
             self.x = -250
-            self.y = random.uniform(-100, 100)
+            self.y = random.uniform(-interaction_radius, interaction_radius)
             self.vx = 1
-            self.vy = random.uniform(-1e-3, 1e-3)
+            self.vy = random.uniform(-1e-9, 1e-9)
             self.penup()
             self.goto(self.x,self.y)
             # self.pendown()
@@ -59,7 +61,7 @@ class Particle(turtle.Turtle):
         ux = dx / hyp
         uy = dy / hyp
         if hyp <= other.abs_radius:
-            k = 10**3 * min(10**3,1/hyp)
+            k = 10**3 * 1/hyp
             decay = ((k)/hyp ** 2)
             self.vy -= uy * decay
             self.vx -= ux * decay
@@ -73,7 +75,7 @@ class Particle(turtle.Turtle):
             if self.is_in:
                 self.is_in = False
                 return
-N = 1000
+N = 500
 density = 10 #! out of 100
 step = 1/density
 particles = []
@@ -85,7 +87,8 @@ for i in range(N):
     P.shape("circle")
     P.showturtle()
     particles.append(P)
-Central = Atom(0,0,100,5)
+interaction_radius = 100
+Central = Atom(0,0,interaction_radius,5)
 atoms.append(Central)
 import time
 c = 0
@@ -93,7 +96,7 @@ angles = []
 import matplotlib.pyplot as plt
 
 while True:
-    if len(angles) >= 500:
+    if len(angles) >= 20_000:
         break
     # time.sleep(.1)
     for A in atoms:
@@ -102,9 +105,10 @@ while True:
     for p in particles:
         deg = p.update()
         if deg is not None:
-            angles.append(deg)
+            angles.append(abs(int(deg)))
+            turtle.title(f"Angles : {len(angles)}")
     turtle.update()
 
-plt.hist(angles, bins=1000)
+plt.hist(angles, bins=180)
 plt.show()
 turtle.done()
