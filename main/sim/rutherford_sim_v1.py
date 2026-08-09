@@ -93,10 +93,8 @@ atoms.append(Central)
 import time
 c = 0
 angles = []
-import matplotlib.pyplot as plt
-
 while True:
-    if len(angles) >= 20_000:
+    if len(angles) >= 1_000:
         break
     # time.sleep(.1)
     for A in atoms:
@@ -109,6 +107,11 @@ while True:
             turtle.title(f"Angles : {len(angles)}")
     turtle.update()
 
-plt.hist(angles, bins=180)
+import matplotlib.pyplot as plt
+plt.hist(angles, bins=180, color = "blue" , edgecolor='black', alpha=0.7)
+plt.xlabel('Scattering Angle $\\theta$ (degrees)')
+plt.ylabel('Number of Particles (Counts)')
+plt.title('Rutherford Scattering Simulation')
+plt.grid(True, linestyle='--', alpha=0.5)
 plt.show()
 turtle.done()
