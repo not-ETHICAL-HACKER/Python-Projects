@@ -75,8 +75,8 @@ class Particle(turtle.Turtle):
             if self.is_in:
                 self.is_in = False
                 return
-N = 500
-density = 10 #! out of 100
+N = 250
+density = 5 #! out of 100
 step = 1/density
 particles = []
 atoms = []
@@ -94,7 +94,7 @@ import time
 c = 0
 angles = []
 while True:
-    if len(angles) >= 1_000:
+    if len(angles) >= 2_500:
         break
     # time.sleep(.1)
     for A in atoms:
@@ -108,9 +108,12 @@ while True:
     turtle.update()
 
 import matplotlib.pyplot as plt
+accu = 1
+true_angles = [1/max(1/(len(angles)/10),(math.sin(math.radians(theta/2)))**1) for theta in range(180 + 1)]
 plt.hist(angles, bins=180, color = "blue" , edgecolor='black', alpha=0.7)
 plt.xlabel('Scattering Angle $\\theta$ (degrees)')
 plt.ylabel('Number of Particles (Counts)')
+plt.plot(true_angles,scaley=False)
 plt.title('Rutherford Scattering Simulation')
 plt.grid(True, linestyle='--', alpha=0.5)
 plt.show()
