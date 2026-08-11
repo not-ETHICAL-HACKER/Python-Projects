@@ -21,6 +21,7 @@ max_len = 110 #! recommened at 100 for consistency and not lag
 circles = []
 
 dt = 0
+color_fade = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -37,7 +38,7 @@ while running:
         x = 0
         vx = vy = 0
         # y = random.randint(int(W/4),int(W-W/4))
-    screen.fill((5, 2, 10))
+    screen.fill((0, 0, 0))
     dt = clock.tick(120) / 10_000 #! do not change or pc explode
     # print(dt)
     # break
@@ -60,12 +61,15 @@ while running:
         r = int(size[j])
 
         #? shifted cyan & magenta rings
-        if r < max(W, H):
+        if r < max(W, H) and color_fade:
             #? magenta channel (shifted slightly left)
             # pygame.draw.circle(screen, (int(180 * fade), 0, int(255 * fade)), (cx - 1, cy), r, 10)
             #? cyan channel (shifted slightly right)
-            pygame.draw.circle(screen, (0, int(255 * fade), int(255 * fade)), (cx + 1, cy), r, 10)
+            pygame.draw.circle(screen, (int(200 * fade), int(200 * fade), int(200 * fade)), (cx + 1, cy), r, 10)
+            # pygame.draw.circle(screen, (0, int(255 * fade), int(255 * fade)), (cx + 1, cy), r, 10)
+        else:
+            pygame.draw.circle(screen, (220, 20, 250), (cx + 1, cy), r, 1)
 
-        # pygame.draw.circle(screen, (255, 240, 150), (cx, cy), 1)
+        pygame.draw.circle(screen, (255, 240, 150), (cx, cy), 1)
     pygame.display.update()
 pygame.quit()
