@@ -2,7 +2,7 @@ import turtle,math,random
 turtle.tracer(0)
 turtle.bgcolor("black")
 class Atom(turtle.Turtle):
-    def __init__(self,x,y,interaction_radius,abs_radius) -> None:
+    def __init__(self,x,y,interaction_radius) -> None:
         super().__init__()
         self.color("red")
         self.shape("circle")
@@ -15,16 +15,18 @@ class Atom(turtle.Turtle):
         self.penup()
         self.goto(x,y)
         self.interaction_radius = interaction_radius
-        self.abs_radius = abs_radius
+        self.abs_radius = interaction_radius * 0.1
+        self.shapesize(self.abs_radius/20,self.abs_radius/20)
 x_lim = 200
 y_lim = 200
 out_bounds_sqr = x_lim**2 + y_lim**2
+size =  2**-3
 class Particle(turtle.Turtle):
     def __init__(self,y,q,c):
         super().__init__()
         self.color(c)
         self.hideturtle()
-        self.shapesize(.125,.125)
+        self.shapesize(size,size)
         self.x = -250
         self.y = y
         self.is_in = False
@@ -33,7 +35,7 @@ class Particle(turtle.Turtle):
         # self.pendown()
         self.q = q
         self.vx = 1
-        self.vy = random.uniform(-1e-9,1e-9)
+        self.vy = random.uniform(-1e-1,1e-1)
         # self.m = 1.6 * 10 ** -27 if q > 0 else 9.1 * 10 ** -31
     
     def update(self):
@@ -75,7 +77,7 @@ class Particle(turtle.Turtle):
             if self.is_in:
                 self.is_in = False
                 return
-N = 250
+N = 50
 density = 5 #! out of 100
 step = 1/density
 particles = []
@@ -87,8 +89,8 @@ for i in range(N):
     P.shape("circle")
     P.showturtle()
     particles.append(P)
-interaction_radius = 100
-Central = Atom(0,0,interaction_radius,5)
+interaction_radius = 150
+Central = Atom(0,0,interaction_radius)
 atoms.append(Central)
 import time
 c = 0
@@ -106,15 +108,67 @@ while True:
             angles.append(abs(int(deg)))
             turtle.title(f"Angles : {len(angles)}")
     turtle.update()
-
-import matplotlib.pyplot as plt
-accu = 1
-true_angles = [1/max(1/(len(angles)/10),(math.sin(math.radians(theta/2)))**1) for theta in range(180 + 1)]
-plt.hist(angles, bins=180, color = "blue" , edgecolor='black', alpha=0.7)
-plt.xlabel('Scattering Angle $\\theta$ (degrees)')
-plt.ylabel('Number of Particles (Counts)')
-plt.plot(true_angles,scaley=False)
-plt.title('Rutherford Scattering Simulation')
-plt.grid(True, linestyle='--', alpha=0.5)
-plt.show()
 turtle.done()
+import matplotlib.pyplot as plt
+import math
+
+# Create histogram manually
+bins = [0] * 180
+
+for angle in angles:
+    angle = min(max(int(angle), 0), 179)
+    bins[angle] += 1
+
+# x values: 0 to 179 degrees
+bin_centers = list(range(180))
+
+# Rutherford theoretical distribution
+# dN/dθ ∝ sin(θ) / sin^4(θ/2)
+theory = []
+
+for theta in bin_centers:
+    theta_rad = math.radians(theta)
+
+    if theta == 0:
+        value = 0
+    else:
+        value = math.sin(theta_rad) / math.sin(theta_rad / 2) ** 4
+
+    theory.append(value)
+
+# Scale theoretical curve to the simulation
+max_theory = max(theory)
+max_counts = max(bins)
+
+if max_theory > 0:
+    theory = [
+        value * max_counts / max_theory
+        for value in theory
+    ]
+
+plt.figure(figsize=(10, 6))
+
+plt.bar(
+    bin_centers,
+    bins,
+    width=1,
+    color="blue",
+    edgecolor="black",
+    alpha=0.6,
+    label="Simulation"
+)
+
+plt.plot(
+    bin_centers,
+    theory,
+    color="red",
+    linewidth=2,
+    label=r"Rutherford: $\frac{\sin\theta}{\sin^4(\theta/2)}$"
+)
+
+plt.xlabel("Scattering Angle θ (degrees)")
+plt.ylabel("Number of Particles")
+plt.title("Rutherford Scattering Simulation")
+plt.grid(True, linestyle="--", alpha=0.5)
+plt.legend()
+plt.show()
