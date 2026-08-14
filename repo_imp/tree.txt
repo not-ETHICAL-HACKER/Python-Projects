@@ -27,7 +27,7 @@ Python-Projects
 |   |   |-- input.py
 |   |   |-- laoding animaimation.py
 |   |   \-- matrix_style_anim.py
-|   |-- cryptography
+|   |-- cryptography 
 |   |   |-- ceaser cipher
 |   |   |   |-- cli.py
 |   |   |   |-- core.py
