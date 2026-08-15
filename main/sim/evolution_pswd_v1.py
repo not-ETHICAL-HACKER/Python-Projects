@@ -1,14 +1,14 @@
-import math,random,statistics as st
+import random
 random.seed(0)
-chars = "abcdefghijklmnopqrstuvwxyz"#ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;':,.<>/?`~ "
-pswd = "helloworld"
+chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"#0123456789!@#$%^&*()_+-=[]{}|;':,.<>/?`~ "
+pswd = "Hello World"
 n = len(pswd)
 N = 100
 class Creature:
     def __init__(self,id):
         self.pswd = id
         cc, cp = correct_ness(pswd, self.pswd)
-        random_noise = 0 #random.random()
+        random_noise = 0
         self.fitness = cc * 0.30 + cp * 0.70 + random_noise * 0.05
 def correct_ness(target,child):
     correct_count = 0
@@ -35,7 +35,7 @@ def mutate(creature):
 pswd_arr = [Creature("".join(random.choices(chars,k = n))) for _ in range(N)]
 c = 0
 while pswd not in [creature.pswd for creature in pswd_arr]:
-    # c += 0
+    c += 1
     len_arr = len(pswd_arr)
     temp = []
     parents = random.choices(pswd_arr,weights=[creature.fitness for creature in pswd_arr],k = len_arr)
@@ -49,11 +49,12 @@ while pswd not in [creature.pswd for creature in pswd_arr]:
             child_1 = Creature(creature_1.pswd[:cut_1] + creature_2.pswd[cut_1:])
             child_2 = Creature(creature_2.pswd[:cut_2] + creature_1.pswd[cut_2:])
             temp.append(random.choices([creature_1,creature_2,child_1,child_2],weights=[weight_1,weight_2,child_1.fitness,child_2.fitness],k = 2 + random.randint(-1,0))[0])
-    # pswd_arr = [creature for creature in temp if creature.fitness > st.mean([creature.fitness for creature in temp])-0.1]
-    pswd_arr = sorted(temp,key = lambda x:x.fitness,reverse = True)[:N//10]
-    for i in range(N - N//10):
-        if random.random() < 0.1:
+    best_cut = N//(10+c//10)
+    pswd_arr = sorted(temp,key = lambda x:x.fitness,reverse = True)[:best_cut]
+    for i in range(N - best_cut):
+        if random.random() < 0.25:
             pswd_arr.append(mutate(temp.pop(random.randint(0,len(temp)-1))))
     if len(pswd_arr) < N:
         pswd_arr += [Creature("".join(random.choices(chars,k = n))) for _ in range(N-len(pswd_arr))]
-    print(f"Current best password: {max(pswd_arr,key = lambda x:x.fitness).pswd} with fitness: {max(pswd_arr,key = lambda x:x.fitness).fitness}")
+    print(f"Gen {c}: {max(pswd_arr,key = lambda x:x.fitness).pswd} with fitness: {max(pswd_arr,key = lambda x:x.fitness).fitness}")
+    # print(f"Gen {c}: {min(pswd_arr,key = lambda x:x.fitness).pswd} with fitness: {min(pswd_arr,key = lambda x:x.fitness).fitness}")
