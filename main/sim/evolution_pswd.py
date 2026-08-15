@@ -1,12 +1,15 @@
-import math,random
+import math,random,statistics as st
 random.seed(0)
 chars = "abcdefghijklmnopqrstuvwxyz"#ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;':,.<>/?`~ "
 pswd = "helloworld"
 n = len(pswd)
-N = 10
-MAX_N = 10**5
-pswd_arr = ["".join(random.choices(chars,k = n)) for _ in range(N)]
-
+N = 100
+class Creature:
+    def __init__(self,id):
+        self.pswd = id
+        cc, cp = correct_ness(pswd, self.pswd)
+        random_noise = 0 #random.random()
+        self.fitness = cc * 0.30 + cp * 0.70 + random_noise * 0.05
 def correct_ness(target,child):
     correct_count = 0
     correct_pos = 0
@@ -23,35 +26,34 @@ def correct_ness(target,child):
         if target[i] == child[i]:
             correct_pos += 1
     return correct_count / len(target) if target else 0, correct_pos / len(target) if target else 0
-
-fitness_arr = {}
-for child in pswd_arr:
-    noise_1 = random.random()
-    cc_1, cp_1 = correct_ness(pswd, child)
-    weight_1 = cc_1 * 0.25 + cp_1 * 0.70 + noise_1 * 0.05
-    fitness_arr[child] = weight_1
-
-while pswd not in pswd_arr:
+def mutate(creature):
+    pswd = list(creature.pswd)
+    for i in range(len(pswd)):
+        if random.random() < 0.25:
+            pswd[i] = random.choice(chars)
+    return Creature("".join(pswd))
+pswd_arr = [Creature("".join(random.choices(chars,k = n))) for _ in range(N)]
+c = 0
+while pswd not in [creature.pswd for creature in pswd_arr]:
+    # c += 0
     len_arr = len(pswd_arr)
     temp = []
-    for i in range(len_arr):
-        for j in range(len_arr):
-            weight_1 = fitness_arr[pswd_arr[i]]
-            weight_2 = fitness_arr[pswd_arr[j]]
+    parents = random.choices(pswd_arr,weights=[creature.fitness for creature in pswd_arr],k = len_arr)
+    for creature_1 in parents:
+        for creature_2 in parents:
+            weight_1 = creature_1.fitness
+            weight_2 = creature_2.fitness
+            cut_1 = max(0, min(n, int(weight_1*n) + random.randint(-5,5)))
+            cut_2 = max(0, min(n, int(weight_2*n) + random.randint(-5,5)))
 
-            child_1 = pswd_arr[i][:int(weight_1*n)] + pswd_arr[j][int(weight_1*n):]
-            child_2 = pswd_arr[j][:int(weight_2*n)] + pswd_arr[i][int(weight_2*n):]
-            cc_c_1, cp_c_1 = correct_ness(pswd, child_1)
-            cc_c_2, cp_c_2 = correct_ness(pswd, child_2)
-            c_weight_1 = cc_c_1 * 0.25 + cp_c_1 * 0.70 + random.random() * 0.05
-            c_weight_2 = cc_c_2 * 0.25 + cp_c_2 * 0.70 + random.random() * 0.05
-            top_3_weights = sorted([weight_1, weight_2, c_weight_1, c_weight_2], reverse=True)[:3]
-            if weight_1 in top_3_weights:
-                temp.append(pswd_arr[i])
-            if weight_2 in top_3_weights:
-                temp.append(pswd_arr[j])
-            if c_weight_1 in top_3_weights:
-                temp.append(child_1)
-            if c_weight_2 in top_3_weights:
-                temp.append(child_2)
-    pswd_arr = temp[:MAX_N]
+            child_1 = Creature(creature_1.pswd[:cut_1] + creature_2.pswd[cut_1:])
+            child_2 = Creature(creature_2.pswd[:cut_2] + creature_1.pswd[cut_2:])
+            temp.append(random.choices([creature_1,creature_2,child_1,child_2],weights=[weight_1,weight_2,child_1.fitness,child_2.fitness],k = 2 + random.randint(-1,0))[0])
+    # pswd_arr = [creature for creature in temp if creature.fitness > st.mean([creature.fitness for creature in temp])-0.1]
+    pswd_arr = sorted(temp,key = lambda x:x.fitness,reverse = True)[:N//10]
+    for i in range(N - N//10):
+        if random.random() < 0.1:
+            pswd_arr.append(mutate(temp.pop(random.randint(0,len(temp)-1))))
+    if len(pswd_arr) < N:
+        pswd_arr += [Creature("".join(random.choices(chars,k = n))) for _ in range(N-len(pswd_arr))]
+    print(f"Current best password: {max(pswd_arr,key = lambda x:x.fitness).pswd} with fitness: {max(pswd_arr,key = lambda x:x.fitness).fitness}")
