@@ -35,7 +35,7 @@ class Particle(turtle.Turtle):
         # self.pendown()
         self.q = q
         self.vx = 1
-        self.vy = random.uniform(-1e-1,1e-1)
+        self.vy = random.uniform(-1e-3,1e-3)
         # self.m = 1.6 * 10 ** -27 if q > 0 else 9.1 * 10 ** -31
     
     def update(self):
@@ -108,9 +108,7 @@ while True:
             angles.append(abs(int(deg)))
             turtle.title(f"Angles : {len(angles)}")
     turtle.update()
-turtle.done()
 import matplotlib.pyplot as plt
-import math
 
 # Create histogram manually
 bins = [0] * 180
@@ -119,32 +117,7 @@ for angle in angles:
     angle = min(max(int(angle), 0), 179)
     bins[angle] += 1
 
-# x values: 0 to 179 degrees
 bin_centers = list(range(180))
-
-# Rutherford theoretical distribution
-# dN/dθ ∝ sin(θ) / sin^4(θ/2)
-theory = []
-
-for theta in bin_centers:
-    theta_rad = math.radians(theta)
-
-    if theta == 0:
-        value = 0
-    else:
-        value = math.sin(theta_rad) / math.sin(theta_rad / 2) ** 4
-
-    theory.append(value)
-
-# Scale theoretical curve to the simulation
-max_theory = max(theory)
-max_counts = max(bins)
-
-if max_theory > 0:
-    theory = [
-        value * max_counts / max_theory
-        for value in theory
-    ]
 
 plt.figure(figsize=(10, 6))
 
@@ -158,17 +131,10 @@ plt.bar(
     label="Simulation"
 )
 
-plt.plot(
-    bin_centers,
-    theory,
-    color="red",
-    linewidth=2,
-    label=r"Rutherford: $\frac{\sin\theta}{\sin^4(\theta/2)}$"
-)
-
 plt.xlabel("Scattering Angle θ (degrees)")
 plt.ylabel("Number of Particles")
 plt.title("Rutherford Scattering Simulation")
 plt.grid(True, linestyle="--", alpha=0.5)
 plt.legend()
 plt.show()
+turtle.done()
