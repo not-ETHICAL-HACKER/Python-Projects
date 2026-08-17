@@ -38,7 +38,6 @@ while pswd not in pswd_arr:
         for j in range(len_arr):
             weight_1 = fitness_arr[pswd_arr[i]]
             weight_2 = fitness_arr[pswd_arr[j]]
-
             child_1 = pswd_arr[i][:int(weight_1*n)] + pswd_arr[j][int(weight_1*n):]
             child_2 = pswd_arr[j][:int(weight_2*n)] + pswd_arr[i][int(weight_2*n):]
             cc_c_1, cp_c_1 = correct_ness(pswd, child_1)
