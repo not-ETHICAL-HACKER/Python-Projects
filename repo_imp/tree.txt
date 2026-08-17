@@ -27,7 +27,7 @@ Python-Projects
 |   |   |-- input.py
 |   |   |-- laoding animaimation.py
 |   |   \-- matrix_style_anim.py
-|   |-- cryptography 
+|   |-- cryptography
 |   |   |-- ceaser cipher
 |   |   |   |-- cli.py
 |   |   |   |-- core.py
@@ -46,9 +46,12 @@ Python-Projects
 |   |   |-- approx_p.py
 |   |   |-- cellular_automata_pygame.py
 |   |   |-- collatz_conjecture.py
+|   |   |-- fav_matrices.pkl
 |   |   |-- flow_fields.py
 |   |   |-- particle_life_pygame.py
 |   |   |-- random_walk.py
+|   |   |-- random_walk_data.csv
+|   |   |-- random_walk_mean_sigma.csv
 |   |   |-- sec_c_ch_3_XII.py
 |   |   |-- tower_of_lire.py
 |   |   \-- tribonacci_series.py
@@ -60,10 +63,17 @@ Python-Projects
 |   |   |-- particle_pairs.py
 |   |   \-- tutorial.py
 |   |-- sim
-|   |   |-- rutherford_sim_v1.py
-|   |   |-- rutherford_sim_v1_pygame.py
-|   |   \-- sonic_boom_v1.py
-|   |-- Sorting_Algos
+|   |   |-- evolution_pswd_sim
+|   |   |   |-- evolution_pswd_v1.py
+|   |   |   \-- evolution_pswd_v2.py
+|   |   |-- misc
+|   |   |   \-- sonic_boom_v1.py
+|   |   |-- rutherford_sim
+|   |   |   |-- rutherford_sim_v1.py
+|   |   |   \-- rutherford_sim_v1_pygame.py
+|   |   \-- wave_physics.py
+|   |       \-- wave_physics_v1.py
+|   |-- sorting_algos
 |   |   |-- block_sort.py
 |   |   |-- bogo_bubble_sort.py
 |   |   |-- new.py
@@ -75,8 +85,12 @@ Python-Projects
 |       |-- ant
 |       |   \-- main.py
 |       |-- ecosystem
-|       |   \-- main.py
+|       |   |-- main.py
+|       |   \-- particle_log.csv
 |       |-- particle_life
+|       |   |-- matrices.pkl
+|       |   |-- matrices_new.pkl
+|       |   |-- matrix.csv
 |       |   |-- particle_life.py
 |       |   |-- particle_life_interesting_runs.py
 |       |   \-- real_particle_life.py
@@ -103,6 +117,7 @@ Python-Projects
 |       |-- trig_2.py
 |       \-- tutorial.py
 |-- math website
+|   |-- qps
 |   |-- math_icon_v1.png
 |   |-- math_web.html
 |   \-- styles.css
@@ -131,17 +146,17 @@ Python-Projects
 |   |   |-- pixil-frame-0.png
 |   |   |-- pixil-frame-0.svg
 |   |   \-- styles.css
+|   |-- output
+|   |   |-- c problems.exe
+|   |   \-- test.exe
 |   |-- c problems.c
 |   |-- print.c
-|   |-- print.exe
 |   |-- test.c
-|   |-- test.exe
 |   \-- test.rs
 |-- .gitattributes
 |-- .gitignore
 |-- diagram.svg
 |-- LICENSE
-|-- matrices_new.pkl
-|-- matrix.csv
+|-- output.txt
 |-- README.md
 \-- save.json
