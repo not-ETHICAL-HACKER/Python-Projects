@@ -7,7 +7,7 @@ import random
 random.seed(0)
 chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;':,.<>/?`~ "
 char_idx = {c:i for i,c in enumerate(chars)}
-pswd = "password helllo wworld caht jipiti"
+pswd = "password"
 n = len(pswd)
 N = 125
 class Creature:
@@ -91,12 +91,24 @@ while True:
         break
     # print(f"Gen {c}: {min(pswd_arr,key = lambda x:x.fitness).pswd} with fitness: {min(pswd_arr,key = lambda x:x.fitness).fitness}")
 import matplotlib.pyplot as plt
-fig, ax = plt.subplots()
+
+fig, ax = plt.subplots(facecolor='black')
 ax.set_facecolor('black')
-plt.plot(best_fitness_arr,label="Fitness",color="blue")
-plt.plot(best_cc_arr,label="Correct Count",color="orange")
-plt.plot(best_cp_arr,label="Correct Position",color="green")
-plt.plot(best_cl_arr,label="Closeness",color="red")
-# plt.ylim(bottom=0,top=1)
-plt.legend()
+
+plt.plot(best_fitness_arr, label="Fitness", color="blue")
+plt.plot(best_cc_arr, label="Correct Count", color="orange")
+plt.plot(best_cp_arr, label="Correct Position", color="green")
+plt.plot(best_cl_arr, label="Closeness", color="red")
+
+#? make the axes frame visible
+for spine in ax.spines.values():
+    spine.set_color('white')
+ax.tick_params(colors='white', which='both')
+ax.xaxis.label.set_color('white')
+ax.yaxis.label.set_color('white')
+ax.grid(True, color='gray', linestyle='--', alpha=0.5)
+legend = plt.legend(facecolor='black', edgecolor='white')
+for text in legend.get_texts():
+    text.set_color('white')
+
 plt.show()

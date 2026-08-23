@@ -1,0 +1,3 @@
+
+#! make this version output a graph best (fitness,cc,cp,cl) over time instead of printing the best password each generation
+#! this has to be done in a way that the graph updates in real time as the generations progress, and the graph should have a black background with colored lines for each metric. The x-axis should represent the generation number, and the y-axis should represent the values of fitness, correct count, correct position, and closeness. The graph should also include a legend to differentiate between the metrics.
