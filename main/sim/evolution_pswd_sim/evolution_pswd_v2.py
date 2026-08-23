@@ -7,7 +7,7 @@ import random
 random.seed(0)
 chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;':,.<>/?`~ "
 char_idx = {c:i for i,c in enumerate(chars)}
-pswd = "password"
+pswd = "password fnidafiadofn dauabfin jf dbic acboa6 65232323232 5656565656565656"
 n = len(pswd)
 N = 125
 class Creature:
@@ -83,7 +83,8 @@ while True:
     best_cc_arr.append(cc)
     best_cp_arr.append(cp)
     best_cl_arr.append(cl)
-    print(f"Gen {c}: {best.pswd} | with fitness: {best.fitness:.3f} | correct count: {cc:.3f} | correct position: {cp:.3f} | closeness: {cl:.3f}",end="\r")
+    print(f"Gen {c} | with fitness: {best.fitness:.3f} | correct count: {cc:.3f} | correct position: {cp:.3f} | closeness: {cl:.3f}",end="\r")
+    #print(f"Gen {c}: {best.pswd} | with fitness: {best.fitness:.3f} | correct count: {cc:.3f} | correct position: {cp:.3f} | closeness: {cl:.3f}",end="\r")
     # print(f"Gen {c}: {best.pswd} | with fitness: {best.fitness}",end="\r")
     best_fitness_arr.append(best.fitness)
     if pswd in [creature.pswd for creature in pswd_arr]:
@@ -92,23 +93,20 @@ while True:
     # print(f"Gen {c}: {min(pswd_arr,key = lambda x:x.fitness).pswd} with fitness: {min(pswd_arr,key = lambda x:x.fitness).fitness}")
 import matplotlib.pyplot as plt
 
-fig, ax = plt.subplots(facecolor='black')
-ax.set_facecolor('black')
+# Enable built-in dark theme BEFORE creating subplots
+plt.style.use('dark_background')
 
-plt.plot(best_fitness_arr, label="Fitness", color="blue")
+fig, ax = plt.subplots()
+
+# Plot your data
+plt.plot(best_fitness_arr, label="Fitness", color="#00ffff")       #? cyan (for visibility)
 plt.plot(best_cc_arr, label="Correct Count", color="orange")
-plt.plot(best_cp_arr, label="Correct Position", color="green")
-plt.plot(best_cl_arr, label="Closeness", color="red")
+plt.plot(best_cp_arr, label="Correct Position", color="#00ff00")   #* green
+plt.plot(best_cl_arr, label="Closeness", color="#ff4444")          #! red
 
-#? make the axes frame visible
-for spine in ax.spines.values():
-    spine.set_color('white')
-ax.tick_params(colors='white', which='both')
-ax.xaxis.label.set_color('white')
-ax.yaxis.label.set_color('white')
-ax.grid(True, color='gray', linestyle='--', alpha=0.5)
-legend = plt.legend(facecolor='black', edgecolor='white')
-for text in legend.get_texts():
-    text.set_color('white')
+# Add a grid for easy comparison
+plt.grid(True, linestyle='--', alpha=0.3)
 
+plt.legend()
+plt.show()
 plt.show()
