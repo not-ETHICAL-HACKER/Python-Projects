@@ -32,5 +32,32 @@ not just a bunch of random shit scattered around.
 2d only for now.(use turtle for now later use pygame or smth)
 #!!!!!!!!! IF USING TURTLE DO NOT MAKE A SHIT TON OF TURT OBJS OR THE PC WILL CRASH.
 
-#!DO NOT START THIS BEFORE EXAMS.
+#//DO NOT START THIS BEFORE EXAMS.
 """
+import turtle,math,random
+random.seed(0) #seed for reproducibility
+turtle.tracer(0)
+turtle.colormode(255)
+turtle.bgcolor("black")
+
+class Helper(turtle.Turtle):
+    def __init__(self,x,y,pen_c:tuple[int,int,int],h_size,h_shape):
+        super().__init__()
+        self.hideturtle()
+        self.speed(0)
+        self.penup()
+        self.color(pen_c)
+        self.shapesize(h_size)
+        self.shape(h_shape)
+        self.x = x
+        self.y = y
+    
+    def print(self,tx,ty):
+        self.goto(tx,ty)
+        self.pendown()
+        self.stamp()
+        self.penup()
+
+path_helpers = [
+    
+]
