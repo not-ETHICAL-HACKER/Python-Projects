@@ -48,5 +48,4 @@ fig.update_layout(
 
 fig.show()
 for i in a:
-    break
     print(f"{Back.BLACK+Fore.WHITE+Style.BRIGHT}{i:.3f} =>>\t{c1}Sin = {math.sin(i):.3f}\t{c2}Cos = {math.cos(i):.3f}\t{c3}Tan = {math.tan(i):.3f}")

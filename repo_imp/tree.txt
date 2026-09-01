@@ -12,21 +12,19 @@ Python-Projects
 |   |-- data_1
 |   |   |-- data_1.csv
 |   |   \-- data_1.py
-|   |-- new.py
-|   \-- new.sql
+|   \-- mysql_test
+|       |-- mysql_connector_test_v1.py
+|       \-- mysql_connector_test_v2.py
 |-- main
 |   |-- animations
-|   |   |-- animation.py
-|   |   |-- animation_2.py
-|   |   |-- animation_3.py
-|   |   |-- anime.py
-|   |   |-- ball ball ball.py
-|   |   |-- deaadly pc killer.py
-|   |   |-- equations.py
-|   |   |-- graphics mods.py
-|   |   |-- input.py
-|   |   |-- laoding animaimation.py
-|   |   \-- matrix_style_anim.py
+|   |   |-- 3d_torus.py
+|   |   |-- bouncing_ball.py
+|   |   |-- graphics_test.py
+|   |   |-- loading_animations.py
+|   |   |-- matrix_style_animation.py
+|   |   |-- moving_ascii_animations.py
+|   |   |-- powers_of_2_vis.py.py
+|   |   \-- terminal_text_effects.py
 |   |-- cryptography
 |   |   |-- ceaser cipher
 |   |   |   |-- cli.py
@@ -34,34 +32,45 @@ Python-Projects
 |   |   |   |-- README.md
 |   |   |   \-- test_core.py
 |   |   |-- ciphers.py
-|   |   \-- passord.py
+|   |   \-- password.py
 |   |-- games
 |   |   \-- increment_game.py
 |   |-- math
 |   |   |-- complex_num
 |   |   |   |-- complex_num_test.py
 |   |   |   \-- exponential.py
-|   |   |-- ! vs $.py
+|   |   |-- math_sims
+|   |   |   |-- 3d_rotation.py
+|   |   |   |-- collatz_conjecture_animation.py
+|   |   |   |-- crystal_formation.py
+|   |   |   |-- epicycles.py
+|   |   |   |-- fast_rose.py
+|   |   |   |-- fourier_transform.py
+|   |   |   |-- gaussian_distribution.py
+|   |   |   |-- matrix_transformation.py
+|   |   |   |-- recursion_tree.py
+|   |   |   |-- rose.py
+|   |   |   |-- trig.py
+|   |   |   \-- trig_2.py
 |   |   |-- approx_e.py
 |   |   |-- approx_p.py
-|   |   |-- cellular_automata_pygame.py
 |   |   |-- collatz_conjecture.py
+|   |   |-- equations.py
+|   |   |-- factorial_vs_superfactorial.py
 |   |   |-- fav_matrices.pkl
 |   |   |-- flow_fields.py
-|   |   |-- particle_life_pygame.py
 |   |   |-- random_walk.py
 |   |   |-- random_walk_data.csv
 |   |   |-- random_walk_mean_sigma.csv
-|   |   |-- sec_c_ch_3_XII.py
 |   |   |-- tower_of_lire.py
 |   |   \-- tribonacci_series.py
-|   |-- mysql_test
-|   |   \-- test.py
 |   |-- pygame_projects
-|   |   |-- particle_life.py
+|   |   |-- cellular_automata_pygame.py
+|   |   |-- particle_life_v1.py
+|   |   |-- particle_life_v2.py
 |   |   |-- particle_move.py
 |   |   |-- particle_pairs.py
-|   |   \-- tutorial.py
+|   |   \-- pygame_tutorial.py
 |   |-- sim
 |   |   |-- evolution_pswd_sim
 |   |   |   |-- evolution_pswd_v1.py
@@ -69,19 +78,21 @@ Python-Projects
 |   |   |   \-- evolution_pswd_v3.py
 |   |   |-- misc
 |   |   |   \-- sonic_boom_v1.py
+|   |   |-- procedural_generation
+|   |   |   \-- procedural_village_gen_v1.py
 |   |   |-- rutherford_sim
 |   |   |   |-- rutherford_sim_v1.py
 |   |   |   \-- rutherford_sim_v1_pygame.py
 |   |   |-- wave_physics.py
 |   |   |   \-- wave_physics_v1.py
-|   |   \-- evolution_pswd.py
+|   |   \-- cellular_automata.py
 |   |-- sorting_algos
 |   |   |-- block_sort.py
 |   |   |-- bogo_bubble_sort.py
-|   |   |-- new.py
-|   |   |-- new_sort_algo.py
-|   |   |-- newest_sortin_algo.py
-|   |   |-- sorting algos.py
+|   |   |-- bubble_sort.py
+|   |   |-- cocktail_sort.py
+|   |   |-- exp_quad_bubble_sort.py
+|   |   |-- sorting_algorithim_test.py
 |   |   \-- stalin_sort.py
 |   \-- turtle
 |       |-- ant
@@ -89,6 +100,11 @@ Python-Projects
 |       |-- ecosystem
 |       |   |-- main.py
 |       |   \-- particle_log.csv
+|       |-- misc
+|       |   |-- dwayne_megumi_yuri.py
+|       |   |-- rinnegan.py
+|       |   |-- sprial.py
+|       |   \-- turtle_tutorial.py
 |       |-- particle_life
 |       |   |-- matrices.pkl
 |       |   |-- matrices_new.pkl
@@ -96,33 +112,10 @@ Python-Projects
 |       |   |-- particle_life.py
 |       |   |-- particle_life_interesting_runs.py
 |       |   \-- real_particle_life.py
-|       |-- 3d_rotation.py
-|       |-- cellular_automata.py
-|       |-- collatz_conjecture.py
-|       |-- collisoion.py
-|       |-- crystal_formation.py
-|       |-- dwayne_megumi_yuri.py
-|       |-- epicycles.py
-|       |-- falling.py
-|       |-- fast_rose.py
-|       |-- fourier_transform.py
-|       |-- func.py
-|       |-- gauss.py
-|       |-- lightning_gen.py
-|       |-- matrix_rename.py
-|       |-- nuclear.py
-|       |-- recursion_tree.py
-|       |-- rinnegan.py
-|       |-- rose.py
-|       |-- sprial.py
-|       |-- trig.py
-|       |-- trig_2.py
-|       \-- tutorial.py
-|-- math website
-|   |-- qps
-|   |-- math_icon_v1.png
-|   |-- math_web.html
-|   \-- styles.css
+|       \-- physics
+|           |-- falling_sim.py
+|           |-- lightning_gen.py
+|           \-- nuclear_fusion.py
 |-- misc
 |   |-- 2_5_26.py
 |   |-- flames_game.py
@@ -133,7 +126,7 @@ Python-Projects
 |   |-- teast.py
 |   \-- threading_test.py
 |-- neural networks
-|   \-- 1st neuron ig.py
+|   \-- neural_network_test.py
 |-- output
 |   |-- Cipher_output.txt
 |   \-- Hello.txt
@@ -155,6 +148,11 @@ Python-Projects
 |   |-- print.c
 |   |-- test.c
 |   \-- test.rs
+|-- website_attempt
+|   |-- qps
+|   |-- math_icon_v1.png
+|   |-- math_web.html
+|   \-- styles.css
 |-- .gitattributes
 |-- .gitignore
 |-- diagram.svg

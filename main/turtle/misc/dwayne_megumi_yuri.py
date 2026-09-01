@@ -2,7 +2,7 @@ import re
 import turtle
 import random
 import math
-
+#! dwanye,megumi,yuri = rock,paper,scissors
 screen = turtle.Screen()
 player = turtle.Turtle()
 helper = turtle.Turtle("turtle")

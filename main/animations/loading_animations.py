@@ -19,7 +19,7 @@ init(autoreset=True)
 
 c = Fore.GREEN+Style.BRIGHT
 colors = [Fore.RED+Style.BRIGHT, Fore.YELLOW+Style.BRIGHT, Fore.GREEN+Style.BRIGHT,
-          Fore.CYAN+Style.BRIGHT, Fore.BLUE+Style.BRIGHT, Fore.MAGENTA+Style.BRIGHT]
+        Fore.CYAN+Style.BRIGHT, Fore.BLUE+Style.BRIGHT, Fore.MAGENTA+Style.BRIGHT]
 i = j = 0
 
 lis = [frames, arr, cir, circ, block, blocks, a, b, d, e, g, h]
