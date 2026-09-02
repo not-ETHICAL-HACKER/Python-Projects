@@ -1,17 +1,11 @@
 Python-Projects
-|-- .github
-|   \-- workflows
-|       \-- visualize.yml
-|-- .vscode
-|   |-- launch.json
-|   \-- settings.json
 |-- database
-|   |-- data structures
-|   |   \-- trees
-|   |       \-- binary tree.py
 |   |-- data_1
 |   |   |-- data_1.csv
 |   |   \-- data_1.py
+|   |-- data_structures
+|   |   \-- trees
+|   |       \-- binary_tree.py
 |   \-- mysql_test
 |       |-- mysql_connector_test_v1.py
 |       \-- mysql_connector_test_v2.py
@@ -23,10 +17,10 @@ Python-Projects
 |   |   |-- loading_animations.py
 |   |   |-- matrix_style_animation.py
 |   |   |-- moving_ascii_animations.py
-|   |   |-- powers_of_2_vis.py.py
+|   |   |-- powers_of_2_vis.py
 |   |   \-- terminal_text_effects.py
 |   |-- cryptography
-|   |   |-- ceaser cipher
+|   |   |-- ceaser_cipher
 |   |   |   |-- cli.py
 |   |   |   |-- core.py
 |   |   |   |-- README.md
@@ -57,20 +51,10 @@ Python-Projects
 |   |   |-- collatz_conjecture.py
 |   |   |-- equations.py
 |   |   |-- factorial_vs_superfactorial.py
-|   |   |-- fav_matrices.pkl
 |   |   |-- flow_fields.py
 |   |   |-- random_walk.py
-|   |   |-- random_walk_data.csv
-|   |   |-- random_walk_mean_sigma.csv
 |   |   |-- tower_of_lire.py
 |   |   \-- tribonacci_series.py
-|   |-- pygame_projects
-|   |   |-- cellular_automata_pygame.py
-|   |   |-- particle_life_v1.py
-|   |   |-- particle_life_v2.py
-|   |   |-- particle_move.py
-|   |   |-- particle_pairs.py
-|   |   \-- pygame_tutorial.py
 |   |-- sim
 |   |   |-- evolution_pswd_sim
 |   |   |   |-- evolution_pswd_v1.py
@@ -80,42 +64,45 @@ Python-Projects
 |   |   |   \-- sonic_boom_v1.py
 |   |   |-- procedural_generation
 |   |   |   \-- procedural_village_gen_v1.py
+|   |   |-- pygame_projects
+|   |   |   |-- cellular_automata_pygame.py
+|   |   |   |-- particle_life_v1.py
+|   |   |   |-- particle_life_v2.py
+|   |   |   |-- particle_move.py
+|   |   |   |-- particle_pairs.py
+|   |   |   \-- pygame_tutorial.py
 |   |   |-- rutherford_sim
 |   |   |   |-- rutherford_sim_v1.py
 |   |   |   \-- rutherford_sim_v1_pygame.py
+|   |   |-- turtle
+|   |   |   |-- ant
+|   |   |   |   \-- main.py
+|   |   |   |-- ecosystem
+|   |   |   |   \-- main.py
+|   |   |   |-- misc
+|   |   |   |   |-- dwayne_megumi_yuri.py
+|   |   |   |   |-- rinnegan.py
+|   |   |   |   |-- sprial.py
+|   |   |   |   \-- turtle_tutorial.py
+|   |   |   |-- particle_life
+|   |   |   |   |-- particle_life.py
+|   |   |   |   |-- particle_life_interesting_runs.py
+|   |   |   |   \-- real_particle_life.py
+|   |   |   \-- physics
+|   |   |       |-- falling_sim.py
+|   |   |       |-- lightning_gen.py
+|   |   |       \-- nuclear_fusion.py
 |   |   |-- wave_physics.py
 |   |   |   \-- wave_physics_v1.py
 |   |   \-- cellular_automata.py
-|   |-- sorting_algos
-|   |   |-- block_sort.py
-|   |   |-- bogo_bubble_sort.py
-|   |   |-- bubble_sort.py
-|   |   |-- cocktail_sort.py
-|   |   |-- exp_quad_bubble_sort.py
-|   |   |-- sorting_algorithim_test.py
-|   |   \-- stalin_sort.py
-|   \-- turtle
-|       |-- ant
-|       |   \-- main.py
-|       |-- ecosystem
-|       |   |-- main.py
-|       |   \-- particle_log.csv
-|       |-- misc
-|       |   |-- dwayne_megumi_yuri.py
-|       |   |-- rinnegan.py
-|       |   |-- sprial.py
-|       |   \-- turtle_tutorial.py
-|       |-- particle_life
-|       |   |-- matrices.pkl
-|       |   |-- matrices_new.pkl
-|       |   |-- matrix.csv
-|       |   |-- particle_life.py
-|       |   |-- particle_life_interesting_runs.py
-|       |   \-- real_particle_life.py
-|       \-- physics
-|           |-- falling_sim.py
-|           |-- lightning_gen.py
-|           \-- nuclear_fusion.py
+|   \-- Sorting_Algos
+|       |-- block_sort.py
+|       |-- bogo_bubble_sort.py
+|       |-- bubble_sort.py
+|       |-- cocktail_sort.py
+|       |-- exp_quad_bubble_sort.py
+|       |-- sorting_algorithim_test.py
+|       \-- stalin_sort.py
 |-- misc
 |   |-- 2_5_26.py
 |   |-- flames_game.py
@@ -125,7 +112,7 @@ Python-Projects
 |   |-- prime_checker.py
 |   |-- teast.py
 |   \-- threading_test.py
-|-- neural networks
+|-- neural_networks
 |   \-- neural_network_test.py
 |-- output
 |   |-- Cipher_output.txt
@@ -141,15 +128,13 @@ Python-Projects
 |   |   |-- pixil-frame-0.png
 |   |   |-- pixil-frame-0.svg
 |   |   \-- styles.css
-|   |-- output
-|   |   |-- c problems.exe
-|   |   \-- test.exe
 |   |-- c problems.c
 |   |-- print.c
+|   |-- print.exe
 |   |-- test.c
+|   |-- test.exe
 |   \-- test.rs
 |-- website_attempt
-|   |-- qps
 |   |-- math_icon_v1.png
 |   |-- math_web.html
 |   \-- styles.css
@@ -157,6 +142,7 @@ Python-Projects
 |-- .gitignore
 |-- diagram.svg
 |-- LICENSE
-|-- output.txt
+|-- matrices_new.pkl
+|-- matrix.csv
 |-- README.md
 \-- save.json

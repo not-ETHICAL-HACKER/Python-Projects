@@ -1,6 +1,6 @@
 $root = Get-Location
 $repoName = Split-Path $root -Leaf
-$ignore = @(".venv", ".git", "__pycache__", ".pytest_cache", ".mypy_cache", "node_modules")
+$ignore = @(".venv", ".git", "__pycache__", ".pytest_cache", ".mypy_cache", "node_modules",".svg",".github",".vscode",".pkl",".csv")
 
 function Show-Tree($Path, $Prefix = "") {
     $items = Get-ChildItem -LiteralPath $Path -Force |
