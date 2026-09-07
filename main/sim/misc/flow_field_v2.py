@@ -12,7 +12,8 @@ N = len(pos_arr)
 screen = pygame.display.set_mode((W,H), pygame.RESIZABLE)
 pygame.display.set_caption("My Simulation")
 fade = pygame.Surface((W, H), pygame.SRCALPHA)
-fade.fill((0, 0, 0, 10))   # Last number = alpha (0-255)
+fade_const = 50
+fade.fill((0, 0, 0, fade_const))   # Last number = alpha (0-255)
 """ #! smaller alpha val make the trails longer
 fade.fill((0,0,0,3))    # Very long trails
 fade.fill((0,0,0,10))   # Medium trails
@@ -32,6 +33,7 @@ running = True
 size = 2
 k = 100
 colors = [(random.randint(0,255),random.randint(0,255),random.randint(0,255)) for _ in range(N)]
+c_avg_arr = [sum(c)/3 for c in colors]
 func_k = list(funcs.keys())
 funcs_arrs = [random.choice(func_k) for _ in range(N)]
 while running:
@@ -44,27 +46,30 @@ while running:
             screen = pygame.display.set_mode((W, H), pygame.RESIZABLE)
 
             fade = pygame.Surface((W, H), pygame.SRCALPHA)
-            fade.fill((0, 0, 0, 10))
+            fade.fill((0, 0, 0, fade_const))
             pos_arr = [
                 (x,y) for x in range(0,W,step) for y in range(0,H,step)
             ]
             N = len(pos_arr)
             funcs_arrs = [random.choice(func_k) for _ in range(N)]
-            colors = [(random.randint(0,255),random.randint(0,255),random.randint(0,255)) for _ in range(N)]
+            colors = [(random.randint(0,255),random.randint(0,255),random.randint(0,255)) for _ in range(N)]            
+            c_avg_arr = [sum(c)/3 for c in colors]
     for i,pos in enumerate(pos_arr):
         x,y = pos
         t = pygame.time.get_ticks() / 1000 #! remove time dependency for more stable flow field
         mx = x - W/2
         my = H/2 - y
-        c_avg = sum(colors[i])/3
+        c_avg = c_avg_arr[i]
 
         # x += funcs[funcs_arrs[i]](my/k + t)
         # y += funcs[funcs_arrs[i]](mx/k + t)
         
-        # x += math.atan2((my), (k) + t)
-        # y += math.atan2((mx),k + t)
-        x += math.cos((my)/(k) + t) * (c_avg/255)
-        y += math.sin((mx)/(k) + t) * (c_avg/255)
+        # x += (math.atan2((my), (k) + t) + math.cos((my)/(k) + t)) * (c_avg/255)
+        # y += (math.atan2((mx),k + t) + math.sin((mx)/(k) + t)) * (c_avg/255)
+        # x += math.cos((my)/(k) + t) * (c_avg/255)
+        # y += math.cos((mx)/(k) + t) * (c_avg/255)
+        x += math.cos((my)/(k)*math.pi + t) * (c_avg/255)
+        y += math.cos((mx)/(k)*math.pi + t) * (c_avg/255)
 
         # x = max(0,min(x,W))
         # y = max(0,min(y,H))
