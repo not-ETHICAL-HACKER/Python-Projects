@@ -29,7 +29,7 @@ funcs = {
 }
 clock = pygame.time.Clock()
 running = True
-size = 1
+size = 2
 k = 100
 colors = [(random.randint(0,255),random.randint(0,255),random.randint(0,255)) for _ in range(N)]
 func_k = list(funcs.keys())
@@ -44,7 +44,7 @@ while running:
             screen = pygame.display.set_mode((W, H), pygame.RESIZABLE)
 
             fade = pygame.Surface((W, H), pygame.SRCALPHA)
-            fade.fill((0, 0, 0, 80))
+            fade.fill((0, 0, 0, 10))
             pos_arr = [
                 (x,y) for x in range(0,W,step) for y in range(0,H,step)
             ]
@@ -56,15 +56,16 @@ while running:
         t = pygame.time.get_ticks() / 1000 #! remove time dependency for more stable flow field
         mx = x - W/2
         my = H/2 - y
-        
+        c_avg = sum(colors[i])/3
+
         # x += funcs[funcs_arrs[i]](my/k + t)
         # y += funcs[funcs_arrs[i]](mx/k + t)
         
         # x += math.atan2((my), (k) + t)
         # y += math.atan2((mx),k + t)
-        x += math.cos(math.sqrt(abs((my)/k + t)))
-        y += math.sin(math.sqrt(abs((mx)/k + t)))
-        
+        x += math.cos((my)/(k) + t) * (c_avg/255)
+        y += math.sin((mx)/(k) + t) * (c_avg/255)
+
         # x = max(0,min(x,W))
         # y = max(0,min(y,H))
         pos_arr[i] = (x,y)
