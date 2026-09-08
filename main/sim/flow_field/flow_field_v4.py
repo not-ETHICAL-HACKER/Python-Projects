@@ -24,7 +24,7 @@ pygame.init()
 W,H = 500,500
 W2,H2 = W//2,H//2
 random.seed(42)
-step = 50
+step = 10
 pos_arr = [
     (x,y) for x in range(0,W,step) for y in range(0,H,step)
 ]
@@ -44,7 +44,7 @@ funcs = {
     "sin": lambda x: math.sin(x/50 + pygame.time.get_ticks()/1000) * 5,
     "cos": lambda x: math.cos(x/50 + pygame.time.get_ticks()/1000) * 5,
     "atan2": lambda x: math.atan2(math.sin(x/50 + pygame.time.get_ticks()/1000), math.cos(x/50 + pygame.time.get_ticks()/1000)) * 5,
-    "log": lambda x: math.log(abs(math.sin(x/50 + pygame.time.get_ticks()/1000)) + 1) * 5,
+    "log": lambda x: math.sin(math.log1p(abs(x/50 + pygame.time.get_ticks()/1000))) * 5,
     "exp": lambda x: math.exp(math.sin(x/50 + pygame.time.get_ticks()/1000)) * 5,
     "sqrt": lambda x: math.sqrt(abs(math.sin(x/50 + pygame.time.get_ticks()/1000))) * 5,
 }
@@ -81,22 +81,27 @@ while running:
         mx = x - W/2
         my = H/2 - y
         c_avg = c_avg_arr[i]
-        nx = x + math.cos((my)/(k) + t) * (c_avg/255)
-        ny = y + math.cos((mx)/(k) + t) * (c_avg/255)
-        
+        # nx = x + math.cos((my)/(k) + t) * (c_avg/255)
+        # ny = y + math.cos((mx)/(k) + t) * (c_avg/255)
+        nx = x + funcs["log"](my) * (c_avg/255)
+        ny = y + funcs["log"](mx) * (c_avg/255)
         new_pos_arr.append((nx,ny))
     screen.blit(fade, (0, 0))
     for i in range(N):
         x1,y1 = pos_arr[i]
         x2,y2 = new_pos_arr[i]
+        
         dx = x2 - x1
         dy = y2 - y1
-        hyp = math.hypot(dx,dy)
+        hyp = max(1e-6,math.hypot(dx,dy))
         ux = dx/hyp 
         uy = dy/hyp
+        
         x2 = x1 + ux * vector_len
         y2 = y1 + uy * vector_len
+        
         pygame.draw.line(screen, colors[i], (int(x1), int(y1)), (int(x2), int(y2)), 2)
+    
     pygame.display.update()
     clock.tick(60)
 pygame.quit()
