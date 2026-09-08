@@ -24,7 +24,7 @@ pygame.init()
 W,H = 500,500
 W2,H2 = W//2,H//2
 random.seed(42)
-step = 20
+step = 50
 pos_arr = [
     (x,y) for x in range(0,W,step) for y in range(0,H,step)
 ]
@@ -32,7 +32,7 @@ N = len(pos_arr)
 screen = pygame.display.set_mode((W,H), pygame.RESIZABLE)
 pygame.display.set_caption("My Simulation")
 fade = pygame.Surface((W, H), pygame.SRCALPHA)
-fade_const = 50
+fade_const = 100
 fade.fill((0, 0, 0, fade_const))   # Last number = alpha (0-255)
 """ #! smaller alpha val make the trails longer
 fade.fill((0,0,0,3))    # Very long trails
@@ -50,7 +50,6 @@ funcs = {
 }
 clock = pygame.time.Clock()
 running = True
-size = 10
 k = 100
 colors = [(random.randint(0,255),random.randint(0,255),random.randint(0,255)) for _ in range(N)]
 c_avg_arr = [sum(c)/3 for c in colors]
@@ -82,9 +81,9 @@ while running:
         mx = x - W/2
         my = H/2 - y
         c_avg = c_avg_arr[i]
-
-        nx = x + math.cos((my)/(k) * math.pi + t) * (c_avg/255)
-        ny = y + math.cos((mx)/(k) * math.pi + t) * (c_avg/255)
+        nx = x + math.cos((my)/(k) + t) * (c_avg/255)
+        ny = y + math.cos((mx)/(k) + t) * (c_avg/255)
+        
         new_pos_arr.append((nx,ny))
     screen.blit(fade, (0, 0))
     for i in range(N):
