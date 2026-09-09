@@ -24,7 +24,8 @@ pygame.init()
 W,H = 500,500
 W2,H2 = W//2,H//2
 random.seed(42)
-step = 10
+step = 100
+vector_len = 50
 pos_arr = [
     (x,y) for x in range(0,W,step) for y in range(0,H,step)
 ]
@@ -32,7 +33,7 @@ N = len(pos_arr)
 screen = pygame.display.set_mode((W,H), pygame.RESIZABLE)
 pygame.display.set_caption("My Simulation")
 fade = pygame.Surface((W, H), pygame.SRCALPHA)
-fade_const = 100
+fade_const = 25
 fade.fill((0, 0, 0, fade_const))   # Last number = alpha (0-255)
 """ #! smaller alpha val make the trails longer
 fade.fill((0,0,0,3))    # Very long trails
@@ -55,7 +56,6 @@ colors = [(random.randint(0,255),random.randint(0,255),random.randint(0,255)) fo
 c_avg_arr = [sum(c)/3 for c in colors]
 func_k = list(funcs.keys())
 funcs_arrs = [random.choice(func_k) for _ in range(N)]
-vector_len = 10
 while running:
     for _ in range(2):
         if _ == 0:
@@ -85,8 +85,10 @@ while running:
             mx = x - W/2
             my = H/2 - y
             c_avg = c_avg_arr[i]
-            nx = x + math.sin((my)/(k) + t) * (c_avg/255)
-            ny = y + math.cos((mx)/(k) + t) * (c_avg/255)
+            # nx = x + random.uniform(-10,10) * (c_avg/255)
+            # ny = y + random.uniform(-10,10) * (c_avg/255)
+            nx = x + math.cos((my)/(k) + t) * (c_avg/255) * 5
+            ny = y + math.sin((mx)/(k) + t) * (c_avg/255) * 5
             # nx = x + funcs["log"](my) * (c_avg/255)
             # ny = y + funcs["log"](mx) * (c_avg/255)
             new_pos_arr.append((nx,ny))
@@ -104,18 +106,24 @@ while running:
             x2 = x1 + ux * vector_len
             y2 = y1 + uy * vector_len
             if _ == 0:
-                vectors.append((ux,uy))
+                # vectors.append((ux,uy))
+                vectors.append((1,0)) #! just use a constant vector for now
             else:
                 oux,ouy = vectors[i]
                 dot = oux*ux + ouy*uy
-                if abs(dot) > math.cos(math.pi/6):
-                    colors[i] = (255,0,0)
-                elif abs(dot) > math.cos(math.pi/4):
-                    colors[i] = (0,255,0)
-                elif abs(dot) > math.cos(math.pi/3):
-                    colors[i] = (0,0,255)
+                if dot > 0:
+                    colors[i] = (255*dot,255/2-255/2*dot,0)
                 else:
-                    colors[i] = (255,255,255)
+                    colors[i] = (0,255/2+255/2*dot,255*abs(dot))
+                # if dot > math.cos(math.pi/6):
+                #     colors[i] = (255,0,0)
+                # elif dot > math.cos(math.pi/4):
+                #     colors[i] = (0,255,0)
+                # elif dot > math.cos(math.pi/3):
+                #     colors[i] = (0,0,255)
+                # else:
+                #     colors[i] = (255,255,255)
+                pygame.draw.rect(screen, colors[i], (int(x1)-2, int(y1)-2, 10, 10))
                 pygame.draw.line(screen, colors[i], (int(x1), int(y1)), (int(x2), int(y2)), 2)
         
         pygame.display.update()
