@@ -13,18 +13,19 @@ fade.fill((0, 0, 0, fade_const))   # Last number = alpha (0-255)
 clock = pygame.time.Clock()
 random.seed(42)
 
-step: int = 25
-vector_len: int = 50
+step: int = 20
+vector_len: int = 20
 pos_arr: list[tuple[int, int]] = [
     (x, y) for x in range(0, W, step) for y in range(0, H, step)
 ]
 
 N: int = len(pos_arr)
 running: bool = True
-k: int = 1
-colors: list[tuple[int, int, int]] = [(random.randint(0, 255), random.randint(
-    0, 255), random.randint(0, 255)) for _ in range(N)]
-c_avg_arr: list[float] = [sum(c)/3 for c in colors]
+k: int = 100
+colors = [(255, 255, 255) for _ in range(N)]
+# colors: list[tuple[int, int, int]] = [(random.randint(0, 255), random.randint(
+#     0, 255), random.randint(0, 255)) for _ in range(N)]
+# c_avg_arr: list[float] = [sum(c)/3 for c in colors]
 particle_pos: list[tuple[int, int]] = []
 P: int = len(particle_pos)
 old_vectors: list[tuple[float, float]] = [(0, 0) for __ in range(N)]
@@ -53,9 +54,10 @@ while running:
             ]
             N: int = len(pos_arr)
             P: int = len(particle_pos)
-            colors: list[tuple[int, int, int]] = [(random.randint(0, 255), random.randint(
-                0, 255), random.randint(0, 255)) for _ in range(N)]
-            c_avg_arr: list[float] = [sum(c)/3 for c in colors]
+            colors = [(255, 255, 255) for _ in range(N)]
+            # colors: list[tuple[int, int, int]] = [(random.randint(0, 255), random.randint(
+            #     0, 255), random.randint(0, 255)) for _ in range(N)]
+            # c_avg_arr: list[float] = [sum(c)/3 for c in colors]
             new_vectors: list[tuple[float, float]] = []
             old_vectors: list[tuple[float, float]] = [
                 (0, 0) for __ in range(N)]
@@ -76,9 +78,9 @@ while running:
         t = 0  # ? because it is zero the vector field is static and not moving, but if you want to make it dynamic you can set it to pygame.time.get_ticks() / 1000
         mx = x - W/2
         my = H/2 - y
-        c_avg = c_avg_arr[i]
-        nx = x - (math.cos(2*(my)/(k) + t)) * (c_avg/255) * 5
-        ny = y + (math.cos(2*(mx)/(k) + t)) * (c_avg/255) * 5
+        # c_avg = c_avg_arr[i]
+        nx = x - (math.cos((my)/(k) + t)) * 5
+        ny = y + (math.sin((mx)/(k) + t)) * 5
         new_pos_arr.append((nx, ny))
     screen.blit(fade, (0, 0))
 
@@ -98,18 +100,18 @@ while running:
         new_vectors.append((ux, uy))
         oux, ouy = old_vectors[i]
         dot = oux*ux + ouy*uy
-        if dot > 0:
-            colors[i] = ((255*(dot*10) % 256), 10*(255/2-255/2*dot) % 256, 0)
-        else:
-            colors[i] = (0, 1.1*(255/2+255/2*dot) %
-                         256, 10*(255*abs(dot)) % 256)
+        # if dot > 0:
+        #     colors[i] = ((255*(dot*10) % 256), 10*(255/2-255/2*dot) % 256, 0)
+        # else:
+        #     colors[i] = (0, 1.1*(255/2+255/2*dot) %
+        #                  256, 10*(255*abs(dot)) % 256)
         pygame.draw.line(screen, colors[i], (int(
             x1), int(y1)), (int(x2), int(y2)), 2)
     old_vectors = new_vectors
     for i, pos in enumerate(particle_pos.copy()):
         x, y = pos
         ix, iy = math.floor(x/step), math.floor(y/step)
-        index = grid[(ix, iy)]
+        index = ix * (H//step) + iy
         ux, uy = new_vectors[index]
         t = pygame.time.get_ticks() / 1000
         mx = x - W/2
@@ -117,18 +119,18 @@ while running:
         c_avg = 255  # ! make the particles white
         x += ux
         y += uy
-        if x < 0:
-            particle_pos.pop(i)
-            continue
-        if x > W:
-            particle_pos.pop(i)
-            continue
-        if y < 0:
-            particle_pos.pop(i)
-            continue
-        if y > H:
-            particle_pos.pop(i)
-            continue
+        # if x < 0:
+        #     particle_pos.pop(i)
+        #     continue
+        # if x > W:
+        #     particle_pos.pop(i)
+        #     continue
+        # if y < 0:
+        #     particle_pos.pop(i)
+        #     continue
+        # if y > H:
+            # particle_pos.pop(i)
+            # continue
         particle_pos[i] = (x, y)
         P = len(particle_pos)
     for j in range(P):
