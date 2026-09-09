@@ -24,7 +24,7 @@ pygame.init()
 W,H = 500,500
 W2,H2 = W//2,H//2
 random.seed(42)
-step = 100
+step = 25
 vector_len = 50
 pos_arr = [
     (x,y) for x in range(0,W,step) for y in range(0,H,step)
@@ -51,7 +51,7 @@ funcs = {
 }
 clock = pygame.time.Clock()
 running = True
-k = 100
+k = 1
 colors = [(random.randint(0,255),random.randint(0,255),random.randint(0,255)) for _ in range(N)]
 c_avg_arr = [sum(c)/3 for c in colors]
 func_k = list(funcs.keys())
@@ -85,10 +85,11 @@ while running:
             mx = x - W/2
             my = H/2 - y
             c_avg = c_avg_arr[i]
+            print(t,end="\r")
             # nx = x + random.uniform(-10,10) * (c_avg/255)
             # ny = y + random.uniform(-10,10) * (c_avg/255)
-            nx = x + math.cos((my)/(k) + t) * (c_avg/255) * 5
-            ny = y + math.sin((mx)/(k) + t) * (c_avg/255) * 5
+            nx = x - (math.cos(2*(my)/(k) + t)) * (c_avg/255) * 5
+            ny = y + (math.cos(2*(mx)/(k) + t)) * (c_avg/255) * 5
             # nx = x + funcs["log"](my) * (c_avg/255)
             # ny = y + funcs["log"](mx) * (c_avg/255)
             new_pos_arr.append((nx,ny))
@@ -115,17 +116,9 @@ while running:
                     colors[i] = (255*dot,255/2-255/2*dot,0)
                 else:
                     colors[i] = (0,255/2+255/2*dot,255*abs(dot))
-                # if dot > math.cos(math.pi/6):
-                #     colors[i] = (255,0,0)
-                # elif dot > math.cos(math.pi/4):
-                #     colors[i] = (0,255,0)
-                # elif dot > math.cos(math.pi/3):
-                #     colors[i] = (0,0,255)
-                # else:
-                #     colors[i] = (255,255,255)
-                pygame.draw.rect(screen, colors[i], (int(x1)-2, int(y1)-2, 10, 10))
+                # pygame.draw.rect(screen, colors[i], (int(x1)-2, int(y1)-2, 10, 10))
                 pygame.draw.line(screen, colors[i], (int(x1), int(y1)), (int(x2), int(y2)), 2)
         
         pygame.display.update()
-        clock.tick(60)
+        # clock.tick(60)
 pygame.quit()
