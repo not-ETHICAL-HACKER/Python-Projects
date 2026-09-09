@@ -57,51 +57,67 @@ func_k = list(funcs.keys())
 funcs_arrs = [random.choice(func_k) for _ in range(N)]
 vector_len = 10
 while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.VIDEORESIZE:
-            W, H = event.w, event.h
-            W2,H2 = W//2,H//2
-            screen = pygame.display.set_mode((W, H), pygame.RESIZABLE)
+    for _ in range(2):
+        if _ == 0:
+            vectors = []
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.VIDEORESIZE:
+                W, H = event.w, event.h
+                W2,H2 = W//2,H//2
+                screen = pygame.display.set_mode((W, H), pygame.RESIZABLE)
 
-            fade = pygame.Surface((W, H), pygame.SRCALPHA)
-            fade.fill((0, 0, 0, fade_const))
-            pos_arr = [
-                (x,y) for x in range(0,W,step) for y in range(0,H,step)
-            ]
-            N = len(pos_arr)
-            funcs_arrs = [random.choice(func_k) for _ in range(N)]
-            colors = [(random.randint(0,255),random.randint(0,255),random.randint(0,255)) for _ in range(N)]            
-            c_avg_arr = [sum(c)/3 for c in colors]
-    new_pos_arr = []
-    for i,pos in enumerate(pos_arr):
-        x,y = pos
-        t = pygame.time.get_ticks() / 1000 #! remove time dependency for more stable flow field
-        mx = x - W/2
-        my = H/2 - y
-        c_avg = c_avg_arr[i]
-        # nx = x + math.cos((my)/(k) + t) * (c_avg/255)
-        # ny = y + math.cos((mx)/(k) + t) * (c_avg/255)
-        nx = x + funcs["log"](my) * (c_avg/255)
-        ny = y + funcs["log"](mx) * (c_avg/255)
-        new_pos_arr.append((nx,ny))
-    screen.blit(fade, (0, 0))
-    for i in range(N):
-        x1,y1 = pos_arr[i]
-        x2,y2 = new_pos_arr[i]
+                fade = pygame.Surface((W, H), pygame.SRCALPHA)
+                fade.fill((0, 0, 0, fade_const))
+                pos_arr = [
+                    (x,y) for x in range(0,W,step) for y in range(0,H,step)
+                ]
+                N = len(pos_arr)
+                funcs_arrs = [random.choice(func_k) for _ in range(N)]
+                colors = [(random.randint(0,255),random.randint(0,255),random.randint(0,255)) for _ in range(N)]            
+                c_avg_arr = [sum(c)/3 for c in colors]
+                vectors = [(0,0) for __ in range(N)]
+        new_pos_arr = []
+        for i,pos in enumerate(pos_arr):
+            x,y = pos
+            t = pygame.time.get_ticks() / 1000 #! remove time dependency for more stable flow field
+            mx = x - W/2
+            my = H/2 - y
+            c_avg = c_avg_arr[i]
+            nx = x + math.sin((my)/(k) + t) * (c_avg/255)
+            ny = y + math.cos((mx)/(k) + t) * (c_avg/255)
+            # nx = x + funcs["log"](my) * (c_avg/255)
+            # ny = y + funcs["log"](mx) * (c_avg/255)
+            new_pos_arr.append((nx,ny))
+        screen.blit(fade, (0, 0))
+        for i in range(N):
+            x1,y1 = pos_arr[i]
+            x2,y2 = new_pos_arr[i]
+            
+            dx = x2 - x1
+            dy = y2 - y1
+            hyp = max(1e-6,math.hypot(dx,dy))
+            ux = dx/hyp 
+            uy = dy/hyp
+            
+            x2 = x1 + ux * vector_len
+            y2 = y1 + uy * vector_len
+            if _ == 0:
+                vectors.append((ux,uy))
+            else:
+                oux,ouy = vectors[i]
+                dot = oux*ux + ouy*uy
+                if abs(dot) > math.cos(math.pi/6):
+                    colors[i] = (255,0,0)
+                elif abs(dot) > math.cos(math.pi/4):
+                    colors[i] = (0,255,0)
+                elif abs(dot) > math.cos(math.pi/3):
+                    colors[i] = (0,0,255)
+                else:
+                    colors[i] = (255,255,255)
+                pygame.draw.line(screen, colors[i], (int(x1), int(y1)), (int(x2), int(y2)), 2)
         
-        dx = x2 - x1
-        dy = y2 - y1
-        hyp = max(1e-6,math.hypot(dx,dy))
-        ux = dx/hyp 
-        uy = dy/hyp
-        
-        x2 = x1 + ux * vector_len
-        y2 = y1 + uy * vector_len
-        
-        pygame.draw.line(screen, colors[i], (int(x1), int(y1)), (int(x2), int(y2)), 2)
-    
-    pygame.display.update()
-    clock.tick(60)
+        pygame.display.update()
+        clock.tick(60)
 pygame.quit()
