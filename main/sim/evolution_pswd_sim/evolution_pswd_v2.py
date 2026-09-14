@@ -7,7 +7,7 @@ import random
 random.seed(0)
 chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;':,.<>/?`~ "
 char_idx = {c:i for i,c in enumerate(chars)}
-pswd = "password fnidafiadofn dauabfin jf dbic acboa6 65232323232 5656565656565656"
+pswd = "password 67"
 n = len(pswd)
 N = 125
 class Creature:

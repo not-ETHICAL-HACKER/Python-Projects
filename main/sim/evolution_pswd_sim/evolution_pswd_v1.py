@@ -1,7 +1,7 @@
 import random
 random.seed(0)
-chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "#0123456789!@#$%^&*()_+-=[]{}|;':,.<>/?`~ "
-pswd = "password helllo wworld caht jipiti"
+chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ#0123456789!@#$%^&*()_+-=[]{}|;':,.<>/?`~ "
+pswd = "password 67"
 n = len(pswd)
 N = 125
 class Creature:

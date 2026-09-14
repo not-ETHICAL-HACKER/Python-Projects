@@ -56,3 +56,4 @@ main/math/random_walk_data.csv
 main/math/random_walk_mean_sigma.csv
 *.csv
 *.pkl
+*.pyc
