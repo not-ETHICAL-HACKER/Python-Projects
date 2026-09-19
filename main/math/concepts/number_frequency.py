@@ -1,8 +1,8 @@
 import time
-n = 10**5
-s_num = "1"
+n = 5 * 10**3
+s_num = "67"
 c = 0
-leading_num = True
+leading_num = False
 delay = 1
 print("start")
 for i in range(n+1):
@@ -17,4 +17,4 @@ for i in range(n+1):
         time.sleep(1/c*delay)
         print(f"num: {i:,} | Probability of {s_num} is {c/(n if n != 0 else 1)*100: .2f}%",end = "\r")
 print()
-print(f"'{s_num}' has appeared in [0,{n}] {c} times\nProbability of {s_num} is {c/(n if n != 0 else 1)*100: .2f}%")
+print(f"'{s_num}' has appeared in mode {leading_num:=} in [0,{n}] {c} times\nProbability of {s_num} is {c/(n if n != 0 else 1)*100: .2f}%")

@@ -5,7 +5,7 @@ class TypeManager:
     def __repr__(self):
         return f"<class '{self.type}'>"
     def find_type(self):
-        new_token = self.obj.split("'")[1]
+        new_token = type(self.obj).__name__
         type_map = {
             int: 'int',
             float: 'real',
