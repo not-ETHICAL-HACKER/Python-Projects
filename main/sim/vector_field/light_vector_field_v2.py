@@ -30,8 +30,9 @@ fade.fill((0,0,0,80))   # Very short trails
 """
 clock = pygame.time.Clock()
 running = True
-k = 10**2
+k = 10**3
 vector_sizes = [vector_len for _ in range(N)]
+acclerations = [(0,0) for _ in range(N)]
 velocities = [(0,0) for _ in range(N)]
 og_time = 0
 cooldown_time = 1
@@ -52,15 +53,19 @@ while running:
             ]
             N = len(pos_arr)
             velocities = [(0,0) for _ in range(N)]
+            acclerations = [(0,0) for _ in range(N)]
             colors = [(255,255,255) for _ in range(N)]
-            vectors = [(0,0) for __ in range(N)]
+            vectors = [(0,0) for _ in range(N)]
             vector_sizes = [vector_len for _ in range(N)]
+
     screen.blit(fade, (0, 0)) #! make colors be white with it fading on long distances
+
     mx, my = pygame.mouse.get_pos()
     buttons = pygame.mouse.get_pressed()
+
     t = pygame.time.get_ticks() / 1000
-    dt = 1e-3
-    print(t,end="\r")
+    dt = 1e-2
+    # print(t,end="\r")
     cooldown = t - og_time > cooldown_time
     if cooldown:
         og_time = t
@@ -70,16 +75,22 @@ while running:
         elif buttons[2]:
             charges.append((-1,(mx,my)))
             C += 1
-    res_x = []
-    res_y = []
+
     for j in range(C):
         c,(qx,qy) = charges[j]
-        vx = math.cos(2*t) * 5
-        vy = math.sin(2*t) * 5
+        ax,ay = acclerations[j]
+        vx,vy = velocities[j]
+        ax = max(-2,min(2,ax + random.uniform(0,1)))
+        ay = max(-2,min(2,ay + random.uniform(0,1)))
+        vx += math.cos(t) * ax * dt
+        vy += math.sin(t) * ay * dt
         qx += vx
         qy += vy
         charges[j] = (c,(qx,qy))
-        
+        acclerations[j] = ax,ay
+        velocities[j] = vx,vy
+    res_x = []
+    res_y = []
     res_color:list[list[tuple[int,int,int]]] = []
     for j in range(C):
         temp_x = []
@@ -96,9 +107,16 @@ while running:
             ux = dx/hyp 
             uy = dy/hyp 
 
+            ax,ay = acclerations[j]
+            vx,vy = velocities[j]
+
             E = max(0,((max_radius - hyp)/max_radius)) * c #* pseudo electric field with fading
-            vector_x = ux * vector_sizes[i] * E 
-            vector_y = uy * vector_sizes[i] * E
+            E_t = k * (c * uy)
+            E_xt = E_t * (ax/(vx**2 + 1))
+            E_yt = E_t * (ay/(vy**2 + 1))
+            print((E_xt,E_yt) if E_xt or E_yt else "",end = "\r")
+            vector_x = min(75,ux * vector_sizes[i] * E + abs(E_xt))
+            vector_y = min(75,uy * vector_sizes[i] * E + abs(E_yt))
             t_c = [255,255,255] #! comment if u want fading colors
             # t_c = [max(0, min(255, int(255*((max_radius - hyp)/max_radius)))) for _ in range(3)] #! comment if u want const colors
 
