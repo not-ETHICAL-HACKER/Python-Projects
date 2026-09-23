@@ -70,6 +70,8 @@ while running:
     res_y = []
     for j in range(C):
         c,(qx,qy) = charges[j]
+        # qx += t/10
+        # qy += math.sin(t/10) * 10
         qx += math.cos(t) * 5
         qy += math.sin(t) * 5
         charges[j] = (c,(qx,qy))
@@ -88,9 +90,9 @@ while running:
             hyp = max(1e-3,math.hypot(dx,dy))
             ux = dx/hyp if c > 0 else -dx/hyp
             uy = dy/hyp if c > 0 else -dy/hyp
-                
-            vector_x = ux * vector_sizes[i] * ((max_radius - hyp)/max_radius) * abs(c)
-            vector_y = uy * vector_sizes[i] * ((max_radius - hyp)/max_radius) * abs(c)
+            E = max(0,((max_radius - hyp)/max_radius)) * abs(c) #* pseudo electric field with fading
+            vector_x = ux * vector_sizes[i] * E 
+            vector_y = uy * vector_sizes[i] * E
             t_c = [max(0, min(255, int(255*((max_radius - hyp)/max_radius)))) for _ in range(3)]
             temp_colors.append(t_c)
             temp_x.append(vector_x)
@@ -115,9 +117,9 @@ while running:
         fin_unit_vector_arr.append((s_x,s_y))
     for i in range(N):
         x1,y1 = pos_arr[i]
-        avg_ux,avg_uy = fin_unit_vector_arr[i]
-        x2 = x1 + avg_ux
-        y2 = y1 + avg_uy
+        res_ux,res_uy = fin_unit_vector_arr[i]
+        x2 = x1 + res_ux
+        y2 = y1 + res_uy
         pygame.draw.line(screen, colors[i], (int(x1), int(y1)), (int(x2), int(y2)), 2)
             
     for charge in charges:
