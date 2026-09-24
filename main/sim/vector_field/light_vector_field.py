@@ -6,9 +6,9 @@ import math,random,pygame
 pygame.init()
 W,H = 500,500
 W2,H2 = W//2,H//2
-random.seed(42)
-step = 50
-vector_len = 50
+random.seed(0)
+step = 25
+vector_len = 12
 max_radius = 1000
 pos_arr = [
     (x,y) for x in range(0,W,step) for y in range(0,H,step)
@@ -20,7 +20,7 @@ colors = [(255,255,255) for _ in range(N)]
 screen = pygame.display.set_mode((W,H), pygame.RESIZABLE)
 pygame.display.set_caption("My Simulation")
 fade = pygame.Surface((W, H), pygame.SRCALPHA)
-fade_const = 50
+fade_const = 100
 fade.fill((0, 0, 0, fade_const))   # Last number = alpha (0-255)
 """ #! smaller alpha val make the trails longer
 fade.fill((0,0,0,3))    # Very long trails
@@ -34,7 +34,7 @@ k = 10**2
 vector_sizes = [vector_len for _ in range(N)]
 velocities = [(0,0) for _ in range(N)]
 og_time = 0
-cooldown_time = 1
+cooldown_time = .5
 
 while running:
     for event in pygame.event.get():
@@ -74,8 +74,8 @@ while running:
     res_y = []
     for j in range(C):
         c,(qx,qy) = charges[j]
-        vx = math.cos(2*t) * 5
-        vy = math.sin(2*t) * 5
+        vx = 0#math.cos(t) * 5
+        vy = 0#math.sin(t) * 5
         qx += vx
         qy += vy
         charges[j] = (c,(qx,qy))
@@ -128,6 +128,13 @@ while running:
         res_ux,res_uy = fin_unit_vector_arr[i]
         x2 = x1 + res_ux
         y2 = y1 + res_uy
+        r,g,b = colors[i]
+        # r = max(-1,min(1, res_ux/vector_len))
+        # b = max(-1,min(1,res_uy/vector_len))
+        # r = abs(int(127 + r * 127))
+        # b = abs(int(127 + b * 127))
+        # g = 0
+        colors[i] = r,g,b
         pygame.draw.line(screen, colors[i], (int(x1), int(y1)), (int(x2), int(y2)), 2)
             
     for charge in charges:
