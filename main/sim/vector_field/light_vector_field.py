@@ -7,8 +7,8 @@ pygame.init()
 W,H = 500,500
 W2,H2 = W//2,H//2
 random.seed(0)
-step = 25
-vector_len = 12
+step = 15
+vector_len = 20
 max_radius = 1000
 pos_arr = [
     (x,y) for x in range(0,W,step) for y in range(0,H,step)
