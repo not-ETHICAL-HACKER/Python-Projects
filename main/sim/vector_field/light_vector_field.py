@@ -2,7 +2,8 @@ import math,random,pygame
 #! watch to get idea how to sim
 #? https://youtu.be/4p7JJ6VPnTM?si=--jDbETjjw98WnsW
 #! done the coulomb part 
-# todo: do the second vecotr part given in the video 
+#!done the transverse part tooo
+#// todo: do the second vecotr part given in the video 
 pygame.init()
 W,H = 500,500
 W2,H2 = W//2,H//2
@@ -118,7 +119,7 @@ while running:
             x3 = x1 + perp_ux
             y3 = y1 + perp_uy
             # pygame.draw.line(screen, (r,b,g), (int(x1), int(y1)), (int(x2+perp_ux), int(y2+perp_uy)), 2)
-            pygame.draw.line(screen, (r,b,g), (int(x1), int(y1)), (int(x3), int(y3)), 2)
+            pygame.draw.line(screen, colors[i], (int(x1), int(y1)), (int(x3), int(y3)), 2)
         else:
             pygame.draw.line(screen, colors[i], (int(x1), int(y1)), (int(x2), int(y2)), 2)
     pygame.draw.rect(screen, (0,255,0), pygame.Rect(mx,my,10,10))
