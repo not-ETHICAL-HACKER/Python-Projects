@@ -21,7 +21,7 @@ colors = [(255,255,255) for _ in range(N)]
 screen = pygame.display.set_mode((W,H), pygame.RESIZABLE)
 pygame.display.set_caption("My Simulation")
 fade = pygame.Surface((W, H), pygame.SRCALPHA)
-fade_const = 100
+fade_const = 10
 fade.fill((0, 0, 0, fade_const))   # Last number = alpha (0-255)
 """ #! smaller alpha val make the trails longer
 fade.fill((0,0,0,3))    # Very long trails
@@ -76,8 +76,8 @@ while running:
     res_y = []
     for j in range(C):
         c,(qx,qy) = charges[j]
-        vx = math.cos(t) * math.log(t + 1) * c
-        vy = math.sin(t) * math.log(t + 1) * c
+        vx = math.cos(t) * math.log10(t + 1) * c
+        vy = 0#math.sin(t) * math.log10(t + 1) * c
         qx += vx
         qy += vy
         charges[j] = (c,(qx,qy))
@@ -121,12 +121,12 @@ while running:
             # pygame.draw.line(screen, (r,b,g), (int(x1), int(y1)), (int(x2+perp_ux), int(y2+perp_uy)), 2)
             pygame.draw.line(screen, colors[i], (int(x1), int(y1)), (int(x3), int(y3)), 2)
         else:
-            pygame.draw.line(screen, colors[i], (int(x1), int(y1)), (int(x2), int(y2)), 2)
+            pygame.draw.line(screen, colors[i], (int(x1), int(y1)), (int(x2), int(y2)), 1)
     pygame.draw.rect(screen, (0,255,0), pygame.Rect(mx,my,10,10))
     for charge in charges:
         c,pos = charge
         x,y = pos
-        pygame.draw.circle(screen, (255,0,0) if c > 0 else (0,0,255), (int(x),int(y)), 5)
+        pygame.draw.circle(screen, (255,255,0) if c > 0 else (0,0,255), (int(x),int(y)), 5)
     pygame.display.update()
     clock.tick(60)
 pygame.quit()
