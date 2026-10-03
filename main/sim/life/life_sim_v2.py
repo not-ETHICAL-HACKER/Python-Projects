@@ -29,7 +29,7 @@ food_arr = [
     for _ in range(F)]
 min_food_dist = 10
 min_food_dist_sqr = min_food_dist ** 2
-
+#todo : make a grid system and try to do a ant sim thing where the chuds remeber food and create a new "home_nest" for them to go to
 screen = pygame.display.set_mode((W,H), pygame.RESIZABLE)
 pygame.display.set_caption("My Simulation")
 fade = pygame.Surface((W, H), pygame.SRCALPHA)
@@ -72,19 +72,9 @@ while running:
         chuds[i] = (c_id,t_id,pos,wander,age,energy)
     chuds = [chud for chud in chuds if chud[-1] > 0]
     food_arr = [foid for foid in food_arr if foid[-1] > 0]
-    for j,foid in enumerate(food_arr):
-        f_id,f_pos,f_hp = foid
-        # if f_hp <= 0:
-        #     food_arr[j] = f_id,(random.randint(0,W),random.randint(0,H)),random.uniform(10,20)
-        if j % 2 == 0:
-            f_x,f_y = f_pos
-            f_x += math.cos(2*t)
-            f_y += math.sin(2*t)
-        if j % 2 == 1:
-            f_x,f_y = f_pos
-            f_x += math.cos(t)
-            f_y += math.sin(t)
-        food_arr[j] = f_id,(f_x,f_y),f_hp
+    # for j,foid in enumerate(food_arr):
+    #     f_id,f_pos,f_hp = foid
+    #     food_arr[j] = f_id,(f_x,f_y),f_hp
     for i,chud in enumerate(chuds):
         c_id,t_id,pos,wander,age,energy = chud
         c_x,c_y = pos
