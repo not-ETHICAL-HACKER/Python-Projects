@@ -3,8 +3,8 @@ pygame.init()
 random.seed(0)
 W,H = 500,500
 S = 10
-N = 250
-draw_help = True
+N = 100
+draw_help = not True
 vector_len = 25
 fade_const = 200
 CELL_SIZE = 100
@@ -30,7 +30,7 @@ class boids:
         self.fov_cos = math.cos(self.fov)
         self.alignment_str = .01
         self.seperation_str = .25
-        self.cohesion_str = .5
+        self.cohesion_str = 1
     
     def __repr__(self):
         return f"boids(x={self.x:.2f},y={self.y:.2f})"
@@ -132,11 +132,14 @@ while running:
                         chud.cohesion(avg_pos)
                         chud.seperation(neighbor_boids)
     for chud in chuds:
+        magnitude = math.hypot(chud.vx,chud.vy)
+        ratio = min(1,magnitude / chud.max_speed)
+        chud.color = (int(255 * ratio),) * 3
         chud.update()
         chud.border_check()
     screen.blit(fade, (0, 0))
     for chud in chuds:
-        pygame.draw.rect(screen,chud.color,(int(chud.x),int(chud.y),2,2))
+        pygame.draw.rect(screen,chud.color,(int(chud.x),int(chud.y),3,3))
     if draw_help:
         for (cx,cy), cell_data in grid_info.items():
             avg_x,avg_y = cell_data["avg_pos"]
