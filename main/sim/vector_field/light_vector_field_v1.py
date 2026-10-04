@@ -21,7 +21,7 @@ colors = [(255,255,255) for _ in range(N)]
 screen = pygame.display.set_mode((W,H), pygame.RESIZABLE)
 pygame.display.set_caption("My Simulation")
 fade = pygame.Surface((W, H), pygame.SRCALPHA)
-fade_const = 10
+fade_const = 100
 fade.fill((0, 0, 0, fade_const))   # Last number = alpha (0-255)
 """ #! smaller alpha val make the trails longer
 fade.fill((0,0,0,3))    # Very long trails
@@ -76,8 +76,8 @@ while running:
     res_y = []
     for j in range(C):
         c,(qx,qy) = charges[j]
-        vx = math.cos(t) * math.log10(t + 1) * c
-        vy = 0#math.sin(t) * math.log10(t + 1) * c
+        vx = math.exp(math.cos(t)) * math.sin(t)#math.cos(t) * math.log10(t + 1) * c
+        vy = math.exp(math.sin(t)) * math.cos(t) #math.sin(t) * math.log10(t + 1) * c
         qx += vx
         qy += vy
         charges[j] = (c,(qx,qy))
