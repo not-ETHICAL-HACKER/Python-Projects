@@ -9,8 +9,9 @@ step = 10
 zoom = 100
 dilation = 10
 vector_len = 1
-rect_size = 5
-fade_const = 10
+rect_size = 1
+fade_const = 100
+border_check = True
 pos_arr = [
     (x,y) for x in range(0,W,step) for y in range(0,H,step)
 ]
@@ -55,11 +56,24 @@ while running:
         # vx = math.exp(math.cos(sim_y)) * math.sin(sim_x) #! singularity formation ig?
         # vy = math.exp(math.sin(sim_x)) * math.cos(sim_y)
         
-        vx = math.exp(math.cos(sim_y + t/dilation)) * math.sin(sim_x + t/dilation) * vector_len#! better dynamic movement
-        vy = math.exp(math.sin(sim_x + t/dilation)) * math.cos(sim_y + t/dilation) * vector_len
+        # vx = math.exp(math.cos(sim_y + t/dilation)) * math.sin(sim_x + t/dilation) * vector_len#! better dynamic movement
+        # vy = math.exp(math.sin(sim_x + t/dilation)) * math.cos(sim_y + t/dilation) * vector_len
+        
+        vx = math.sin(sim_y + t) + math.cos(sim_y * 0.5)#! pulsating vortices
+        vy = math.sin(sim_x - t) - math.cos(sim_x * 0.5)
+        
+        # vx = math.sin(2 * sim_x + t) * math.cos(3 * sim_y - t) #! wave interference pattern
+        # vy = math.sin(3 * sim_x - t) * math.cos(2 * sim_y + t)
+        
+        # vx = sim_y - (sim_x**3) + sim_x #! id sum bs ig
+        # vy = -sim_x + math.sin(t * 0.5)
+        
         x += vx
         y += vy
-        pos_arr[j] = ((x,y))
+        if border_check:
+            x = max(0, min(W-rect_size, x))
+            y = max(0, min(H-rect_size, y))
+        pos_arr[j] = x,y
         pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(int(x), int(y), rect_size, rect_size))
     pygame.display.update()
     clock.tick(60)
