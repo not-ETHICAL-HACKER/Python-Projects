@@ -45,7 +45,7 @@ for i in range(N):
     particles.append(P)
 from time import sleep 
 while True:
-    sleep(1/30)
+    sleep(1/60)
     for p in particles:
         p.clear()
     for p in particles:
