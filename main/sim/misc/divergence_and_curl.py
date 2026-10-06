@@ -4,12 +4,16 @@ W,H = 500,500
 W2,H2 = W//2,H//2
 random.seed(0)
 step = 10
-zoom = 100
+zoom = 1000
 dilation = 10
 vector_len = 1
 rect_size = 1
-fade_const = 100
+fade_const = 10
 border_check = not True
+source_sink = not True
+if source_sink:
+    source_x,source_y = 0,0
+    sink_x,sink_y = 100,100
 pos_arr = [
     (x,y) for x in range(0,W,step) for y in range(0,H,step)
 ]
@@ -48,6 +52,21 @@ while running:
 
         # vx = math.exp(math.cos(sim_y)) * math.sin(sim_y) * vector_len #* math.cos(t) #! log unit circle
         # vy = math.exp(math.sin(sim_x)) * math.cos(sim_x) * vector_len #* math.cos(t)
+        if source_sink:
+            dx1 = sim_x - (source_x)*math.pi
+            dy1 = sim_y - (source_y)*math.pi
+
+            dx2 = sim_x - (sink_x - W2)*math.pi
+            dy2 = sim_y - (H2-sink_y)*math.pi
+
+            r1 = dx1**2 + dy1**2 + 1e-6
+            r2 = dx2**2 + dy2**2 + 1e-6
+
+            vx = dx1/r1 - dx2/r2
+            vy = dy1/r1 - dy2/r2
+        
+        # vx = -y/H * math.sin(sim_x) + random.uniform(-1,1)#! weird source sink thing
+        # vy = x/W * math.cos(sim_y) - random.uniform(-1,1)
         
         # vx = math.exp(math.cos(sim_y)) * math.sin(t) #! fluidish movement
         # vy = math.exp(math.sin(sim_x)) * math.cos(t)
@@ -64,8 +83,8 @@ while running:
         # vx = math.sin(sim_y + t) + math.cos(sim_y * 0.5)#! pulsating vortices
         # vy = math.sin(sim_x - t) - math.cos(sim_x * 0.5)
         
-        # vx = math.sin(2 * sim_x + t) * math.cos(3 * sim_y - t) #! wave interference pattern
-        # vy = math.sin(3 * sim_x - t) * math.cos(2 * sim_y + t)
+        vx = math.sin(2 * sim_x + t) * math.cos(3 * sim_y - t) #! wave interference pattern
+        vy = math.sin(3 * sim_x - t) * math.cos(2 * sim_y + t)
         
         # vx = sim_y - (sim_x**3) + sim_x #! id sum bs ig
         # vy = -sim_x + math.sin(t * 0.5)
