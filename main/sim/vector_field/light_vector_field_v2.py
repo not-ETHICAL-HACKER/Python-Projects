@@ -7,19 +7,20 @@ import math,random,pygame
 pygame.init()
 W,H = 500,500
 W2,H2 = W//2,H//2
-random.seed(0)
+random.seed(42)
 step = 10
+particle_step = 75
 vector_len = 10
-max_radius = 1000
+max_radius = 10000
 pos_arr = [
     (x,y) for x in range(0,W,step) for y in range(0,H,step)
 ]
-particle_arr = [((x,y),(x,y)) for x,y in pos_arr] #! original pos, current pos
-particle_radius = 1
+particle_arr = [((x,y)) for x in range(0,W,particle_step) for y in range(0,H,particle_step)] #! original pos, current pos
+particle_radius = 2
 C = 1
 charges = [(random.choice([-1,1]),(random.randint(0,W),random.randint(0,H))) for _ in range(C)]
 N = len(pos_arr)
-colors = [(255,255,255) for _ in range(N)]
+colors = [(50,50,50) for _ in range(N)]
 screen = pygame.display.set_mode((W,H), pygame.RESIZABLE)
 pygame.display.set_caption("My Simulation")
 fade = pygame.Surface((W, H), pygame.SRCALPHA)
@@ -56,10 +57,10 @@ while running:
             ]
             N = len(pos_arr)
             velocities = [(0,0) for _ in range(N)]
-            colors = [(255,255,255) for _ in range(N)]
+            colors = [(50,50,50) for _ in range(N)]
             vectors = [(0,0) for __ in range(N)]
             vector_sizes = [vector_len for _ in range(N)]
-            particle_arr = [((x,y),(x,y)) for x,y in pos_arr] #! original pos, current pos
+            particle_arr = [((x,y)) for x in range(0,W,particle_step) for y in range(0,H,particle_step)] #! original pos, current pos
     screen.blit(fade, (0, 0)) #! make colors be white with it fading on long distances
     mx, my = pygame.mouse.get_pos()
     buttons = pygame.mouse.get_pressed()
@@ -79,8 +80,8 @@ while running:
     res_y = []
     for j in range(C):
         c,(qx,qy) = charges[j]
-        vx = math.exp(math.cos(t)) * math.sin(t)#math.cos(t) * math.log10(t + 1) * c
-        vy = math.exp(math.sin(t)) * math.cos(t) #math.sin(t) * math.log10(t + 1) * c
+        vx = 0#math.exp(math.cos(t)) * math.sin(t)#math.cos(t) * math.log10(t + 1) * c
+        vy = 0#math.exp(math.sin(t)) * math.cos(t) #math.sin(t) * math.log10(t + 1) * c
         qx += vx
         qy += vy
         charges[j] = (c,(qx,qy))
@@ -90,7 +91,6 @@ while running:
         for i in range(N):
             x1,y1 = pos_arr[i]
             c,(x2,y2) = charges[j]
-            (ox,oy),(nx,ny) = particle_arr[i]
             vector_x = vector_y = 0
 
             dx = x2 - x1
@@ -102,31 +102,36 @@ while running:
             E = max(0,((max_radius - hyp)/max_radius)) * c #* pseudo electric field with fading
             vector_x = ux * vector_sizes[i] * E 
             vector_y = uy * vector_sizes[i] * E
-            nx += vector_x 
-            ny += vector_y
-            particle_arr[i] = ((ox,oy),(nx,ny))
             Sum_x[i] += vector_x
             Sum_y[i] += vector_y
-    for k in range(len(particle_arr)):
-        (ox,oy),(nx,ny) = particle_arr[k]
-        # if abs(nx - ox) < 1e-3 and abs(ny - oy) < 1e-3:
-        #     continue  #skip draw for dead vectors
-        for j in range(C):
+    for j in range(C):
+        for k in range(len(particle_arr)):
+            (nx,ny) = particle_arr[k]
             c,(qx,qy) = charges[j]
-            if c > 0:
-                continue
-            if abs(nx - qx) < 5 and abs(ny - qy) < 5:
-                nx,ny = ox,oy
-                break
-        if nx > W:
-            nx = ox
-        if nx < 0:
-            nx = ox
-        if ny > H:
-            ny = oy
-        if ny < 0:
-            ny = oy
-        pygame.draw.rect(screen, (255,255,0), pygame.Rect(nx,ny,particle_radius,particle_radius))
+            dx = qx - nx
+            dy = qy - ny
+            hyp = max(1e-3,math.hypot(dx,dy))
+            ux = dx/hyp 
+            uy = dy/hyp
+            E = max(0,((max_radius - hyp)/max_radius)) * c #* pseudo electric field with fading
+            vector_x = ux * vector_sizes[k] * E 
+            vector_y = uy * vector_sizes[k] * E
+            if hyp < 10:
+                nx,ny = random.randint(0,W),random.randint(0,H)
+            if nx > W:
+                nx = random.randint(0,W)
+            if nx < 0:
+                nx = random.randint(0,W)
+            if ny > H:
+                ny = random.randint(0,H)
+            if ny < 0:
+                ny = random.randint(0,H)
+            if hyp > 1:
+                pygame.draw.rect(screen, (0,255,0), pygame.Rect(nx,ny,particle_radius,particle_radius))
+        
+            nx += vector_x
+            ny += vector_y
+            particle_arr[k] = (nx,ny)
     for i in range(N):
         x1,y1 = pos_arr[i]
         res_ux,res_uy = Sum_x[i], Sum_y[i]
@@ -135,8 +140,9 @@ while running:
         magnitude = math.hypot(res_ux,res_uy)
         x2 = x1 + res_ux
         y2 = y1 + res_uy
-        color_intensity = max(0,min(255, int(magnitude/vector_len*255)))
+        color_intensity = max(0,min(1, int(magnitude/vector_len)))
         r,g,b = colors[i]
+        # r,g,b = int(255*color_intensity),int(255*color_intensity),(255*color_intensity)
         # r = color_intensity
         # b = 255 - color_intensity
         # g = 0
@@ -149,7 +155,6 @@ while running:
             pygame.draw.line(screen, colors[i], (int(x1), int(y1)), (int(x3), int(y3)), 2)
         else:
             pygame.draw.line(screen, colors[i], (int(x1), int(y1)), (int(x2), int(y2)), 1)
-    pygame.draw.rect(screen, (0,255,0), pygame.Rect(mx,my,10,10))
     for charge in charges:
         c,pos = charge
         x,y = pos
