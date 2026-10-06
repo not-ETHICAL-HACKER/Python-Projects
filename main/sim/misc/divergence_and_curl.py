@@ -1,6 +1,4 @@
-from cmath import rect
 import math,random,pygame
-from tkinter import dialog
 pygame.init()
 W,H = 500,500
 W2,H2 = W//2,H//2
@@ -11,7 +9,7 @@ dilation = 10
 vector_len = 1
 rect_size = 1
 fade_const = 100
-border_check = True
+border_check = not True
 pos_arr = [
     (x,y) for x in range(0,W,step) for y in range(0,H,step)
 ]
@@ -46,21 +44,25 @@ while running:
     print(t,end="\r")
     for j in range(len(pos_arr)):
         (x,y) = pos_arr[j]
-        sim_x,sim_y = x/zoom,y/zoom
-        # vx = math.exp(math.cos(sim_y)) * math.sin(sim_y) * vector_len #! log unit circle
-        # vy = math.exp(math.sin(sim_x)) * math.cos(sim_x) * vector_len
+        sim_x,sim_y = x/zoom*math.pi,y/zoom*math.pi
+
+        # vx = math.exp(math.cos(sim_y)) * math.sin(sim_y) * vector_len #* math.cos(t) #! log unit circle
+        # vy = math.exp(math.sin(sim_x)) * math.cos(sim_x) * vector_len #* math.cos(t)
         
         # vx = math.exp(math.cos(sim_y)) * math.sin(t) #! fluidish movement
         # vy = math.exp(math.sin(sim_x)) * math.cos(t)
         
+        vx = ((math.cos(sim_y)) * math.sin(sim_x) + (math.sin(sim_y)) * math.cos(sim_x)) * math.sin(t) #! singularity formation ig?
+        vy = ((math.sin(sim_x)) * math.cos(sim_y) - (math.cos(sim_x)) * math.sin(sim_y)) * math.sin(t)
+
         # vx = math.exp(math.cos(sim_y)) * math.sin(sim_x) #! singularity formation ig?
         # vy = math.exp(math.sin(sim_x)) * math.cos(sim_y)
         
         # vx = math.exp(math.cos(sim_y + t/dilation)) * math.sin(sim_x + t/dilation) * vector_len#! better dynamic movement
         # vy = math.exp(math.sin(sim_x + t/dilation)) * math.cos(sim_y + t/dilation) * vector_len
         
-        vx = math.sin(sim_y + t) + math.cos(sim_y * 0.5)#! pulsating vortices
-        vy = math.sin(sim_x - t) - math.cos(sim_x * 0.5)
+        # vx = math.sin(sim_y + t) + math.cos(sim_y * 0.5)#! pulsating vortices
+        # vy = math.sin(sim_x - t) - math.cos(sim_x * 0.5)
         
         # vx = math.sin(2 * sim_x + t) * math.cos(3 * sim_y - t) #! wave interference pattern
         # vy = math.sin(3 * sim_x - t) * math.cos(2 * sim_y + t)
