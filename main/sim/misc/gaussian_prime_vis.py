@@ -68,7 +68,7 @@ while running:
     #             pygame.display.update()
     
     for num in prime_pos_arr:
-        x,y = int(num[0]+random.uniform(-0.5, 0.5)),int(num[1]+random.uniform(-0.5, 0.5))
+        x,y = int(num[0]*math.cos(num[1])),int(num[1]*math.sin(num[0]))
         pygame.draw.rect(screen,(255,255,255),pygame.Rect((x+W2,y+H2), (rect_size,rect_size)))
     pygame.display.update()
     clock.tick(60)
