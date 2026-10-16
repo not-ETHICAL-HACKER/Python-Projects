@@ -22,8 +22,26 @@ scale = 5
 transverse = not True
 player:list[tuple[int,int,float,float]] = [(W2, H2,0,0)]
 class laser:
-    def __init__(self, time,vel):
-        self.
+    def __init__(self, timing,vel,size):
+        self.tx = random.randint(0,W)
+        self.ty = random.randint(0,H)
+        self.x = self.tx if random.random() > .5 else 0
+        self.y = self.ty if not self.x else 0
+        self.vel = vel
+        self.past_time = 0
+        self.timing = timing
+        self.size = size
+    def draw(self):
+        if pygame.time.get_ticks() - self.past_time > self.timing*1000:
+            pygame.draw.line(screen, (255,0,0), (self.x,self.y), (self.x+self.vel,self.y+self.vel), self.size)
+            self.x += self.vel
+            self.y += self.vel
+            self.past_time = pygame.time.get_ticks()
+    def check(self):
+        if self.x > W or self.y > H or self.x < 0 or self.y < 0:
+            return True
+        return False
+lasers:list[laser] = [laser(random.randint(1,5),random.randint(10,50),random.randint(1,5)) for _ in range(10)]
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -56,6 +74,11 @@ while running:
         vx += scale
     player[0] = (x,y,vx,vy)
     cooldown = t - og_time > cooldown_time
+    for l in lasers:
+        l.draw()
+        if l.check():
+            lasers.remove(l)
+            lasers.append(laser(random.randint(1,5),random.randint(1,5),random.randint(1,5)))
     for player_pos in player:
         x,y,vx,vy = player_pos
         x += vx 
