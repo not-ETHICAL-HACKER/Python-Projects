@@ -33,6 +33,7 @@ def is_prime(n):
     return True
 prime_pos_arr = [num for num in pos_arr if is_prime(int((abs(num[0]**2 + num[1]**2))))]
 # prime_pos_arr = [num for num in pos_arr if is_prime(math.sqrt(abs(num[0]**2 + num[1]**2)))] #! for cocnentric circles of primes
+cunt = 0
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -50,6 +51,7 @@ while running:
             for num in prime_pos_arr:
                 x,y = int(num[0]),int(num[1])
                 pygame.draw.rect(screen,(255,255,255),pygame.Rect((x+W2,y+H2), (1,1)))
+            cunt = 0
             N = len(pos_arr)
     screen.blit(fade, (0, 0)) #! make colors be white with it fading on long distances
     t = pygame.time.get_ticks() / 1000
@@ -68,8 +70,12 @@ while running:
     #             pygame.display.update()
     
     for num in prime_pos_arr:
-        x,y = int(num[0]*math.cos(num[1])),int(num[1]*math.sin(num[0]))
+        # x,y = int(num[0]*math.cos(num[1])),int(num[1]*math.sin(num[0]))
+        x,y = int(num[0]),int(num[1])
+        if cunt == 0:
+            pygame.display.update()
         pygame.draw.rect(screen,(255,255,255),pygame.Rect((x+W2,y+H2), (rect_size,rect_size)))
     pygame.display.update()
     clock.tick(60)
+    cunt += 1
 pygame.quit()
