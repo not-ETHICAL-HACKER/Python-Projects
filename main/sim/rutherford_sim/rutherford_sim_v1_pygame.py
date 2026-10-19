@@ -4,7 +4,7 @@ pygame.init()
 
 W,H = 500,500
 N = 200
-A = 60
+A = 6
 running = True
 interaction_rad = 100
 abs_rad = interaction_rad * (1 - 0.9)

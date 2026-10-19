@@ -4,7 +4,7 @@ random.seed(0)
 W,H = 500,500
 S = 10
 N = 100
-draw_help = not True
+draw_help = True
 vector_len = 25
 fade_const = 200
 CELL_SIZE = 100
